@@ -4705,8 +4705,29 @@ export default function App() {
         )}
       </main>
 
+      {/* Consultation Contact Banner */}
+      <div className="bg-slate-900 text-white mt-12">
+        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="text-center md:text-left">
+            <h4 className="font-bold text-base flex items-center justify-center md:justify-start gap-1.5">
+              <Sparkles className="w-4 h-4 text-emerald-400" />
+              ต้องการที่ปรึกษาด้านบัญชีและภาษีโดยเฉพาะ?
+            </h4>
+            <p className="text-sm text-slate-300 mt-0.5">บริษัท อัลเทอร์เนแท็ก จำกัด</p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-sm font-semibold">
+            <a href="tel:0972474415" className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 transition px-4 py-2 rounded-xl">
+              📞 097-247-4415
+            </a>
+            <span className="flex items-center gap-1.5 text-slate-300">
+              🕘 Office Hours: Monday – Friday | 09:00 – 18:00
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 py-4 mt-12">
+      <footer className="bg-white border-t border-slate-200 py-4">
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-12 text-center text-xs text-slate-400">
           <p>Tax Twin Easy © 2026</p>
         </div>
