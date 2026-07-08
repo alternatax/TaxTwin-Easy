@@ -42,7 +42,7 @@ import ReactMarkdown from "react-markdown";
 
 // --- BACKEND CONFIG ---
 // Paste the Web App URL you get after deploying apps-script/Code.gs (see README.md).
-export const GAS_API_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+export const GAS_API_URL = "https://script.google.com/macros/s/AKfycbz_0_FMxsbDg8nmMhl0bi5wfLooN1Z8qD_QoM4b6zdkYsfovQ6NY-OCcJJGf0CmFlrOdg/exec";
 
 // Calls the Google Apps Script backend. Uses a plain-text body (no explicit
 // Content-Type header) so the browser sends "text/plain", which keeps this a
