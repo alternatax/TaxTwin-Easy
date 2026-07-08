@@ -1271,9 +1271,6 @@ export default function App() {
             <div>
               <h1 className="text-xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
                 Tax Twin Easy
-                <span className="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full inline-block">
-                  เรียลไทม์ 2026
-                </span>
               </h1>
               <p className="text-xs text-slate-500">
                 เครื่องมือเปรียบเทียบคำนวณและประเมินภาษีบุคคลธรรมดา VS จดนิติบุคคลไทย
