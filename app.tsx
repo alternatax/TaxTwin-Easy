@@ -1270,7 +1270,7 @@ export default function App() {
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
-                Thai Tax Sync
+                Tax Twin Easy
                 <span className="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full inline-block">
                   เรียลไทม์ 2026
                 </span>
@@ -4700,7 +4700,7 @@ export default function App() {
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 py-4 mt-12">
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-12 text-center text-xs text-slate-400">
-          <p>Thai Tax Sync © 2026</p>
+          <p>Tax Twin Easy © 2026</p>
         </div>
       </footer>
 
