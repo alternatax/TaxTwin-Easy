@@ -4713,7 +4713,7 @@ export default function App() {
               <Sparkles className="w-4 h-4 text-emerald-400" />
               ต้องการที่ปรึกษาด้านบัญชีและภาษีโดยเฉพาะ?
             </h4>
-            <p className="text-sm text-slate-300 mt-0.5">บริษัท อัลเทอร์เนแท็ก จำกัด</p>
+            <p className="text-sm text-slate-300 mt-0.5">บริษัท อัลเทอร์เนแท็กส์ จำกัด</p>
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-sm font-semibold">
             <a href="tel:0972474415" className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 transition px-4 py-2 rounded-xl">
