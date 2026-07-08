@@ -20,8 +20,6 @@ import {
   Sliders,
   HelpCircle,
   Trash2,
-  History,
-  Save,
   RefreshCw,
   Lock,
   LogOut,
@@ -84,26 +82,6 @@ interface CorporateTaxResult {
   avgRate: number;
   totalExpenses?: number;
   marginalRate: number;
-}
-
-interface SavedCalculation {
-  id: string;
-  timestamp: string;
-  label: string;
-  revenue: number;
-  incomeType?: string;
-  expenseType: "flat" | "actual";
-  actualExpensePercent: number;
-  expenses: number;
-  personalTax: number;
-  personalNetTaxable: number;
-  corporateTotalCost: number;
-  corporateTax: number;
-  corporateNetProfit: number;
-  savings: number;
-  corporateIsBetter: boolean;
-  useMultipleIncomes?: boolean;
-  incomes?: { id: string; typeId: string; amount: number }[];
 }
 
 export const INCOME_TYPES = [
@@ -189,11 +167,6 @@ export default function App() {
   const [plannerUseCustomDeductions, setPlannerUseCustomDeductions] = useState<boolean>(false);
   const [plannerInterestIncome, setPlannerInterestIncome] = useState<number>(0);
   const [plannerRentalIncome, setPlannerRentalIncome] = useState<number>(0);
-
-  // --- HISTORY STATES ---
-  const [history, setHistory] = useState<SavedCalculation[]>([]);
-  const [customLabel, setCustomLabel] = useState<string>("");
-  const [showClearConfirm, setShowClearConfirm] = useState<boolean>(false);
 
   // --- USER AUTHENTICATION STATES ---
   const [currentUser, setCurrentUser] = useState<{ email: string; name: string; isGuest?: boolean } | null>({
@@ -289,65 +262,6 @@ export default function App() {
       logUserLogin("ผู้ใช้งานทั่วไป (Guest)", "guest@taxsync.co");
     }
   }, []);
-
-  // Load history when current user changes
-  useEffect(() => {
-    if (currentUser) {
-      const saved = localStorage.getItem(`thai_tax_history_${currentUser.email}`);
-      if (saved) {
-        try {
-          setHistory(JSON.parse(saved));
-        } catch (e) {
-          console.error("Error parsing tax history from localStorage:", e);
-          setHistory([]);
-        }
-      } else {
-        // If it's the default demo user or acct.prompt@gmail.com, populate initial comparative benchmarks
-        if (currentUser.email === "acct.prompt@gmail.com" || currentUser.email === "demo@taxsync.co") {
-          const demoHistory: SavedCalculation[] = [
-            {
-              id: "demo-1",
-              timestamp: "10:30 - " + new Date().toLocaleDateString("th-TH", { day: "2-digit", month: "short" }),
-              label: "สถานการณ์รายรับปีละ 1.8M (หักเหมา 60% บุคคล คุ้มกว่า)",
-              revenue: 1800000,
-              expenseType: "flat",
-              actualExpensePercent: 35,
-              expenses: 1080000,
-              personalTax: 115000,
-              personalNetTaxable: 660000,
-              corporateTotalCost: 119500,
-              corporateTax: 99500,
-              corporateNetProfit: 990000,
-              savings: 4500,
-              corporateIsBetter: false,
-            },
-            {
-              id: "demo-2",
-              timestamp: "11:15 - " + new Date().toLocaleDateString("th-TH", { day: "2-digit", month: "short" }),
-              label: "จุดคุ้มทุนที่ 3.5M (นิติบุคคลประหยัดกว่า 4.6 หมื่นบาท)",
-              revenue: 3500000,
-              expenseType: "actual",
-              actualExpensePercent: 50,
-              expenses: 1750000,
-              personalTax: 279000,
-              personalNetTaxable: 1690000,
-              corporateTotalCost: 232500,
-              corporateTax: 212500,
-              corporateNetProfit: 1750000,
-              savings: 46500,
-              corporateIsBetter: true,
-            }
-          ];
-          setHistory(demoHistory);
-          localStorage.setItem(`thai_tax_history_${currentUser.email}`, JSON.stringify(demoHistory));
-        } else {
-          setHistory([]);
-        }
-      }
-    } else {
-      setHistory([]);
-    }
-  }, [currentUser]);
 
   // Fetch logs on mount/activeTab change if admin
   useEffect(() => {
@@ -943,146 +857,6 @@ export default function App() {
     );
   };
 
-  // History & Scenario Saver Card — reused across tabs. History is stored
-  // per-user under `thai_tax_history_${currentUser.email}` (see the
-  // useEffect above and saveCalculation/deleteRecord/clearAllHistory below),
-  // so different accounts never share or mix each other's saved plans.
-  const renderHistoryCard = () => (
-    <>
-      {currentUser && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white p-6 rounded-2xl border border-slate-200 shadow-md space-y-4"
-        >
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
-            <div className="flex items-start gap-2.5">
-              <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl shrink-0">
-                <History className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                  สารบัญแผนจำลองและประวัติเปรียบเทียบภาระภาษี ({history.length} แผน)
-                </h3>
-                <p className="text-[10px] text-slate-500 mt-0.5">บันทึก จำลอง หลายประเภทเงินได้/ช่วงรายรับ เปรียบเทียบแผนภาษีได้สะดวก · ข้อมูลของแต่ละบัญชีแยกจากกัน</p>
-              </div>
-            </div>
-
-            {/* Quickly save current plan */}
-            <div className="flex items-center gap-2 self-end sm:self-center">
-              <button
-                type="button"
-                onClick={() => {
-                  const label = prompt(
-                    "กรุณาระบุชื่อสัญญาวางแผนภาษีนี้เพื่ออ้างอิง:",
-                    `แผนจำลอง ${useMultipleIncomes ? "หลายประเภทเงินได้" : `ประเภทมาตรา 40(${incomeType.replace("40_", "")})`} | ${(revenue).toLocaleString()} บ. | ${expenseType === "flat" ? "หักเหมา" : "หักจริง"}`
-                  );
-                  if (label) {
-                    saveCalculation(label);
-                  }
-                }}
-                className="bg-indigo-650 hover:bg-indigo-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl cursor-pointer transition flex items-center gap-1.5 shadow-sm"
-              >
-                <Save className="w-3.5 h-3.5" />
-                บันทึกแผนจำลองปัจจุบัน
-              </button>
-
-              {history.length > 0 && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (confirm("คุณแน่ใจหรือไม่ว่าต้องการล้างประวัติจำลองแผนภาษีทั้งหมด? ข้อมูลนี้จะไม่สามารถกู้คืนได้")) {
-                      clearAllHistory();
-                    }
-                  }}
-                  className="bg-slate-100 hover:bg-rose-50 text-slate-500 hover:text-rose-650 text-xs font-semibold px-2.5 py-2 rounded-lg transition border border-transparent hover:border-rose-200 cursor-pointer"
-                >
-                  ล้างประวัติทั้งหมด
-                </button>
-              )}
-            </div>
-          </div>
-
-          {history.length === 0 ? (
-            <div className="text-center py-8 border border-dashed border-slate-200 rounded-xl bg-slate-50/50">
-              <p className="text-xs text-slate-400 font-bold">ยังไม่มีแผนจำลองภาษีที่จัดเก็บบันทึกไว้ในสัญญานี้</p>
-              <p className="text-[10px] text-slate-500 mt-1">ตั้งระดับรายรับ เลือกประเภทเงินได้ และกดบันทึกแผนล่าสุดด้านบนเพื่อเก็บเข้าสารบัญเปรียบเทียบกันได้ทันที</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 max-h-[220px] overflow-y-auto pr-1">
-              {history.map((record) => {
-                const isSelected = Math.abs(revenue - record.revenue) < 1 &&
-                                   expenseType === record.expenseType &&
-                                   (useMultipleIncomes === record.useMultipleIncomes);
-                return (
-                  <div
-                    key={record.id}
-                    className={`p-3.5 rounded-xl border transition-all text-xs flex flex-col justify-between ${
-                      isSelected
-                        ? "bg-indigo-50/50 border-indigo-250 shadow-xs"
-                        : "bg-slate-50/70 border-slate-200 hover:border-slate-300"
-                    }`}
-                  >
-                    <div className="space-y-1.5">
-                      <div className="flex justify-between items-start gap-1">
-                        <span className="font-bold text-slate-900 text-[11px] leading-tight line-clamp-2" title={record.label}>
-                          {record.label}
-                        </span>
-                        <span className="text-[9px] font-mono text-slate-400 shrink-0">
-                          {record.timestamp.split(" - ")[0]}
-                        </span>
-                      </div>
-                      <div className="flex flex-wrap gap-1 items-center mt-1 text-[10px]">
-                        <span className="font-mono font-bold text-slate-800 bg-white border border-slate-200 px-1.5 py-0.5 rounded">
-                          {record.revenue.toLocaleString()} ฿
-                        </span>
-                        {record.useMultipleIncomes ? (
-                          <span className="bg-emerald-50 text-emerald-700 border border-emerald-200/40 font-bold px-1.5 py-0.5 rounded text-[9px]">
-                            หลายประเภท ({record.incomes?.length || 1})
-                          </span>
-                        ) : (
-                          <span className="bg-slate-100 text-slate-600 font-semibold px-1.5 py-0.5 rounded text-[9px]">
-                            40({record.incomeType?.replace("40_", "") || "8"})
-                          </span>
-                        )}
-                        <span className="bg-indigo-50 text-indigo-700 border border-indigo-100/70 font-semibold px-1.5 py-0.5 rounded text-[9px]">
-                          {record.expenseType === "flat" ? "หักเหมา" : "หักจริง"}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="border-t border-slate-200/50 mt-3 pt-2.5 flex items-center justify-between">
-                      <span className="text-[10px] text-slate-500 font-medium leading-none">
-                        👤 {record.personalTax.toLocaleString()} บ. vs 💼 {record.corporateTotalCost.toLocaleString()} บ.
-                      </span>
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          type="button"
-                          onClick={() => loadRecord(record)}
-                          className="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 bg-white hover:bg-indigo-100 border border-slate-200 hover:border-indigo-200 px-2 py-0.5 rounded cursor-pointer transition shadow-2xs"
-                        >
-                          โหลดแผน
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => deleteRecord(record.id)}
-                          className="text-[10px] font-bold text-rose-500 hover:text-rose-700 p-0.5 rounded cursor-pointer transition hover:bg-rose-50"
-                          title="ลบแผนจำลองนี้"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </motion.div>
-      )}
-    </>
-  );
-
   // Helper for rendering deduction placeholders
   const defaultPersonalDeductions = 60000 + (hasSpouse ? 60000 : 0) + (childrenCount * 30000) + socialSecurity + insuranceCost + investmentSavings;
 
@@ -1093,71 +867,6 @@ export default function App() {
   const hasPnd94Requirement = useMultipleIncomes
     ? incomes.some(item => ["40_5", "40_6_med", "40_6_other", "40_7", "40_8"].includes(item.typeId))
     : ["40_5", "40_6_med", "40_6_other", "40_7", "40_8"].includes(incomeType);
-
-  // --- HISTORY HANDLERS ---
-  const saveCalculation = (customName?: string) => {
-    if (!currentUser) return;
-    const labelToSave = customName?.trim() || customLabel.trim() || `จำลองช่วงรายรับ ${(revenue / 1000000).toFixed(2)}M (${expenseType === "flat" ? "หักเหมา" : "หักจริง"})`;
-    
-    const newRecord: SavedCalculation = {
-      id: Date.now().toString(),
-      timestamp: new Date().toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" }) + " - " + new Date().toLocaleDateString("th-TH", { day: "2-digit", month: "short" }),
-      label: labelToSave,
-      revenue,
-      incomeType,
-      expenseType,
-      actualExpensePercent,
-      expenses: actualExpenseInput,
-      personalTax: personalResult.totalTax,
-      personalNetTaxable: personalResult.netTaxableIncome,
-      corporateTotalCost: corporateResult.totalCost,
-      corporateTax: corporateResult.corpTax,
-      corporateNetProfit: corporateResult.netProfit,
-      savings: costDiff,
-      corporateIsBetter,
-      useMultipleIncomes,
-      incomes,
-    };
-
-    const updated = [newRecord, ...history];
-    setHistory(updated);
-    localStorage.setItem(`thai_tax_history_${currentUser.email}`, JSON.stringify(updated));
-    setCustomLabel("");
-  };
-
-  const deleteRecord = (id: string) => {
-    if (!currentUser) return;
-    const updated = history.filter(item => item.id !== id);
-    setHistory(updated);
-    localStorage.setItem(`thai_tax_history_${currentUser.email}`, JSON.stringify(updated));
-  };
-
-  const loadRecord = (record: SavedCalculation) => {
-    setRevenue(record.revenue);
-    if (record.incomeType) {
-      setIncomeType(record.incomeType);
-    }
-    setExpenseType(record.expenseType);
-    setActualExpensePercent(record.actualExpensePercent);
-    setActualExpenseInput(record.expenses);
-    if (record.useMultipleIncomes !== undefined) {
-      setUseMultipleIncomes(record.useMultipleIncomes);
-    } else {
-      setUseMultipleIncomes(false);
-    }
-    if (record.incomes) {
-      setIncomes(record.incomes);
-    } else if (record.incomeType) {
-      setIncomes([{ id: "1", typeId: record.incomeType, amount: record.revenue }]);
-    }
-  };
-
-  const clearAllHistory = () => {
-    if (!currentUser) return;
-    setHistory([]);
-    localStorage.removeItem(`thai_tax_history_${currentUser.email}`);
-    setShowClearConfirm(false);
-  };
 
   // --- USER AUTHENTICATION HANDLERS ---
   const handleSignIn = (e: React.FormEvent) => {
@@ -1512,8 +1221,6 @@ export default function App() {
             
             {/* LEFT SIDE: Inputs / Parameter Panels */}
             <section className="lg:col-span-12 space-y-6">
-
-              {renderHistoryCard()}
 
               {/* Top Row: Revenue and Corporate Settings side-by-side on md+ screens */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -2596,8 +2303,6 @@ export default function App() {
                 </p>
               </div>
             </div>
-
-            {renderHistoryCard()}
 
             {/* Content layout: 2 columns */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
