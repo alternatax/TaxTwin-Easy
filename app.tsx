@@ -1375,11 +1375,162 @@ export default function App() {
                   </div>
                 </div>
 
+                {/* Section 40 Income Category Selector — sits under Revenue card */}
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+                  <div className="space-y-4 pt-1 col-span-1">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                      <div>
+                        <label className="text-sm font-bold text-slate-950 flex items-center gap-1.5">
+                          <UserCheck className="w-4 h-4 text-emerald-600" />
+                          ประเภทเงินได้พึงประเมิน (มาตรา 40)
+                        </label>
+                        <p className="text-[10px] text-slate-500 mt-0.5">ระบุประเภทและรายละเอียดแหล่งรายรับของคุณ</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setUseMultipleIncomes(!useMultipleIncomes)}
+                        className={`text-[10.5px] px-3 py-1 rounded-full font-bold border cursor-pointer transition flex items-center gap-1 ${
+                          useMultipleIncomes
+                            ? "bg-emerald-600 text-white border-emerald-700 shadow-xs"
+                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                        }`}
+                      >
+                        {useMultipleIncomes ? "✓ โหมดหลายประเภท" : "➕ รวมรายได้หลายประเภท"}
+                      </button>
+                    </div>
+
+                    {!useMultipleIncomes ? (
+                      // Simple Single Income Selector
+                      <div className="space-y-2">
+                        <div className="relative">
+                          <select
+                            id="incomeTypeSelect"
+                            value={incomeType}
+                            onChange={(e) => setIncomeType(e.target.value)}
+                            className="w-full pl-3.5 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs md:text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer appearance-none transition"
+                          >
+                            {INCOME_TYPES.map((type) => (
+                              <option key={type.id} value={type.id}>
+                                {type.name}
+                              </option>
+                            ))}
+                          </select>
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-500">
+                            <ChevronDown className="w-4 h-4" />
+                          </div>
+                        </div>
+                        <div className="bg-emerald-50 p-3 rounded-xl border border-emerald-100 text-[11px] text-emerald-800 flex items-start gap-2 leading-relaxed">
+                          <BookOpen className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                          <span>
+                            {INCOME_TYPES.find((t) => t.id === incomeType)?.desc}
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
+                      // Multiple Incomes Management
+                      <div className="space-y-3.5">
+                        <div className="space-y-3">
+                          {incomes.map((item, idx) => {
+                            const matchedType = INCOME_TYPES.find((t) => t.id === item.typeId) || INCOME_TYPES[4];
+                            return (
+                              <motion.div
+                                initial={{ opacity: 0, y: 5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                key={item.id}
+                                className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-3 relative group"
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="text-[10px] uppercase tracking-wider font-extrabold text-slate-400">
+                                    แหล่งเงินได้ที่ {idx + 1}
+                                  </span>
+                                  {incomes.length > 1 && (
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setIncomes(incomes.filter((x) => x.id !== item.id));
+                                      }}
+                                      className="text-[10px] text-rose-500 hover:text-rose-700 font-bold bg-rose-50 hover:bg-rose-100 px-2.5 py-0.5 rounded-md border border-rose-200 transition cursor-pointer"
+                                    >
+                                      ลบแหล่งนี้
+                                    </button>
+                                  )}
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+                                  {/* Type Select */}
+                                  <div className="md:col-span-8 relative">
+                                    <select
+                                      value={item.typeId}
+                                      onChange={(e) => {
+                                        const updated = incomes.map((x) =>
+                                          x.id === item.id ? { ...x, typeId: e.target.value } : x
+                                        );
+                                        setIncomes(updated);
+                                      }}
+                                      className="w-full pl-3 pr-8 py-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                    >
+                                      {INCOME_TYPES.map((type) => (
+                                        <option key={type.id} value={type.id}>
+                                          {type.name}
+                                        </option>
+                                      ))}
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-400">
+                                      <ChevronDown className="w-3.5 h-3.5" />
+                                    </div>
+                                  </div>
+
+                                  {/* Amount Input */}
+                                  <div className="md:col-span-4 relative">
+                                    <input
+                                      type="text"
+                                      value={item.amount === 0 ? "" : item.amount.toLocaleString("en-US")}
+                                      onChange={(e) => {
+                                        const val = parseInt(e.target.value.replace(/[^0-9]/g, "")) || 0;
+                                        const updated = incomes.map((x) =>
+                                          x.id === item.id ? { ...x, amount: val } : x
+                                        );
+                                        setIncomes(updated);
+                                      }}
+                                      placeholder="ยอดเงิน (บาท)"
+                                      className="w-full pl-2 pr-7 py-2 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-950 font-mono text-right focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                    />
+                                    <span className="absolute right-2.5 inset-y-0 flex items-center text-[10px] font-bold text-slate-400">
+                                      ฿
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="text-[10px] text-slate-550 flex items-start gap-1">
+                                  <BookOpen className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                                  <span>{matchedType.desc}</span>
+                                </div>
+                              </motion.div>
+                            );
+                          })}
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const id = Date.now().toString() + Math.random().toString(36).substr(2, 5);
+                            setIncomes([...incomes, { id, typeId: "40_8", amount: 200000 }]);
+                          }}
+                          className="w-full py-2 bg-slate-50 hover:bg-slate-100 border border-dashed border-slate-300 rounded-xl text-xs font-bold text-slate-700 transition flex items-center justify-center gap-1.5 cursor-pointer"
+                        >
+                          <Plus className="w-4 h-4 text-emerald-600" />
+                          เพิ่มแหล่งเงินได้ มาตรา 40 ตัวอื่น
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
               </div>
 
               {/* Box 1.5: Income Categories and Expenses */}
               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-6">
-                
+
                 {/* VAT Warning Banner */}
                 {revenue > 1800000 && (
                   <motion.div 
@@ -1396,155 +1547,6 @@ export default function App() {
                     </div>
                   </motion.div>
                 )}
-
-                {/* Section 40 Income Category Selector */}
-                <div className="space-y-4 pt-1 col-span-1">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-2">
-                    <div>
-                      <label className="text-sm font-bold text-slate-950 flex items-center gap-1.5">
-                        <UserCheck className="w-4 h-4 text-emerald-600" />
-                        ประเภทเงินได้พึงประเมิน (มาตรา 40)
-                      </label>
-                      <p className="text-[10px] text-slate-500 mt-0.5">ระบุประเภทและรายละเอียดแหล่งรายรับของคุณ</p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setUseMultipleIncomes(!useMultipleIncomes)}
-                      className={`text-[10.5px] px-3 py-1 rounded-full font-bold border cursor-pointer transition flex items-center gap-1 ${
-                        useMultipleIncomes
-                          ? "bg-emerald-600 text-white border-emerald-700 shadow-xs"
-                          : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
-                      }`}
-                    >
-                      {useMultipleIncomes ? "✓ โหมดหลายประเภท" : "➕ รวมรายได้หลายประเภท"}
-                    </button>
-                  </div>
-
-                  {!useMultipleIncomes ? (
-                    // Simple Single Income Selector
-                    <div className="space-y-2">
-                      <div className="relative">
-                        <select
-                          id="incomeTypeSelect"
-                          value={incomeType}
-                          onChange={(e) => setIncomeType(e.target.value)}
-                          className="w-full pl-3.5 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs md:text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer appearance-none transition"
-                        >
-                          {INCOME_TYPES.map((type) => (
-                            <option key={type.id} value={type.id}>
-                              {type.name}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-500">
-                          <ChevronDown className="w-4 h-4" />
-                        </div>
-                      </div>
-                      <div className="bg-emerald-50 p-3 rounded-xl border border-emerald-100 text-[11px] text-emerald-800 flex items-start gap-2 leading-relaxed">
-                        <BookOpen className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                        <span>
-                          {INCOME_TYPES.find((t) => t.id === incomeType)?.desc}
-                        </span>
-                      </div>
-                    </div>
-                  ) : (
-                    // Multiple Incomes Management
-                    <div className="space-y-3.5">
-                      <div className="space-y-3">
-                        {incomes.map((item, idx) => {
-                          const matchedType = INCOME_TYPES.find((t) => t.id === item.typeId) || INCOME_TYPES[4];
-                          return (
-                            <motion.div
-                              initial={{ opacity: 0, y: 5 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              key={item.id}
-                              className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-3 relative group"
-                            >
-                              <div className="flex items-center justify-between">
-                                <span className="text-[10px] uppercase tracking-wider font-extrabold text-slate-400">
-                                  แหล่งเงินได้ที่ {idx + 1}
-                                </span>
-                                {incomes.length > 1 && (
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      setIncomes(incomes.filter((x) => x.id !== item.id));
-                                    }}
-                                    className="text-[10px] text-rose-500 hover:text-rose-700 font-bold bg-rose-50 hover:bg-rose-100 px-2.5 py-0.5 rounded-md border border-rose-200 transition cursor-pointer"
-                                  >
-                                    ลบแหล่งนี้
-                                  </button>
-                                )}
-                              </div>
-
-                              <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-                                {/* Type Select */}
-                                <div className="md:col-span-8 relative">
-                                  <select
-                                    value={item.typeId}
-                                    onChange={(e) => {
-                                      const updated = incomes.map((x) =>
-                                        x.id === item.id ? { ...x, typeId: e.target.value } : x
-                                      );
-                                      setIncomes(updated);
-                                    }}
-                                    className="w-full pl-3 pr-8 py-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                                  >
-                                    {INCOME_TYPES.map((type) => (
-                                      <option key={type.id} value={type.id}>
-                                        {type.name}
-                                      </option>
-                                    ))}
-                                  </select>
-                                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-400">
-                                    <ChevronDown className="w-3.5 h-3.5" />
-                                  </div>
-                                </div>
-
-                                {/* Amount Input */}
-                                <div className="md:col-span-4 relative">
-                                  <input
-                                    type="text"
-                                    value={item.amount === 0 ? "" : item.amount.toLocaleString("en-US")}
-                                    onChange={(e) => {
-                                      const val = parseInt(e.target.value.replace(/[^0-9]/g, "")) || 0;
-                                      const updated = incomes.map((x) =>
-                                        x.id === item.id ? { ...x, amount: val } : x
-                                      );
-                                      setIncomes(updated);
-                                    }}
-                                    placeholder="ยอดเงิน (บาท)"
-                                    className="w-full pl-2 pr-7 py-2 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-950 font-mono text-right focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                                  />
-                                  <span className="absolute right-2.5 inset-y-0 flex items-center text-[10px] font-bold text-slate-400">
-                                    ฿
-                                  </span>
-                                </div>
-                              </div>
-
-                              <div className="text-[10px] text-slate-550 flex items-start gap-1">
-                                <BookOpen className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                                <span>{matchedType.desc}</span>
-                              </div>
-                            </motion.div>
-                          );
-                        })}
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const id = Date.now().toString() + Math.random().toString(36).substr(2, 5);
-                          setIncomes([...incomes, { id, typeId: "40_8", amount: 200000 }]);
-                        }}
-                        className="w-full py-2 bg-slate-50 hover:bg-slate-100 border border-dashed border-slate-300 rounded-xl text-xs font-bold text-slate-700 transition flex items-center justify-center gap-1.5 cursor-pointer"
-                      >
-                        <Plus className="w-4 h-4 text-emerald-600" />
-                        เพิ่มแหล่งเงินได้ มาตรา 40 ตัวอื่น
-                      </button>
-                    </div>
-                  )}
-                </div>
 
                 {/* ภ.ง.ด. 94 Guide Advisor Box */}
                 <AnimatePresence>
