@@ -1287,97 +1287,9 @@ export default function App() {
                       </div>
                     )}
                   </div>
-                </div>
 
-                {/* Box 3: Corporate Settings (นิติบุคคล) */}
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
-                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                    <Building2 className="w-4 h-4 text-emerald-600" />
-                    พารามิเตอร์การวางโครงสร้าง นิติบุคคล
-                  </h3>
-
-                  <div className="text-xs space-y-3.5">
-                    {/* SME Status Toggle */}
-                    <div className="flex items-center justify-between p-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl transition border border-slate-200">
-                      <div>
-                        <span className="font-semibold text-slate-900 flex items-center gap-1">
-                          กิจการอยู่ในเกณฑ์ SME ไทย
-                          <span className="cursor-help" title="จดทะเบียนทุน < 5 ล้านบาท และรายรับสะสม < 30 ล้านบาท/ปี">
-                            <Info className="w-3 h-3 text-slate-400" />
-                          </span>
-                        </span>
-                        <span className="text-[10px] text-slate-500">
-                          ได้รับพิกัดภาษีอัตราพิเศษ (0% / 15% / 20%)
-                        </span>
-                      </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input 
-                          type="checkbox" 
-                          checked={isSme} 
-                          disabled={revenue > 30000000} // Force disable if revenue is gigantic
-                          onChange={() => setIsSme(!isSme)} 
-                          className="sr-only peer" 
-                        />
-                        <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600 peer-disabled:bg-slate-300"></div>
-                      </label>
-                    </div>
-
-
-
-                    {/* Dividend Withholding Tax Numeric Input */}
-                    <div className="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 space-y-2.5">
-                      <div className="flex items-center justify-between gap-2">
-                        <div>
-                          <span className="font-semibold text-slate-800 block text-xs">ระบุจำนวนเงินปันผลที่ต้องการจ่าย (บาท)</span>
-                          <span className="text-[10px] text-slate-500 block">หักภาษี ณ ที่จ่าย 10% อัตโนมัติ</span>
-                        </div>
-                        <div className="relative flex items-center max-w-[150px] shrink-0">
-                          <input
-                            type="text"
-                            value={dividendPayout === 0 ? "" : dividendPayout.toLocaleString("en-US")}
-                            onChange={(e) => {
-                              const val = e.target.value.replace(/[^0-9]/g, "");
-                              const valNum = parseInt(val) || 0;
-                              setDividendPayout(valNum);
-                            }}
-                            placeholder="0"
-                            className="w-full pl-2 pr-5 py-1 text-right font-mono text-emerald-600 font-bold bg-white focus:ring-1 focus:ring-indigo-500 rounded border border-slate-200 focus:border-indigo-500 text-xs focus:outline-none"
-                          />
-                          <span className="absolute right-1.5 text-slate-400 font-semibold text-[10px]">฿</span>
-                        </div>
-                      </div>
-                      
-                      <div className="flex flex-wrap items-center justify-between gap-1 text-[10px]">
-                        <div className="flex items-center gap-1">
-                          <span className="text-slate-400">กำไรหลังภาษีสูงสุด:</span>
-                          <span className="font-mono font-medium text-slate-700">
-                            {corporateResult.netProfitAfterTax.toLocaleString()} ฿
-                          </span>
-                        </div>
-                        {corporateResult.netProfitAfterTax > 0 && (
-                          <button
-                            type="button"
-                            onClick={() => setDividendPayout(corporateResult.netProfitAfterTax)}
-                            className="font-semibold text-indigo-600 hover:text-indigo-800 cursor-pointer transition-colors"
-                          >
-                            [ ปันผลทั้งหมด ]
-                          </button>
-                        )}
-                      </div>
-
-                      <div className="flex justify-between items-center bg-indigo-50/50 p-2 rounded-lg text-[10px] border border-indigo-100/30">
-                        <span className="text-slate-600 font-semibold">ภาษีเงินปันผลหัก ณ ที่จ่าย (10%):</span>
-                        <span className="font-mono font-bold text-indigo-600 text-[11px]">
-                          {Math.round(dividendPayout * 0.10).toLocaleString()} ฿
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Section 40 Income Category Selector — sits under Revenue card */}
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
-                  <div className="space-y-4 pt-1 col-span-1">
+                  {/* Section 40 Income Category Selector — same card as Revenue */}
+                  <div className="space-y-4 pt-4 mt-2 border-t border-slate-100">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-2">
                       <div>
                         <label className="text-sm font-bold text-slate-950 flex items-center gap-1.5">
@@ -1523,6 +1435,92 @@ export default function App() {
                         </button>
                       </div>
                     )}
+                  </div>
+                </div>
+
+                {/* Box 3: Corporate Settings (นิติบุคคล) */}
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                    <Building2 className="w-4 h-4 text-emerald-600" />
+                    พารามิเตอร์การวางโครงสร้าง นิติบุคคล
+                  </h3>
+
+                  <div className="text-xs space-y-3.5">
+                    {/* SME Status Toggle */}
+                    <div className="flex items-center justify-between p-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl transition border border-slate-200">
+                      <div>
+                        <span className="font-semibold text-slate-900 flex items-center gap-1">
+                          กิจการอยู่ในเกณฑ์ SME ไทย
+                          <span className="cursor-help" title="จดทะเบียนทุน < 5 ล้านบาท และรายรับสะสม < 30 ล้านบาท/ปี">
+                            <Info className="w-3 h-3 text-slate-400" />
+                          </span>
+                        </span>
+                        <span className="text-[10px] text-slate-500">
+                          ได้รับพิกัดภาษีอัตราพิเศษ (0% / 15% / 20%)
+                        </span>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={isSme} 
+                          disabled={revenue > 30000000} // Force disable if revenue is gigantic
+                          onChange={() => setIsSme(!isSme)} 
+                          className="sr-only peer" 
+                        />
+                        <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600 peer-disabled:bg-slate-300"></div>
+                      </label>
+                    </div>
+
+
+
+                    {/* Dividend Withholding Tax Numeric Input */}
+                    <div className="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 space-y-2.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <div>
+                          <span className="font-semibold text-slate-800 block text-xs">ระบุจำนวนเงินปันผลที่ต้องการจ่าย (บาท)</span>
+                          <span className="text-[10px] text-slate-500 block">หักภาษี ณ ที่จ่าย 10% อัตโนมัติ</span>
+                        </div>
+                        <div className="relative flex items-center max-w-[150px] shrink-0">
+                          <input
+                            type="text"
+                            value={dividendPayout === 0 ? "" : dividendPayout.toLocaleString("en-US")}
+                            onChange={(e) => {
+                              const val = e.target.value.replace(/[^0-9]/g, "");
+                              const valNum = parseInt(val) || 0;
+                              setDividendPayout(valNum);
+                            }}
+                            placeholder="0"
+                            className="w-full pl-2 pr-5 py-1 text-right font-mono text-emerald-600 font-bold bg-white focus:ring-1 focus:ring-indigo-500 rounded border border-slate-200 focus:border-indigo-500 text-xs focus:outline-none"
+                          />
+                          <span className="absolute right-1.5 text-slate-400 font-semibold text-[10px]">฿</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex flex-wrap items-center justify-between gap-1 text-[10px]">
+                        <div className="flex items-center gap-1">
+                          <span className="text-slate-400">กำไรหลังภาษีสูงสุด:</span>
+                          <span className="font-mono font-medium text-slate-700">
+                            {corporateResult.netProfitAfterTax.toLocaleString()} ฿
+                          </span>
+                        </div>
+                        {corporateResult.netProfitAfterTax > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => setDividendPayout(corporateResult.netProfitAfterTax)}
+                            className="font-semibold text-indigo-600 hover:text-indigo-800 cursor-pointer transition-colors"
+                          >
+                            [ ปันผลทั้งหมด ]
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="flex justify-between items-center bg-indigo-50/50 p-2 rounded-lg text-[10px] border border-indigo-100/30">
+                        <span className="text-slate-600 font-semibold">ภาษีเงินปันผลหัก ณ ที่จ่าย (10%):</span>
+                        <span className="font-mono font-bold text-indigo-600 text-[11px]">
+                          {Math.round(dividendPayout * 0.10).toLocaleString()} ฿
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
