@@ -44,15 +44,15 @@ import ReactMarkdown from "react-markdown";
 // Paste the Web App URL you get after deploying apps-script/Code.gs (see README.md).
 export const GAS_API_URL = "https://script.google.com/macros/s/AKfycbz_0_FMxsbDg8nmMhl0bi5wfLooN1Z8qD_QoM4b6zdkYsfovQ6NY-OCcJJGf0CmFlrOdg/exec";
 
-// Calls the Google Apps Script backend. Uses a plain-text body (no explicit
-// Content-Type header) so the browser sends "text/plain", which keeps this a
-// CORS-safe "simple request" — Apps Script Web Apps can't handle a preflight
-// OPTIONS request, so an explicit "application/json" header would break it.
+// Calls the Google Apps Script backend via GET, with the action + payload
+// JSON-encoded in a single "data" query param. Apps Script Web App URLs
+// always 302-redirect to script.googleusercontent.com, and per the Fetch
+// spec a browser silently downgrades a POST to a bodyless GET when
+// following that redirect — so a POST body never actually reaches the
+// script. Using GET from the start sidesteps that entirely.
 async function callApi(action: string, payload: Record<string, any> = {}) {
-  const res = await fetch(GAS_API_URL, {
-    method: "POST",
-    body: JSON.stringify({ action, ...payload }),
-  });
+  const url = GAS_API_URL + "?data=" + encodeURIComponent(JSON.stringify({ action, ...payload }));
+  const res = await fetch(url);
   return res.json();
 }
 

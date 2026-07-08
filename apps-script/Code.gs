@@ -4,8 +4,16 @@
  * Deploy as a Web App (Execute as: Me, Who has access: Anyone) and paste the
  * resulting URL into GAS_API_URL in app.tsx. See README.md for full steps.
  *
- * All requests are POSTs to the single Web App URL with a JSON body of the
- * form { action: "...", ...payload }. See doPost() for the list of actions.
+ * Requests are GETs to the Web App URL with a single "data" query param
+ * containing JSON: { action: "...", ...payload }. See dispatch() for the
+ * list of actions.
+ *
+ * Why GET and not POST: Apps Script Web App URLs (script.google.com/.../exec)
+ * always respond with an HTTP 302 redirect to script.googleusercontent.com.
+ * Per the Fetch spec, browsers silently downgrade a POST to a bodyless GET
+ * when following a 301/302 redirect — so a browser fetch() POST never
+ * actually reaches doPost() with its body intact; it arrives as an empty
+ * GET and hits doGet() instead. Using GET from the start avoids this.
  */
 
 var LOG_SHEET_NAME = "Logs";
@@ -16,17 +24,32 @@ var LOG_HEADERS = ["Name", "Email", "Date", "Time", "Timestamp"];
 var SPREADSHEET_ID = "1ldvHLNVmSPaCp3g1fRPeATMDTB4L41bOxlYSqQlPpYY";
 
 function doGet(e) {
-  return jsonResponse({ status: "ok", message: "Thai Tax Compare API" });
+  var raw = e && e.parameter && e.parameter.data;
+  if (!raw) {
+    return jsonResponse({ status: "ok", message: "Thai Tax Compare API" });
+  }
+  var payload;
+  try {
+    payload = JSON.parse(raw);
+  } catch (err) {
+    return jsonResponse({ error: "Invalid JSON in data parameter" });
+  }
+  return dispatch(payload);
 }
 
 function doPost(e) {
+  // Kept for completeness (e.g. server-to-server calls), but the browser
+  // client uses doGet — see the note at the top of this file.
   var payload;
   try {
     payload = JSON.parse(e.postData.contents);
   } catch (err) {
     return jsonResponse({ error: "Invalid JSON body" });
   }
+  return dispatch(payload);
+}
 
+function dispatch(payload) {
   var action = payload.action || "";
   try {
     switch (action) {
