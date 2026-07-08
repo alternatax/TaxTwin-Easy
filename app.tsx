@@ -4430,17 +4430,17 @@ export default function App() {
                   <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500 opacity-10 rounded-full blur-2xl"></div>
                   <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                      <span className="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded">ผลลัพธ์สุทธิรวม (Net Strategic Family Benefit)</span>
+                      <span className="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded">สรุปผลรวม: บริษัท + ส่วนตัว</span>
                       <h4 className="text-xl font-bold mt-2">
-                        {activeRes.netSaved > 0 ? "🎉 ประหยัดรวมทั้งบ้านขึ้นจริง!" : "📊 เสนอจัดสรรภาษีรูปปันผลดีกว่า"}
+                        {activeRes.netSaved > 0 ? "🎉 คุ้มค่า! จ่ายเงินเดือนกรรมการดีกว่า" : "📊 กรณีนี้จ่ายเป็นเงินปันผลคุ้มกว่า"}
                       </h4>
                       <p className="text-xs text-slate-300 mt-1">
-                        การจัดสรรเงินเดือนเพื่อบริหารฐานภาษีประหยัดรายจ่ายรวมของครัวเรือนได้สูงสุดจริง
+                        นำภาษีที่บริษัทประหยัดได้จากการตั้งเงินเดือนนี้ หักลบด้วยภาษีบุคคลธรรมดาที่กรรมการต้องจ่ายเพิ่มแล้ว ยังเหลือประหยัดสุทธิเท่านี้
                       </p>
                     </div>
 
                     <div className="bg-white/5 border border-white/10 p-4 rounded-2xl w-full md:w-52 text-center shrink-0">
-                      <span className="text-[10px] text-slate-400 block font-semibold">ประโยชน์ที่ประหยัดได้สุทธิปีละ:</span>
+                      <span className="text-[10px] text-slate-400 block font-semibold">ประหยัดภาษีสุทธิ (บริษัท - บุคคล):</span>
                       <span className="text-2xl font-black font-mono text-emerald-400 block mt-1.5">
                         {activeRes.netSaved.toLocaleString()} บ./ปี
                       </span>
