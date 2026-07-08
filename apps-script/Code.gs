@@ -11,6 +11,10 @@
 var LOG_SHEET_NAME = "Logs";
 var LOG_HEADERS = ["Name", "Email", "Date", "Time", "Timestamp"];
 
+// Google Sheet where user visit logs are stored. The account that deploys
+// this Web App must have edit access to this spreadsheet.
+var SPREADSHEET_ID = "1ldvHLNVmSPaCp3g1fRPeATMDTB4L41bOxlYSqQlPpYY";
+
 function doGet(e) {
   return jsonResponse({ status: "ok", message: "Thai Tax Compare API" });
 }
@@ -51,6 +55,11 @@ function jsonResponse(obj) {
 // --- SPREADSHEET STORAGE -----------------------------------------------
 
 function getOrCreateSpreadsheet() {
+  if (SPREADSHEET_ID) {
+    return SpreadsheetApp.openById(SPREADSHEET_ID);
+  }
+  // Fallback: no fixed sheet configured, so get-or-create one bound to this
+  // script's Script Properties (useful if you don't want to hardcode an ID).
   var props = PropertiesService.getScriptProperties();
   var id = props.getProperty("SPREADSHEET_ID");
   if (id) {

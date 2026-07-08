@@ -20,12 +20,18 @@
    [apps-script/appsscript.json](apps-script/appsscript.json) ไปแทนที่ manifest (เปิดผ่าน **Project Settings > Show "appsscript.json"**)
 3. ไปที่ **Project Settings > Script Properties** แล้วเพิ่มค่า `GEMINI_API_KEY`
    (ไม่ใส่ก็ได้ — ระบบจะใช้คำแนะนำสำรองแบบกฎเกณฑ์แทน)
-4. กด **Deploy > New deployment** เลือกประเภท **Web app**
-5. ตั้งค่า **Execute as: Me** และ **Who has access: Anyone** แล้วกด Deploy
-6. คัดลอก Web App URL ที่ได้ ไปวางแทนที่ `GAS_API_URL` ใน [app.tsx](app.tsx)
+4. ตรวจสอบว่าตัวแปร `SPREADSHEET_ID` ที่ต้นไฟล์ `Code.gs` ตรงกับ Google Sheet ที่ต้องการเก็บ log
+   (ค่าเริ่มต้นชี้ไปที่ Sheet ที่ตั้งค่าไว้แล้ว) — บัญชีที่ใช้ deploy สคริปต์ต้องมีสิทธิ์แก้ไข Sheet นี้ด้วย
+5. กด **Deploy > New deployment** เลือกประเภท **Web app**
+6. ตั้งค่า **Execute as: Me** และ **Who has access: Anyone** แล้วกด Deploy
+7. คัดลอก Web App URL ที่ได้ ไปวางแทนที่ `GAS_API_URL` ใน [app.tsx](app.tsx)
 
-ทุกครั้งที่มีคนล็อกอินเข้าเว็บ ระบบจะสร้าง (หรือใช้) Google Sheet ชื่อ "Thai Tax Compare - User Logs" ในไดรฟ์
-ของบัญชีที่ deploy สคริปต์ให้อัตโนมัติ ดูลิงก์ชีทได้จากแท็บ "🛡️ ระบบผู้ดูแล" ในเว็บ (บัญชี `acct.prom@gmail.com`)
+ทุกครั้งที่มีคนล็อกอินเข้าเว็บ ระบบจะเขียน log ลง sheet ชื่อ "Logs" ใน Google Sheet ที่ตั้งค่าไว้ข้างต้นโดยอัตโนมัติ
+ดูลิงก์ชีทได้จากแท็บ "🛡️ ระบบผู้ดูแล" ในเว็บ (บัญชี `acct.prom@gmail.com`)
+
+หากแก้โค้ดใน `Code.gs` ภายหลัง (เช่นเปลี่ยน `SPREADSHEET_ID`) ต้องไปที่ **Deploy > Manage deployments**
+กดไอคอนดินสอ แล้วเลือก **Version: New version** ก่อนกด Deploy อีกครั้ง ไม่เช่นนั้น Web App URL เดิม
+จะยังรันโค้ดเวอร์ชันเก่าอยู่
 
 ## รันดูในเครื่อง
 
