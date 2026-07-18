@@ -1300,6 +1300,12 @@ export default function App() {
             {/* LEFT SIDE: Inputs / Parameter Panels */}
             <section className="lg:col-span-12 space-y-6">
 
+              {/* Plain-language intro for first-time users */}
+              <div className="bg-blue-50 border border-blue-100 rounded-2xl px-5 py-3.5 text-sm text-blue-900 flex items-start gap-2.5">
+                <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                <span>กรอกข้อมูล 3 ขั้นตอนด้านล่าง ผลลัพธ์ด้านบนจะอัปเดตให้ทันทีทุกครั้งที่แก้ตัวเลข ไม่ต้องกดปุ่มคำนวณ</span>
+              </div>
+
               {/* Hero Result Summary: the headline takeaway, up front */}
               <div className="bg-blue-600 text-white rounded-2xl p-6 shadow-md">
                 <span className="text-xs font-bold uppercase tracking-wide opacity-80">ผลลัพธ์เบื้องต้นของคุณ</span>
@@ -1323,6 +1329,9 @@ export default function App() {
                 {/* Card 1: Revenue Input */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4 flex flex-col justify-between">
                   <div>
+                    <span className="inline-block text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full mb-3">
+                      ขั้นที่ 1 · กรอกรายได้และประเภทงาน
+                    </span>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
                       <label className="text-sm font-semibold text-slate-950 flex items-center gap-1.5">
                         <Coins className="w-4 h-4 text-blue-600" />
@@ -1535,10 +1544,14 @@ export default function App() {
 
                 {/* Box 3: Corporate Settings (นิติบุคคล) */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+                  <span className="inline-block text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full">
+                    ขั้นที่ 2 · ตั้งค่านิติบุคคล (ถ้ามี)
+                  </span>
                   <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
                     <Building2 className="w-4 h-4 text-blue-600" />
                     พารามิเตอร์การวางโครงสร้าง นิติบุคคล
                   </h3>
+                  <p className="text-xs text-slate-500 -mt-2">ถ้ายังไม่มีบริษัท ข้ามส่วนนี้ไปได้เลย ใช้ค่าเริ่มต้นก็พอ</p>
 
                   <div className="text-xs space-y-3.5">
                     {/* SME Status Toggle */}
@@ -1644,11 +1657,15 @@ export default function App() {
 
                 {/* Business Expense Toggle Selection */}
                 <div>
-                  <label className="text-sm font-semibold text-slate-950 flex items-center gap-1.5 mb-3">
+                  <span className="inline-block text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full mb-3">
+                    ขั้นที่ 3 · เลือกวิธีหักค่าใช้จ่าย
+                  </span>
+                  <label className="text-sm font-semibold text-slate-950 flex items-center gap-1.5 mb-1">
                     <Layers className="w-4 h-4 text-blue-600" />
                     ค่าใช้จ่ายในธุรกิจ (Expenses Deductible)
                   </label>
-                  
+                  <p className="text-xs text-slate-500 mb-3">ไม่แน่ใจให้เลือก "หักแบบเหมา" ไว้ก่อน ง่ายที่สุด ไม่ต้องมีใบเสร็จ</p>
+
                   <div className="grid grid-cols-2 gap-2 p-1 bg-slate-100 rounded-xl mb-4">
                     <button
                       type="button"
@@ -2385,12 +2402,16 @@ export default function App() {
                 
                 {/* 1. Core Income section */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-5">
-                  <div className="flex items-center gap-2 pb-3 border-b border-rose-100/50">
-                    <div className="p-1.5 bg-rose-50 text-rose-600 rounded-lg">
+                  <span className="inline-block text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full">
+                    ขั้นที่ 2
+                  </span>
+                  <div className="flex items-center gap-2 pb-3 border-b border-blue-100/50">
+                    <div className="p-1.5 bg-blue-50 text-blue-600 rounded-lg">
                       <Coins className="w-4 h-4" />
                     </div>
-                    <h3 className="font-bold text-slate-900 text-sm">ส่วนที่ 1: รายได้พึงประเมินและค่าใช้จ่าย</h3>
+                    <h3 className="font-bold text-slate-900 text-sm">กรอกรายได้และค่าใช้จ่าย</h3>
                   </div>
+                  <p className="text-xs text-slate-500 -mt-3">พิมพ์ตัวเลขรายได้รวมทั้งปีของคุณ ถ้าไม่แน่ใจให้กะประมาณก่อนได้</p>
 
                   {/* Revenue Input */}
                   <div className="space-y-2">
@@ -2618,14 +2639,18 @@ export default function App() {
 
                 {/* 2. Deductions Settings Card */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-indigo-100/50">
+                  <span className="inline-block text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full">
+                    ขั้นที่ 3
+                  </span>
+                  <div className="flex items-center justify-between pb-3 border-b border-blue-100/50">
                     <div className="flex items-center gap-2">
-                      <div className="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg">
+                      <div className="p-1.5 bg-blue-50 text-blue-600 rounded-lg">
                         <User className="w-4 h-4" />
                       </div>
-                      <h3 className="font-bold text-slate-900 text-sm">ส่วนที่ 2: ค่าลดหย่อนส่วนบุคคลและสะสม</h3>
+                      <h3 className="font-bold text-slate-900 text-sm">ค่าลดหย่อนส่วนบุคคลและสะสม</h3>
                     </div>
                   </div>
+                  <p className="text-xs text-slate-500 -mt-2">ไม่แน่ใจข้ามได้เลย ระบบใช้ค่าเริ่มต้นให้อัตโนมัติ</p>
 
                   {/* Mode selector: Simple vs Detailed (20 items) */}
                   <div className="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200/50">
