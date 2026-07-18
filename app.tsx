@@ -679,9 +679,9 @@ export default function App() {
       avgRate: personalFlatResult.avgRate,
       marginalRate: personalFlatResult.marginalRate,
       color: "emerald",
-      badgeBg: "bg-emerald-50 text-emerald-700 border-emerald-200/50",
-      accentBorder: "border-emerald-500",
-      textColor: "text-emerald-700",
+      badgeBg: "bg-blue-50 text-blue-700 border-blue-200/50",
+      accentBorder: "border-blue-500",
+      textColor: "text-blue-700",
       desc: "หักจ่ายเหมาตามเรทกฎหมาย 30% - 60% โดยไม่ต้องมีเอกสารใบรับเงินหรือใบเสร็จใดๆ"
     },
     {
@@ -725,7 +725,7 @@ export default function App() {
         num: 1,
         medal: "🏆 อันดับ 1",
         label: "ประหยัดภาษีที่สุด",
-        badgeStyle: "bg-emerald-600 text-white border-emerald-500 shadow-xs",
+        badgeStyle: "bg-blue-600 text-white border-blue-500 shadow-xs",
         bannerText: "แนะนำมากที่สุด"
       };
     } else if (rankIndex === 1) {
@@ -782,7 +782,7 @@ export default function App() {
               {rank.medal}
             </span>
             <span className={`text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded ${
-              rank.num === 1 ? "bg-emerald-100 text-emerald-800 border border-emerald-200/50" : "bg-slate-200 text-slate-600 border border-slate-300/50"
+              rank.num === 1 ? "bg-blue-100 text-blue-800 border border-blue-200/50" : "bg-slate-200 text-slate-600 border border-slate-300/50"
             }`}>
               {rank.bannerText}
             </span>
@@ -816,7 +816,7 @@ export default function App() {
             {cashLeftPercent > 0 && (
               <div
                 style={{ width: `${cashLeftPercent}%` }}
-                className="bg-emerald-500 h-full transition-all duration-300 hover:opacity-90"
+                className="bg-blue-500 h-full transition-all duration-300 hover:opacity-90"
                 title={`เงินคงเหลือสุทธิ ${cashLeftPercent.toFixed(1)}%`}
               />
             )}
@@ -845,7 +845,7 @@ export default function App() {
           </div>
           <div className="border-l border-slate-200 pl-1">
             <div className="flex items-center gap-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
               <span className="truncate">เหลือเก็บ ({cashLeftPercent.toFixed(0)}%)</span>
             </div>
             <span className="font-mono font-bold text-slate-800 block text-[11px] mt-0.5">
@@ -1114,7 +1114,7 @@ export default function App() {
       <header className="bg-white border-b border-slate-200 sm:sticky sm:top-0 z-30 shadow-xs">
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-12 py-3 md:py-4 flex flex-col md:flex-row items-center justify-between gap-3.5">
           <div className="flex items-center gap-3">
-            <div className="bg-emerald-600 text-white p-2.5 rounded-xl shadow-md cursor-pointer hover:bg-emerald-700 transition">
+            <div className="bg-blue-600 text-white p-2.5 rounded-xl shadow-md cursor-pointer hover:bg-blue-700 transition">
               <Calculator id="app-logo" className="w-6 h-6 animate-pulse" />
             </div>
             <div>
@@ -1132,7 +1132,7 @@ export default function App() {
             {currentUser && !currentUser.isGuest ? (
               <div className="flex items-center gap-2.5 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-2xl text-xs w-full sm:w-auto justify-between sm:justify-start">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
                   <div className="text-left">
                     <span className="font-semibold text-slate-800 block text-[10px] leading-none max-w-[120px] truncate">{currentUser.name}</span>
                     <span className="font-mono text-slate-500 text-[9px] leading-tight max-w-[150px] truncate">{currentUser.email}</span>
@@ -1222,6 +1222,54 @@ export default function App() {
             {/* LEFT SIDE: Inputs / Parameter Panels */}
             <section className="lg:col-span-12 space-y-6">
 
+              {/* Persona Quick-Picker: jumps straight to a sensible income type */}
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full mb-3">
+                  ขั้นที่ 1
+                </span>
+                <h3 className="text-base font-bold text-slate-900 mb-3">ธุรกิจของคุณใกล้เคียงแบบไหนที่สุด?</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+                  {[
+                    { id: "40_8", emoji: "🛍️", name: "ขายของออนไลน์", desc: "ค้าขาย ร้านอาหาร" },
+                    { id: "40_2", emoji: "💻", name: "ฟรีแลนซ์ / รับจ้าง", desc: "งานบริการ นายหน้า" },
+                    { id: "40_6_other", emoji: "🏠", name: "วิชาชีพ / ให้เช่า", desc: "หมอ ทนาย ให้เช่าบ้าน" },
+                    { id: "40_1", emoji: "🏛️", name: "ข้าราชการ", desc: "เงินเดือนประจำ" },
+                  ].map((p) => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => { setIncomeType(p.id); setUseMultipleIncomes(false); }}
+                      className={`text-left p-3.5 rounded-xl border-2 transition cursor-pointer ${
+                        !useMultipleIncomes && incomeType === p.id
+                          ? "border-blue-600 bg-blue-50"
+                          : "border-slate-200 bg-slate-50 hover:border-blue-300"
+                      }`}
+                    >
+                      <span className="text-xl block mb-1">{p.emoji}</span>
+                      <span className="text-sm font-bold text-slate-900 block">{p.name}</span>
+                      <span className="text-xs text-slate-500 block mt-0.5">{p.desc}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Hero Result Summary: the headline takeaway, up front */}
+              <div className="bg-blue-600 text-white rounded-2xl p-6 shadow-md">
+                <span className="text-xs font-bold uppercase tracking-wide opacity-80">ผลลัพธ์เบื้องต้นของคุณ</span>
+                <h3 className="text-xl font-bold mt-1.5">
+                  {corporateIsBetter ? "จดนิติบุคคลคุ้มกว่า" : "อยู่แบบบุคคลธรรมดาคุ้มกว่า"}
+                </h3>
+                <p className="text-sm opacity-90 mt-1 max-w-md">
+                  {corporateIsBetter
+                    ? "การจดบริษัทจะช่วยประหยัดภาษีได้มากกว่าการทำในนามบุคคลธรรมดาสำหรับรายรับนี้"
+                    : "ค่าใช้จ่ายในการจดบริษัทและทำบัญชีอาจสูงกว่าภาษีที่ประหยัดได้ ยังไม่คุ้มที่จะจดในตอนนี้"}
+                </p>
+                <div className="flex items-baseline gap-2 mt-4">
+                  <span className="text-3xl font-black font-mono">{costDiff.toLocaleString()}</span>
+                  <span className="text-sm opacity-85">บาท/ปี ที่ประหยัดได้เพิ่ม</span>
+                </div>
+              </div>
+
               {/* Top Row: Revenue and Corporate Settings side-by-side on md+ screens */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
@@ -1230,7 +1278,7 @@ export default function App() {
                   <div>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
                       <label className="text-sm font-semibold text-slate-950 flex items-center gap-1.5">
-                        <Coins className="w-4 h-4 text-emerald-600" />
+                        <Coins className="w-4 h-4 text-blue-600" />
                         รายรับทั้งหมดต่อปี (Revenue)
                       </label>
                       {!useMultipleIncomes && (
@@ -1265,7 +1313,7 @@ export default function App() {
                         value={revenue === 0 ? "" : revenue.toLocaleString("en-US")}
                         disabled={useMultipleIncomes}
                         onChange={(e) => setRevenue(Math.max(0, parseInt(e.target.value.replace(/[^0-9]/g, "")) || 0))}
-                        className={`w-full pl-4 pr-12 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono text-lg font-semibold transition-all ${
+                        className={`w-full pl-4 pr-12 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-lg font-semibold transition-all ${
                           useMultipleIncomes
                             ? "bg-slate-100 border-slate-200 text-slate-500 cursor-not-allowed select-none"
                             : "bg-white border-slate-300 text-slate-900"
@@ -1280,8 +1328,8 @@ export default function App() {
                     {useMultipleIncomes && (
                       <div className="mt-2 text-[10.5px] bg-slate-50 text-slate-600 px-3 py-2 rounded-xl border border-slate-200 flex items-center gap-2">
                         <span className="relative flex h-2 w-2 shrink-0">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                         </span>
                         <span>ยอดรวมจากทุกประเภทเงินได้ที่จัดแจงในตกลงด้านล่าง ({incomes.length} แหล่งรายรับ)</span>
                       </div>
@@ -1293,7 +1341,7 @@ export default function App() {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-2">
                       <div>
                         <label className="text-sm font-bold text-slate-950 flex items-center gap-1.5">
-                          <UserCheck className="w-4 h-4 text-emerald-600" />
+                          <UserCheck className="w-4 h-4 text-blue-600" />
                           ประเภทเงินได้พึงประเมิน (มาตรา 40)
                         </label>
                         <p className="text-[10px] text-slate-500 mt-0.5">ระบุประเภทและรายละเอียดแหล่งรายรับของคุณ</p>
@@ -1303,7 +1351,7 @@ export default function App() {
                         onClick={() => setUseMultipleIncomes(!useMultipleIncomes)}
                         className={`text-[10.5px] px-3 py-1 rounded-full font-bold border cursor-pointer transition flex items-center gap-1 ${
                           useMultipleIncomes
-                            ? "bg-emerald-600 text-white border-emerald-700 shadow-xs"
+                            ? "bg-blue-600 text-white border-blue-700 shadow-xs"
                             : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
                         }`}
                       >
@@ -1319,7 +1367,7 @@ export default function App() {
                             id="incomeTypeSelect"
                             value={incomeType}
                             onChange={(e) => setIncomeType(e.target.value)}
-                            className="w-full pl-3.5 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs md:text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer appearance-none transition"
+                            className="w-full pl-3.5 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs md:text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer appearance-none transition"
                           >
                             {INCOME_TYPES.map((type) => (
                               <option key={type.id} value={type.id}>
@@ -1331,8 +1379,8 @@ export default function App() {
                             <ChevronDown className="w-4 h-4" />
                           </div>
                         </div>
-                        <div className="bg-emerald-50 p-3 rounded-xl border border-emerald-100 text-[11px] text-emerald-800 flex items-start gap-2 leading-relaxed">
-                          <BookOpen className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                        <div className="bg-blue-50 p-3 rounded-xl border border-blue-100 text-[11px] text-blue-800 flex items-start gap-2 leading-relaxed">
+                          <BookOpen className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
                           <span>
                             {INCOME_TYPES.find((t) => t.id === incomeType)?.desc}
                           </span>
@@ -1379,7 +1427,7 @@ export default function App() {
                                         );
                                         setIncomes(updated);
                                       }}
-                                      className="w-full pl-3 pr-8 py-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                      className="w-full pl-3 pr-8 py-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                       {INCOME_TYPES.map((type) => (
                                         <option key={type.id} value={type.id}>
@@ -1405,7 +1453,7 @@ export default function App() {
                                         setIncomes(updated);
                                       }}
                                       placeholder="ยอดเงิน (บาท)"
-                                      className="w-full pl-2 pr-7 py-2 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-950 font-mono text-right focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                      className="w-full pl-2 pr-7 py-2 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-950 font-mono text-right focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                     <span className="absolute right-2.5 inset-y-0 flex items-center text-[10px] font-bold text-slate-400">
                                       ฿
@@ -1414,7 +1462,7 @@ export default function App() {
                                 </div>
 
                                 <div className="text-[10px] text-slate-550 flex items-start gap-1">
-                                  <BookOpen className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                                  <BookOpen className="w-3.5 h-3.5 text-blue-600 shrink-0 mt-0.5" />
                                   <span>{matchedType.desc}</span>
                                 </div>
                               </motion.div>
@@ -1430,7 +1478,7 @@ export default function App() {
                           }}
                           className="w-full py-2 bg-slate-50 hover:bg-slate-100 border border-dashed border-slate-300 rounded-xl text-xs font-bold text-slate-700 transition flex items-center justify-center gap-1.5 cursor-pointer"
                         >
-                          <Plus className="w-4 h-4 text-emerald-600" />
+                          <Plus className="w-4 h-4 text-blue-600" />
                           เพิ่มแหล่งเงินได้ มาตรา 40 ตัวอื่น
                         </button>
                       </div>
@@ -1441,7 +1489,7 @@ export default function App() {
                 {/* Box 3: Corporate Settings (นิติบุคคล) */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
                   <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                    <Building2 className="w-4 h-4 text-emerald-600" />
+                    <Building2 className="w-4 h-4 text-blue-600" />
                     พารามิเตอร์การวางโครงสร้าง นิติบุคคล
                   </h3>
 
@@ -1467,7 +1515,7 @@ export default function App() {
                           onChange={() => setIsSme(!isSme)} 
                           className="sr-only peer" 
                         />
-                        <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600 peer-disabled:bg-slate-300"></div>
+                        <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600 peer-disabled:bg-slate-300"></div>
                       </label>
                     </div>
 
@@ -1490,7 +1538,7 @@ export default function App() {
                               setDividendPayout(valNum);
                             }}
                             placeholder="0"
-                            className="w-full pl-2 pr-5 py-1 text-right font-mono text-emerald-600 font-bold bg-white focus:ring-1 focus:ring-indigo-500 rounded border border-slate-200 focus:border-indigo-500 text-xs focus:outline-none"
+                            className="w-full pl-2 pr-5 py-1 text-right font-mono text-blue-600 font-bold bg-white focus:ring-1 focus:ring-indigo-500 rounded border border-slate-200 focus:border-indigo-500 text-xs focus:outline-none"
                           />
                           <span className="absolute right-1.5 text-slate-400 font-semibold text-[10px]">฿</span>
                         </div>
@@ -1576,7 +1624,7 @@ export default function App() {
                           </p>
                           <ul className="list-disc list-inside text-slate-700 text-[12.5px] md:text-[13px] space-y-1.5 pl-1 leading-relaxed">
                             <li><span className="font-semibold text-slate-900">ยื่นแบบกระดาษ:</span> 1 ก.ค. - 30 ก.ย. ของทุกปี</li>
-                            <li><span className="font-bold text-emerald-800">ยื่นแบบออนไลน์ (E-Filing):</span> ได้ขยายเวลาเพิ่มอีก 8 วัน (ปกติถึง 8 ต.ค.)</li>
+                            <li><span className="font-bold text-blue-800">ยื่นแบบออนไลน์ (E-Filing):</span> ได้ขยายเวลาเพิ่มอีก 8 วัน (ปกติถึง 8 ต.ค.)</li>
                           </ul>
                         </div>
 
@@ -1604,7 +1652,7 @@ export default function App() {
                 {/* Business Expense Toggle Selection */}
                 <div>
                   <label className="text-sm font-semibold text-slate-950 flex items-center gap-1.5 mb-3">
-                    <Layers className="w-4 h-4 text-emerald-600" />
+                    <Layers className="w-4 h-4 text-blue-600" />
                     ค่าใช้จ่ายในธุรกิจ (Expenses Deductible)
                   </label>
                   
@@ -1683,7 +1731,7 @@ export default function App() {
                           <span>บังคับใช้ระบบบันทึกค่าใช้จ่ายตามจริง และต้องมีใบเสร็จ+บัญชีถูกต้องเท่านั้น</span>
                         </p>
                         <p className="flex items-start gap-1">
-                          <span className="text-emerald-600 font-bold shrink-0">👤 บุคคลธรรมดา:</span>
+                          <span className="text-blue-600 font-bold shrink-0">👤 บุคคลธรรมดา:</span>
                           <span>หากเลือกหักตามจริง จะต้องจัดทำ&ldquo;รายงานรายรับ-รายจ่าย&rdquo; และเก็บรักษาใบกำกับภาษี/ใบเสร็จรับเงินเป็นหลักฐานเพื่อให้สรรพากรตรวจสอบย้อนหลังได้</span>
                         </p>
                       </div>
@@ -1701,14 +1749,14 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 
                 {/* COLUMN 1: บุคคลธรรมดา (หักเหมา) */}
-                <div className={`relative bg-white p-5 rounded-2xl border transition shadow-xs flex flex-col justify-between ${expenseType === "flat" ? "border-emerald-500 ring-2 ring-emerald-500/15" : "border-slate-200"}`}>
+                <div className={`relative bg-white p-5 rounded-2xl border transition shadow-xs flex flex-col justify-between ${expenseType === "flat" ? "border-blue-500 ring-2 ring-blue-500/15" : "border-slate-200"}`}>
                   {/* Vertical Divider for desktop to separate Column 1 & 2 */}
                   <div className="hidden md:block absolute -right-3 top-6 bottom-6 w-px bg-slate-200/80" />
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
                       <div className="flex justify-between items-start pb-3 border-b border-slate-100 mb-4 h-12">
                         <div className="flex items-center gap-2">
-                          <div className="bg-emerald-50 text-emerald-600 p-1.5 rounded-lg">
+                          <div className="bg-blue-50 text-blue-600 p-1.5 rounded-lg">
                             <User className="w-4 h-4" />
                           </div>
                           <div>
@@ -1731,7 +1779,7 @@ export default function App() {
                             })()}
                           </span>
                           {expenseType === "flat" && (
-                            <span className="text-[8.5px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded border border-emerald-300">
+                            <span className="text-[8.5px] font-bold text-blue-700 bg-blue-100 px-1.5 py-0.2 rounded border border-blue-300">
                               กำลังใช้งาน
                             </span>
                           )}
@@ -1777,7 +1825,7 @@ export default function App() {
                                 setCustomDeductions(valNum);
                               }}
                               placeholder={defaultPersonalDeductions.toLocaleString()}
-                              className="w-full pl-4 pr-4 py-1 text-right font-mono text-red-600 font-bold bg-slate-50 hover:bg-slate-100 focus:bg-white focus:ring-1 focus:ring-emerald-500 rounded border border-slate-200 focus:border-emerald-500 transition-all focus:outline-none placeholder-red-400/70"
+                              className="w-full pl-4 pr-4 py-1 text-right font-mono text-red-600 font-bold bg-slate-50 hover:bg-slate-100 focus:bg-white focus:ring-1 focus:ring-blue-500 rounded border border-slate-200 focus:border-blue-500 transition-all focus:outline-none placeholder-red-400/70"
                             />
                             <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]">฿</span>
                           </div>
@@ -1786,7 +1834,7 @@ export default function App() {
                         <div className="p-3 bg-slate-50 rounded-xl border border-dashed border-slate-200 mt-2">
                           <div className="flex justify-between items-center">
                             <span className="font-bold text-slate-600 text-xs sm:text-sm">เงินได้สุทธิสุทธิ:</span>
-                            <span className="font-mono font-bold text-sm sm:text-base text-emerald-700">
+                            <span className="font-mono font-bold text-sm sm:text-base text-blue-700">
                               {personalFlatResult.netTaxableIncome.toLocaleString()} ฿
                             </span>
                           </div>
@@ -1808,7 +1856,7 @@ export default function App() {
                       </div>
                       <div className="text-right">
                         <span className="text-xs text-slate-500 block">ภาษีสุทธิแบบเหมา</span>
-                        <span className="text-base md:text-lg font-bold font-mono text-emerald-600 block">
+                        <span className="text-base md:text-lg font-bold font-mono text-blue-600 block">
                           {personalFlatResult.totalTax.toLocaleString()} บ.
                         </span>
                       </div>
@@ -2122,12 +2170,12 @@ export default function App() {
 
               {/* AI SEGMENT: ADVANCED TAX STRATEGY & DEDUCTIONS PLANNER (GEMINI PROXY) */}
               <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm relative overflow-hidden">
-                <div className="absolute top-0 left-0 bg-emerald-600 w-1.5 h-full"></div>
+                <div className="absolute top-0 left-0 bg-blue-600 w-1.5 h-full"></div>
                 
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-6 pb-6 border-b border-slate-100">
                   <div className="flex-1">
                     <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                      <Sparkles className="w-5 h-5 text-emerald-600 animate-bounce" />
+                      <Sparkles className="w-5 h-5 text-blue-600 animate-bounce" />
                       ระบบวิเคราะห์และแนะนำลดหย่อนอัจฉริยะ (AI Agent)
                     </h3>
                     <p className="text-xs text-slate-500 mt-1">
@@ -2138,14 +2186,14 @@ export default function App() {
                     <div className="mt-4 space-y-3">
                       <div className="flex flex-col space-y-1.5">
                         <label className="text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
-                          <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                          <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
                           ประเด็นหรือคำถามเพิ่มเติมที่ต้องการเน้น (ระบุหรือไม่ระบุก็ได้):
                         </label>
                         <textarea
                           value={customAdvicePrompt}
                           onChange={(e) => setCustomAdvicePrompt(e.target.value)}
                           placeholder="เช่น: อยากเน้นการลดหย่อนประกันและกองทุน, รายได้ 1.5 ล้านจดบริษัทคุ้มไหม, แนะนำการตั้งเงินเดือนกรรมการ ฯลฯ"
-                          className="w-full text-xs p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 bg-slate-50/50 placeholder-slate-400 font-medium transition duration-150 resize-none"
+                          className="w-full text-xs p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-slate-50/50 placeholder-slate-400 font-medium transition duration-150 resize-none"
                           rows={2}
                           disabled={isLoadingAdvice}
                         />
@@ -2167,7 +2215,7 @@ export default function App() {
                             type="button"
                             className={`text-[10px] px-2 py-1 rounded-lg border transition font-medium cursor-pointer ${
                               customAdvicePrompt === tag
-                                ? "bg-emerald-50 border-emerald-300 text-emerald-700 font-semibold"
+                                ? "bg-blue-50 border-blue-300 text-blue-700 font-semibold"
                                 : "bg-slate-50 hover:bg-slate-100 hover:text-slate-900 text-slate-600 border-slate-200"
                             }`}
                           >
@@ -2200,7 +2248,7 @@ export default function App() {
                         </span>
                       ) : (
                         <>
-                          <Sparkles className="w-4 h-4 text-emerald-300 animate-pulse" />
+                          <Sparkles className="w-4 h-4 text-blue-300 animate-pulse" />
                           ขอคำแนะนำวางแผนภาษีจาก AI
                         </>
                       )}
@@ -2217,7 +2265,7 @@ export default function App() {
                       className="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col items-center justify-center p-8 space-y-3"
                     >
                       <div className="relative">
-                        <div className="w-10 h-10 border-4 border-slate-300 border-t-emerald-600 animate-spin rounded-full"></div>
+                        <div className="w-10 h-10 border-4 border-slate-300 border-t-blue-600 animate-spin rounded-full"></div>
                         <Sparkles className="w-5 h-5 text-indigo-600 absolute top-2.5 left-2.5 animate-pulse" />
                       </div>
                       <div className="text-center">
@@ -2244,22 +2292,22 @@ export default function App() {
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="bg-emerald-50/60 p-5 rounded-2xl border border-emerald-100 space-y-4"
+                      className="bg-blue-50/60 p-5 rounded-2xl border border-blue-100 space-y-4"
                     >
-                      <div className="flex items-center gap-2 pb-2.5 border-b border-emerald-100/80">
-                        <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                      <div className="flex items-center gap-2 pb-2.5 border-b border-blue-100/80">
+                        <CheckCircle2 className="w-5 h-5 text-blue-600" />
                         <h4 className="font-bold text-slate-900 text-sm">
                           ผลวิเคราะห์และวางแผนระดับสูงแบบเรียลไทม์ โดย AI ของคุณ
                         </h4>
                       </div>
 
                       {/* Render compiled Markdown advice beautifully */}
-                      <div className="prose prose-sm max-w-none text-xs text-slate-800 leading-relaxed space-y-4 prose-headings:font-bold prose-headings:text-slate-900 prose-p:my-2 prose-strong:text-emerald-900 prose-ul:list-disc prose-ul:pl-5">
+                      <div className="prose prose-sm max-w-none text-xs text-slate-800 leading-relaxed space-y-4 prose-headings:font-bold prose-headings:text-slate-900 prose-p:my-2 prose-strong:text-blue-900 prose-ul:list-disc prose-ul:pl-5">
                         <ReactMarkdown>{advice}</ReactMarkdown>
                       </div>
 
-                      <div className="bg-white/80 p-3.5 rounded-xl border border-emerald-200 text-[11px] text-slate-500 flex gap-2 items-center italic">
-                        <Info className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <div className="bg-white/80 p-3.5 rounded-xl border border-blue-200 text-[11px] text-slate-500 flex gap-2 items-center italic">
+                        <Info className="w-4 h-4 text-blue-600 shrink-0" />
                         <span>คำแนะนำนี้เป็นเพียงแบบจำลองเบื้องต้นเพื่ออำนวยความสะดวกในการคิดทางเลือก ควรปรึกษาสำนักงานบัญชีหรือที่ปรึกษากฎหมายภาษีก่อนจดจดจัดตั้งจริง</span>
                       </div>
                     </motion.div>
@@ -2288,11 +2336,11 @@ export default function App() {
             <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-fade-in">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="p-1 px-2.5 bg-emerald-50 text-emerald-700 font-bold rounded-lg text-xs">
+                  <span className="p-1 px-2.5 bg-blue-50 text-blue-700 font-bold rounded-lg text-xs">
                      ภ.ง.ด. 90/91 
                   </span>
                   <span className="text-xs bg-slate-100 text-slate-800 font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
-                    <User className="w-3 h-3 text-emerald-600" /> คำนวณภาษีเงินได้บุคคลธรรมดารายปี
+                    <User className="w-3 h-3 text-blue-600" /> คำนวณภาษีเงินได้บุคคลธรรมดารายปี
                   </span>
                 </div>
                 <h2 className="text-2xl font-black text-slate-900 leading-tight">
@@ -2331,7 +2379,7 @@ export default function App() {
                         disabled={useMultipleIncomes}
                         onChange={(e) => setRevenue(Math.max(0, parseInt(e.target.value.replace(/[^0-9]/g, "")) || 0))}
                         placeholder="0"
-                        className={`w-full pl-4 pr-10 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono text-sm font-semibold transition-all ${
+                        className={`w-full pl-4 pr-10 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm font-semibold transition-all ${
                           useMultipleIncomes
                             ? "bg-slate-100 border-slate-200 text-slate-500 cursor-not-allowed select-none"
                             : "bg-white border-slate-300 text-slate-900"
@@ -2347,7 +2395,7 @@ export default function App() {
                         step="50000"
                         value={revenue}
                         onChange={(e) => setRevenue(parseInt(e.target.value))}
-                        className="w-full accent-emerald-600 cursor-pointer h-1.5 rounded-lg bg-slate-200"
+                        className="w-full accent-blue-600 cursor-pointer h-1.5 rounded-lg bg-slate-200"
                       />
                     )}
                   </div>
@@ -2363,7 +2411,7 @@ export default function App() {
                         onClick={() => setUseMultipleIncomes(!useMultipleIncomes)}
                         className={`text-xs px-3 py-1.5 rounded-xl font-bold border cursor-pointer transition-all duration-200 flex items-center gap-1.5 ${
                           useMultipleIncomes
-                            ? "bg-emerald-600 text-white border-emerald-700 hover:bg-emerald-700"
+                            ? "bg-blue-600 text-white border-blue-700 hover:bg-blue-700"
                             : "bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200"
                         }`}
                       >
@@ -2376,7 +2424,7 @@ export default function App() {
                         <select
                           value={incomeType}
                           onChange={(e) => setIncomeType(e.target.value)}
-                          className="w-full pl-3 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-emerald-500 appearance-none cursor-pointer"
+                          className="w-full pl-3 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-500 appearance-none cursor-pointer"
                         >
                           {INCOME_TYPES.map((type) => (
                             <option key={type.id} value={type.id}>
@@ -2452,7 +2500,7 @@ export default function App() {
                           }}
                           className="w-full py-1.5 bg-white hover:bg-slate-50 border border-dashed border-slate-300 rounded-lg text-[10px] font-bold text-slate-650 transition flex items-center justify-center gap-1 cursor-pointer"
                         >
-                          <Plus className="w-3 h-3 text-emerald-600" /> เพิ่มประเภทเงินได้มาตรา 40 อื่น
+                          <Plus className="w-3 h-3 text-blue-600" /> เพิ่มประเภทเงินได้มาตรา 40 อื่น
                         </button>
                       </div>
                     )}
@@ -2487,10 +2535,10 @@ export default function App() {
                     </div>
 
                     {expenseType === "flat" ? (
-                      <div className="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100/70 text-xs text-emerald-800 space-y-1">
+                      <div className="bg-blue-50/50 p-3 rounded-xl border border-blue-100/70 text-xs text-blue-800 space-y-1">
                         <div className="flex justify-between items-center font-bold">
                           <span>ค่าใช้จ่ายพึงหักสะสม:</span>
-                          <span className="font-mono text-emerald-950 font-bold">
+                          <span className="font-mono text-blue-950 font-bold">
                             {(() => {
                               const selectedType = INCOME_TYPES.find(t => t.id === incomeType) || INCOME_TYPES[4];
                               let calculatedVal = revenue * selectedType.rate;
@@ -2501,7 +2549,7 @@ export default function App() {
                             })().toLocaleString()} บาท
                           </span>
                         </div>
-                        <p className="text-[10px] text-emerald-700/80 leading-snug">
+                        <p className="text-[10px] text-blue-700/80 leading-snug">
                           * {(INCOME_TYPES.find(t => t.id === incomeType) || INCOME_TYPES[4]).desc}
                         </p>
                       </div>
@@ -2517,7 +2565,7 @@ export default function App() {
                                 const val = parseInt(e.target.value.replace(/[^0-9]/g, "")) || 0;
                                 handleActualExpenseChange(val);
                               }}
-                              className="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs font-bold font-mono text-slate-950 text-right focus:ring-2 focus:ring-emerald-500"
+                              className="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs font-bold font-mono text-slate-950 text-right focus:ring-2 focus:ring-blue-500"
                               placeholder="0"
                             />
                           </div>
@@ -2532,7 +2580,7 @@ export default function App() {
                                 const val = Math.min(100, Math.max(0, parseInt(e.target.value) || 0));
                                 handlePercentSliderChange(val);
                               }}
-                              className="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs font-bold font-mono text-slate-950 text-right focus:ring-2 focus:ring-emerald-500"
+                              className="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs font-bold font-mono text-slate-950 text-right focus:ring-2 focus:ring-blue-500"
                               placeholder="0"
                             />
                           </div>
@@ -2572,7 +2620,7 @@ export default function App() {
                           </p>
                           <ul className="list-disc list-inside text-slate-700 text-[12.5px] md:text-[13px] space-y-1.5 pl-1 leading-relaxed">
                             <li><span className="font-semibold text-slate-900">ยื่นแบบกระดาษ:</span> 1 ก.ค. - 30 ก.ย. ของทุกปี</li>
-                            <li><span className="font-bold text-emerald-800">ยื่นแบบออนไลน์ (E-Filing):</span> ปกติถึง 8 ต.ค.</li>
+                            <li><span className="font-bold text-blue-800">ยื่นแบบออนไลน์ (E-Filing):</span> ปกติถึง 8 ต.ค.</li>
                           </ul>
                         </div>
 
@@ -3224,25 +3272,24 @@ export default function App() {
               <div className="lg:col-span-7 space-y-6">
                 
                 {/* 1. Final personal tax verdict widget */}
-                <div className="bg-slate-900 text-white rounded-3xl p-6 relative overflow-hidden border border-slate-800 shadow-lg animate-fade-in">
-                  <div className="absolute top-0 right-0 w-36 h-36 bg-emerald-500 opacity-10 rounded-full blur-3xl"></div>
+                <div className="bg-blue-600 text-white rounded-3xl p-6 relative overflow-hidden shadow-lg animate-fade-in">
                   <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                     <div className="space-y-1">
-                      <span className="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded">
+                      <span className="text-[10px] uppercase font-bold text-white bg-white/15 px-2.5 py-1 rounded">
                         สรุปการเสียภาษีเงินได้บุคคลธรรมดา
                       </span>
-                      <p className="text-[11px] text-slate-400 mt-1">เงินได้สุทธิประจำปีหลังหักค่าใช้จ่ายและลดหย่อน</p>
+                      <p className="text-[11px] text-blue-100 mt-1">เงินได้สุทธิประจำปีหลังหักค่าใช้จ่ายและลดหย่อน</p>
                       <h4 className="text-3xl font-black font-mono text-white tracking-tight">
                         {personalResult.netTaxableIncome.toLocaleString()} <span className="text-lg">บาท</span>
                       </h4>
                     </div>
 
-                    <div className="bg-white/5 border border-white/10 p-4 rounded-2xl w-full md:w-56 text-center shrink-0">
-                      <span className="text-[10.5px] text-slate-300 block font-semibold">ยอดภาษีที่ต้องชำระสะสม:</span>
-                      <span className="text-3xl font-black font-mono text-amber-400 block mt-1">
+                    <div className="bg-white/10 border border-white/20 p-4 rounded-2xl w-full md:w-56 text-center shrink-0">
+                      <span className="text-[10.5px] text-blue-100 block font-semibold">ยอดภาษีที่ต้องชำระสะสม:</span>
+                      <span className="text-3xl font-black font-mono text-white block mt-1">
                         {personalResult.totalTax.toLocaleString()} <span className="text-sm font-sans font-normal">บาท</span>
                       </span>
-                      <div className="mt-1.5 inline-block text-[10px] bg-amber-500/10 text-amber-300 px-2.5 py-0.5 rounded-full font-bold">
+                      <div className="mt-1.5 inline-block text-[10px] bg-white/15 text-white px-2.5 py-0.5 rounded-full font-bold">
                         อัตราก้าวหน้าขั้นสุดท้าย {personalResult.marginalRate}%
                       </div>
                     </div>
@@ -3252,7 +3299,7 @@ export default function App() {
                 {/* 2. Detailed computation summary (Waterfall list) */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
                   <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5 mb-4 pb-2.5 border-b border-slate-100">
-                    <TrendingUp className="w-4 h-4 text-emerald-600" />
+                    <TrendingUp className="w-4 h-4 text-blue-600" />
                     สมการการคำนวณภาษีเงินได้สุทธิขั้นพื้นฐาน
                   </h3>
 
@@ -3280,9 +3327,9 @@ export default function App() {
                       <span className="font-mono text-indigo-600 font-bold">-{personalResult.totalDeductions.toLocaleString()} บาท</span>
                     </div>
 
-                    <div className="flex justify-between items-center p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-sm font-bold">
+                    <div className="flex justify-between items-center p-3 rounded-xl bg-blue-500/5 border border-blue-500/20 text-sm font-bold">
                       <span className="text-slate-900">4. คงเหลือเงินได้สุทธิเพื่อคำนวณตามขั้น (เงินได้สุทธิ)</span>
-                      <span className="font-mono text-emerald-700 font-bold">{personalResult.netTaxableIncome.toLocaleString()} บาท</span>
+                      <span className="font-mono text-blue-700 font-bold">{personalResult.netTaxableIncome.toLocaleString()} บาท</span>
                     </div>
                   </div>
                 </div>
@@ -3291,7 +3338,7 @@ export default function App() {
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
                   <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
                     <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                      <Layers className="w-4 h-4 text-emerald-600" />
+                      <Layers className="w-4 h-4 text-blue-600" />
                       เกณฑ์ตารางภาษีอัตราก้าวหน้ารายบุคคล (Progressive Tax Slabs)
                     </h3>
                     <span className="text-[10px] bg-slate-100 text-slate-400 py-1 px-2 rounded-md font-bold uppercase">ปี 2026</span>
@@ -3322,7 +3369,7 @@ export default function App() {
                                 key={row.bracket} 
                                 className={`transition-all duration-150 ${
                                   isActive 
-                                    ? "bg-emerald-500/5 text-slate-950 font-medium border-l-4 border-emerald-500" 
+                                    ? "bg-blue-500/5 text-slate-950 font-medium border-l-4 border-blue-500" 
                                     : "text-slate-500 hover:bg-slate-50/50"
                                 }`}
                               >
@@ -3333,7 +3380,7 @@ export default function App() {
                                 </td>
                                 <td className="p-3 text-right font-mono font-bold text-slate-950">
                                   {row.taxInBracket > 0 ? (
-                                    <span className="text-emerald-700">+{row.taxInBracket.toLocaleString()} ฿</span>
+                                    <span className="text-blue-700">+{row.taxInBracket.toLocaleString()} ฿</span>
                                   ) : (
                                     <span className="text-slate-400">0 ฿</span>
                                   )}
@@ -3348,7 +3395,7 @@ export default function App() {
 
                   <div className="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
                     <span className="font-semibold text-slate-700">รวมภาษีสะสมทั้งหมดทุกช่วงฐาน:</span>
-                    <span className="font-mono font-black text-emerald-800 text-sm">
+                    <span className="font-mono font-black text-blue-800 text-sm">
                       {personalResult.totalTax.toLocaleString()} บาท
                     </span>
                   </div>
@@ -3389,7 +3436,7 @@ export default function App() {
                       </li>
                     ) : (
                       <li className="flex items-start gap-2 leading-relaxed bg-white/70 p-2.5 rounded-xl border border-amber-100">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
                         <div>
                           <strong>สถานะปัจจุบัน:</strong> ขนาดเงินได้สุทธิของคุณอยู่ในระดับที่พิกัดภาษียังเกาะเกณฑ์ต่ำ การอยู่แบบบุคคลธรรมดาร่วมกับการซื้อลดหย่อนเพิ่มยังคงเป็นกลยุทธ์ที่คล่องตัวประหยัดที่สุด และช่วยเลี่ยงภาระค่าใช้จ่ายบริหารจัดทำงบผู้ตรวจสอบบัญชีทางนิติบุคคล
                         </div>
@@ -3714,12 +3761,12 @@ export default function App() {
                       <div>
                         <div className="flex justify-between items-center gap-2 mb-2">
                           <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md ${
-                            plannerSalary === plannerCase1Salary ? "bg-white/10 text-emerald-400" : "bg-indigo-50 text-indigo-700"
+                            plannerSalary === plannerCase1Salary ? "bg-white/10 text-blue-400" : "bg-indigo-50 text-indigo-700"
                           }`}>
                             Case 1
                           </span>
                           {Math.max(res1.netSaved, res2.netSaved, res3.netSaved) === res1.netSaved && (
-                            <span className="bg-emerald-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase">
+                            <span className="bg-blue-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase">
                               Best
                             </span>
                           )}
@@ -3733,7 +3780,7 @@ export default function App() {
                       <div className="space-y-1.5 text-xs border-t border-slate-200/20 pt-2.5">
                         <div className="flex justify-between items-center">
                           <span className={`text-[10px] font-medium ${plannerSalary === plannerCase1Salary ? "text-slate-300" : "text-slate-500"}`}>นิติบุคคลประหยัด:</span>
-                          <span className="font-mono font-bold text-emerald-500">+{res1.corpSaved.toLocaleString()} บ.</span>
+                          <span className="font-mono font-bold text-blue-500">+{res1.corpSaved.toLocaleString()} บ.</span>
                         </div>
                         <div className="flex justify-between items-center">
                           <span className={`text-[10px] font-medium ${plannerSalary === plannerCase1Salary ? "text-slate-300" : "text-slate-500"}`}>บุคคลเสียเพิ่ม:</span>
@@ -3741,7 +3788,7 @@ export default function App() {
                         </div>
                         <div className="border-t border-dashed border-slate-200/20 pt-1.5 flex justify-between items-center">
                           <span className="font-extrabold text-[11px]">ประหยัดรวม:</span>
-                          <span className={`font-mono font-black ${res1.netSaved > 0 ? "text-emerald-400" : "text-red-400"}`}>
+                          <span className={`font-mono font-black ${res1.netSaved > 0 ? "text-blue-400" : "text-red-400"}`}>
                             {res1.netSaved > 0 ? "+" : ""}{res1.netSaved.toLocaleString()} บ.
                           </span>
                         </div>
@@ -3763,12 +3810,12 @@ export default function App() {
                       <div>
                         <div className="flex justify-between items-center gap-2 mb-2">
                           <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md ${
-                            plannerSalary === plannerCase2Salary ? "bg-white/10 text-emerald-400" : "bg-indigo-50 text-indigo-700"
+                            plannerSalary === plannerCase2Salary ? "bg-white/10 text-blue-400" : "bg-indigo-50 text-indigo-700"
                           }`}>
                             Case 2
                           </span>
                           {Math.max(res1.netSaved, res2.netSaved, res3.netSaved) === res2.netSaved && (
-                            <span className="bg-emerald-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase">
+                            <span className="bg-blue-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase">
                               Best
                             </span>
                           )}
@@ -3782,7 +3829,7 @@ export default function App() {
                       <div className="space-y-1.5 text-xs border-t border-slate-200/20 pt-2.5">
                         <div className="flex justify-between items-center">
                           <span className={`text-[10px] font-medium ${plannerSalary === plannerCase2Salary ? "text-slate-300" : "text-slate-500"}`}>นิติบุคคลประหยัด:</span>
-                          <span className="font-mono font-bold text-emerald-500">+{res2.corpSaved.toLocaleString()} บ.</span>
+                          <span className="font-mono font-bold text-blue-500">+{res2.corpSaved.toLocaleString()} บ.</span>
                         </div>
                         <div className="flex justify-between items-center">
                           <span className={`text-[10px] font-medium ${plannerSalary === plannerCase2Salary ? "text-slate-300" : "text-slate-500"}`}>บุคคลเสียเพิ่ม:</span>
@@ -3790,7 +3837,7 @@ export default function App() {
                         </div>
                         <div className="border-t border-dashed border-slate-200/20 pt-1.5 flex justify-between items-center">
                           <span className="font-extrabold text-[11px]">ประหยัดรวม:</span>
-                          <span className={`font-mono font-black ${res2.netSaved > 0 ? "text-emerald-400" : "text-red-400"}`}>
+                          <span className={`font-mono font-black ${res2.netSaved > 0 ? "text-blue-400" : "text-red-400"}`}>
                             {res2.netSaved > 0 ? "+" : ""}{res2.netSaved.toLocaleString()} บ.
                           </span>
                         </div>
@@ -3812,12 +3859,12 @@ export default function App() {
                       <div>
                         <div className="flex justify-between items-center gap-2 mb-2">
                           <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md ${
-                            plannerSalary === plannerCase3Salary ? "bg-white/10 text-emerald-400" : "bg-indigo-50 text-indigo-700"
+                            plannerSalary === plannerCase3Salary ? "bg-white/10 text-blue-400" : "bg-indigo-50 text-indigo-700"
                           }`}>
                             Case 3
                           </span>
                           {Math.max(res1.netSaved, res2.netSaved, res3.netSaved) === res3.netSaved && (
-                            <span className="bg-emerald-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase">
+                            <span className="bg-blue-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase">
                               Best
                             </span>
                           )}
@@ -3831,7 +3878,7 @@ export default function App() {
                       <div className="space-y-1.5 text-xs border-t border-slate-200/20 pt-2.5">
                         <div className="flex justify-between">
                           <span className={`text-[10px] font-medium ${plannerSalary === plannerCase3Salary ? "text-slate-300" : "text-slate-500"}`}>นิติบุคคลประหยัด:</span>
-                                <span className="font-mono font-bold text-emerald-500">+{res3.corpSaved.toLocaleString()} บ.</span>
+                                <span className="font-mono font-bold text-blue-500">+{res3.corpSaved.toLocaleString()} บ.</span>
                               </div>
                               <div className="flex justify-between">
                                 <span className={`${plannerSalary === plannerCase3Salary ? "text-slate-400" : "text-slate-500"} font-medium`}>ภาษีบุคคลเพิ่ม:</span>
@@ -3839,7 +3886,7 @@ export default function App() {
                               </div>
                               <div className="border-t border-dashed border-slate-200/20 pt-1.5 flex justify-between items-center">
                                 <span className="font-extrabold text-[12px]">ประหยัดรวมสุทธิ:</span>
-                                <span className={`font-mono font-black text-sm ${res3.netSaved > 0 ? "text-emerald-400" : "text-red-400"}`}>
+                                <span className={`font-mono font-black text-sm ${res3.netSaved > 0 ? "text-blue-400" : "text-red-400"}`}>
                                   {res3.netSaved > 0 ? "+" : ""}{res3.netSaved.toLocaleString()} บ.
                                 </span>
                               </div>
@@ -3847,7 +3894,7 @@ export default function App() {
 
                             {/* Best tag */}
                             {Math.max(res1.netSaved, res2.netSaved, res3.netSaved) === res3.netSaved && (
-                              <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-bl-lg">
+                              <div className="absolute top-0 right-0 bg-blue-500 text-white text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-bl-lg">
                                 Best
                               </div>
                             )}
@@ -3871,7 +3918,7 @@ export default function App() {
                       <div className="bg-slate-900 text-white p-6 rounded-2xl shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div>
                           <h3 className="text-lg md:text-xl font-extrabold flex items-center gap-2">
-                            <Sparkles className="w-5 h-5 text-emerald-400" />
+                            <Sparkles className="w-5 h-5 text-blue-400" />
                             เจาะลึกเฉพาะจุด: Case {plannerCase > 0 ? plannerCase : "กำหนดเอง"} (กระหมวดเงินเดือน {plannerSalary.toLocaleString()} บาท/เดือน)
                           </h3>
                           <p className="text-xs md:text-sm font-semibold text-slate-300 mt-1">
@@ -3968,8 +4015,8 @@ export default function App() {
                         <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4 shadow-xs flex flex-col justify-between">
                           <div className="space-y-4">
                             <div className="flex items-center gap-2 pb-2 border-b border-dashed border-slate-200">
-                              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                              <span className="text-sm font-bold text-emerald-800">แบบใหม่หลังเพิ่มเงินเดือน</span>
+                              <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                              <span className="text-sm font-bold text-blue-800">แบบใหม่หลังเพิ่มเงินเดือน</span>
                             </div>
 
                             <div className="space-y-3 text-xs md:text-[13px]">
@@ -3985,14 +4032,14 @@ export default function App() {
                               </div>
                               <div className="flex justify-between border-t border-slate-100 pt-2">
                                 <span className="text-slate-800 font-bold">กำไรสุทธิทางภาษี</span>
-                                <span className="font-mono text-emerald-700 font-bold">{activeRes.profitAfter.toLocaleString()} ฿</span>
+                                <span className="font-mono text-blue-700 font-bold">{activeRes.profitAfter.toLocaleString()} ฿</span>
                               </div>
 
                               {/* HIGHLIGHTED GREEN ROW */}
-                              <div className="bg-emerald-50/40 rounded-xl p-3 border-2 border-emerald-500/80 my-2">
+                              <div className="bg-blue-50/40 rounded-xl p-3 border-2 border-blue-500/80 my-2">
                                 <div className="flex justify-between items-center text-xs">
-                                  <span className="font-extrabold text-emerald-950">หัก ภาษีเงินได้ {plannerSme ? "SME" : "20%"} (ใหม่)</span>
-                                  <span className="font-mono text-emerald-800 font-black">
+                                  <span className="font-extrabold text-blue-950">หัก ภาษีเงินได้ {plannerSme ? "SME" : "20%"} (ใหม่)</span>
+                                  <span className="font-mono text-blue-800 font-black">
                                     ({activeRes.corpTaxAfter.toLocaleString()}) ฿
                                   </span>
                                 </div>
@@ -4008,17 +4055,17 @@ export default function App() {
                                 <span className="font-mono text-red-500">({activeRes.divTaxAfter.toLocaleString()}) ฿</span>
                               </div>
 
-                              <div className="flex justify-between border-t border-slate-100 pt-3 font-bold text-slate-900 bg-emerald-50/40 p-2.5 rounded-lg">
-                                <span className="text-emerald-950">คงเหลือเงินได้รับจริง</span>
-                                <span className="font-mono text-emerald-900 font-black">{activeRes.netReceivedAfter.toLocaleString()} ฿</span>
+                              <div className="flex justify-between border-t border-slate-100 pt-3 font-bold text-slate-900 bg-blue-50/40 p-2.5 rounded-lg">
+                                <span className="text-blue-950">คงเหลือเงินได้รับจริง</span>
+                                <span className="font-mono text-blue-900 font-black">{activeRes.netReceivedAfter.toLocaleString()} ฿</span>
                               </div>
                             </div>
                           </div>
 
                           <div className="pt-2">
-                            <div className="bg-emerald-50/50 border border-emerald-200 rounded-xl p-3 flex justify-between items-center text-sm font-extrabold text-emerald-900">
+                            <div className="bg-blue-50/50 border border-blue-200 rounded-xl p-3 flex justify-between items-center text-sm font-extrabold text-blue-900">
                               <span>ภาระภาษีบริษัทรวมใหม่:</span>
-                              <span className="font-mono font-black text-emerald-700 text-base">
+                              <span className="font-mono font-black text-blue-700 text-base">
                                 {(activeRes.corpTaxAfter + activeRes.divTaxAfter).toLocaleString()} ฿/ปี
                               </span>
                             </div>
@@ -4030,15 +4077,15 @@ export default function App() {
 
                     {/* Integrated Savings Row at the bottom of the Card */}
                     <div className="mt-8 pt-4 border-t border-slate-100">
-                      <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-500 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+                      <div className="bg-gradient-to-r from-blue-50 to-teal-50 border-2 border-blue-500 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center gap-3">
                         <div className="flex items-center gap-2 text-left">
                           <span className="text-2xl">💰</span>
                           <div>
-                            <span className="text-xs md:text-sm font-black text-emerald-950 block">สรุปการประหยัดภาษีฝั่งนิติบุคคล:</span>
-                            <span className="text-[10px] md:text-xs text-emerald-700/90 font-medium">ส่วนต่างภาระภาษีรวมที่ลดลงของฝั่งบริษัทหลังปันส่วนเป็นเงินเดือนกรรมการ</span>
+                            <span className="text-xs md:text-sm font-black text-blue-950 block">สรุปการประหยัดภาษีฝั่งนิติบุคคล:</span>
+                            <span className="text-[10px] md:text-xs text-blue-700/90 font-medium">ส่วนต่างภาระภาษีรวมที่ลดลงของฝั่งบริษัทหลังปันส่วนเป็นเงินเดือนกรรมการ</span>
                           </div>
                         </div>
-                        <span className="font-mono font-black text-base md:text-xl text-emerald-700 bg-white px-4 py-1.5 rounded-xl border border-emerald-200/50 shadow-sm shrink-0">
+                        <span className="font-mono font-black text-base md:text-xl text-blue-700 bg-white px-4 py-1.5 rounded-xl border border-blue-200/50 shadow-sm shrink-0">
                           +{Math.round(
                             ((plannerRevenue - plannerExpenses > 0 ? (plannerSme ? (
                               (plannerRevenue - plannerExpenses > 3000000 ? ((plannerRevenue - plannerExpenses - 3000000) * 0.2 + 405000) : Math.max(0, plannerRevenue - plannerExpenses - 300000) * 0.15)
@@ -4079,7 +4126,7 @@ export default function App() {
                         {plannerInterestIncome > 0 && (
                           <div className="flex justify-between bg-slate-50 p-2 rounded-xl font-medium text-slate-800 text-xs">
                             <span className="text-slate-500">💰 รายได้ดอกเบี้ยของกรรมการ</span>
-                            <span className="font-mono text-emerald-600">+{plannerInterestIncome.toLocaleString()} ฿</span>
+                            <span className="font-mono text-blue-600">+{plannerInterestIncome.toLocaleString()} ฿</span>
                           </div>
                         )}
 
@@ -4087,7 +4134,7 @@ export default function App() {
                           <div className="space-y-1 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
                             <div className="flex justify-between font-medium text-slate-800 text-xs">
                               <span className="text-slate-500">🔑 รายได้ค่าเช่าของกรรมการ</span>
-                              <span className="font-mono text-emerald-600">+{plannerRentalIncome.toLocaleString()} ฿</span>
+                              <span className="font-mono text-blue-600">+{plannerRentalIncome.toLocaleString()} ฿</span>
                             </div>
                             <div className="flex justify-between text-red-500 text-[10px]">
                               <span className="text-slate-400">หัก ค่าใช้จ่ายค่าเช่า (เหมา 30%)</span>
@@ -4142,22 +4189,21 @@ export default function App() {
                 </div>
 
                 {/* OVERALL NET IMPACT VERDICT ROW */}
-                <div className="bg-slate-900 text-white rounded-3xl p-6 relative overflow-hidden border border-slate-800 shadow-lg">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500 opacity-10 rounded-full blur-2xl"></div>
+                <div className="bg-blue-600 text-white rounded-3xl p-6 relative overflow-hidden shadow-lg">
                   <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                      <span className="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded">สรุปผลรวม: บริษัท + ส่วนตัว</span>
+                      <span className="text-[10px] uppercase font-bold text-white bg-white/15 px-2.5 py-1 rounded">สรุปผลรวม: บริษัท + ส่วนตัว</span>
                       <h4 className="text-xl font-bold mt-2">
                         {activeRes.netSaved > 0 ? "🎉 คุ้มค่า! จ่ายเงินเดือนกรรมการดีกว่า" : "📊 กรณีนี้จ่ายเป็นเงินปันผลคุ้มกว่า"}
                       </h4>
-                      <p className="text-xs text-slate-300 mt-1">
+                      <p className="text-xs text-blue-100 mt-1">
                         นำภาษีที่บริษัทประหยัดได้จากการตั้งเงินเดือนนี้ หักลบด้วยภาษีบุคคลธรรมดาที่กรรมการต้องจ่ายเพิ่มแล้ว ยังเหลือประหยัดสุทธิเท่านี้
                       </p>
                     </div>
 
-                    <div className="bg-white/5 border border-white/10 p-4 rounded-2xl w-full md:w-52 text-center shrink-0">
-                      <span className="text-[10px] text-slate-400 block font-semibold">ประหยัดภาษีสุทธิ (บริษัท - บุคคล):</span>
-                      <span className="text-2xl font-black font-mono text-emerald-400 block mt-1.5">
+                    <div className="bg-white/10 border border-white/20 p-4 rounded-2xl w-full md:w-52 text-center shrink-0">
+                      <span className="text-[10px] text-blue-100 block font-semibold">ประหยัดภาษีสุทธิ (บริษัท - บุคคล):</span>
+                      <span className="text-2xl font-black font-mono text-white block mt-1.5">
                         {activeRes.netSaved.toLocaleString()} บ./ปี
                       </span>
                     </div>
@@ -4165,8 +4211,8 @@ export default function App() {
                 </div>
 
                 {/* AI advice */}
-                <div className="bg-emerald-50/60 p-4 rounded-xl border border-emerald-100 flex gap-2 items-center text-xs text-slate-700">
-                  <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
+                <div className="bg-blue-50/60 p-4 rounded-xl border border-blue-100 flex gap-2 items-center text-xs text-slate-700">
+                  <Sparkles className="w-4 h-4 text-blue-600 shrink-0" />
                   <span>
                     <strong>คำแนะนำของระบบ:</strong> สำหรับรายได้บริษัท {plannerRevenue.toLocaleString()} บ. การตั้งเงินเดือนร่วมกับรายได้ดอกเบี้ย {plannerInterestIncome.toLocaleString()} บ. และรายได้ค่าเช่า {plannerRentalIncome.toLocaleString()} บ. ส่งผลให้ลดพิกัดภาษีรวมได้อย่างคุ้มค่าที่สุด!
                   </span>
@@ -4190,7 +4236,7 @@ export default function App() {
                   <span className="bg-rose-50 text-rose-700 font-bold px-2.5 py-1 rounded-lg text-xs border border-rose-100">
                     🛡️ Admin Console
                   </span>
-                  <span className="text-xs bg-emerald-50 text-emerald-800 font-bold px-2.5 py-1 rounded-full border border-emerald-100">
+                  <span className="text-xs bg-blue-50 text-blue-800 font-bold px-2.5 py-1 rounded-full border border-blue-100">
                     Google Sheets Real-time Synchronization
                   </span>
                 </div>
@@ -4220,11 +4266,11 @@ export default function App() {
             {sheetsStatusMessage && (
               <div className={`p-4 rounded-2xl border text-xs flex items-center gap-2 ${
                 sheetsStatusMessage.type === "success" 
-                  ? "bg-emerald-50 text-emerald-800 border-emerald-200" 
+                  ? "bg-blue-50 text-blue-800 border-blue-200" 
                   : "bg-red-50 text-red-800 border-red-200"
               }`}>
                 {sheetsStatusMessage.type === "success" ? (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
                 ) : (
                   <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
                 )}
@@ -4287,7 +4333,7 @@ export default function App() {
               {/* RIGHT COLUMN: Real-time user access logging records */}
               <div className="lg:col-span-7 space-y-6">
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-emerald-100/50">
+                  <div className="flex items-center justify-between pb-3 border-b border-blue-100/50">
                     <div className="flex items-center gap-2">
                       <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
                       <h3 className="font-bold text-slate-900 text-sm">ประวัติบันทึกการเข้าใช้โปรแกรมเรียลไทม์</h3>
@@ -4364,7 +4410,7 @@ export default function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
                 <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5 border-b border-slate-100 pb-2">
-                  <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span>
+                  <span className="w-2.5 h-2.5 bg-blue-500 rounded-full"></span>
                   ภาษีเงินได้บุคคลธรรมดา (Individual Tax)
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
@@ -4415,13 +4461,13 @@ export default function App() {
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-center md:text-left">
             <h4 className="font-bold text-base flex items-center justify-center md:justify-start gap-1.5">
-              <Sparkles className="w-4 h-4 text-emerald-400" />
+              <Sparkles className="w-4 h-4 text-blue-400" />
               ต้องการที่ปรึกษาด้านบัญชีและภาษีโดยเฉพาะ?
             </h4>
             <p className="text-sm text-slate-300 mt-0.5">บริษัท อัลเทอร์เนแท็กส์ จำกัด</p>
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-sm font-semibold">
-            <a href="tel:0972474415" className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 transition px-4 py-2 rounded-xl">
+            <a href="tel:0972474415" className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 transition px-4 py-2 rounded-xl">
               📞 097-247-4415
             </a>
             <span className="flex items-center gap-1.5 text-slate-300">
@@ -4458,7 +4504,7 @@ export default function App() {
                   <X className="w-5 h-5" />
                 </button>
                 <div className="relative z-10 flex flex-col items-center">
-                  <div className="bg-emerald-600/20 text-emerald-400 p-3 rounded-full mb-3 border border-emerald-500/20">
+                  <div className="bg-blue-600/20 text-blue-400 p-3 rounded-full mb-3 border border-blue-500/20">
                     <Lock className="w-6 h-6" />
                   </div>
                   <h2 className="text-lg font-bold tracking-tight">ระบบบัญชีจำลองส่วนบุคคล</h2>
@@ -4512,8 +4558,8 @@ export default function App() {
                 )}
                 
                 {authSuccess && (
-                  <div className="p-3.5 bg-emerald-50 text-emerald-800 text-xs border border-emerald-200 rounded-xl flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <div className="p-3.5 bg-blue-50 text-blue-800 text-xs border border-blue-200 rounded-xl flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
                     <span>{authSuccess}</span>
                   </div>
                 )}
@@ -4531,7 +4577,7 @@ export default function App() {
                           value={authName}
                           onChange={(e) => setAuthName(e.target.value)}
                           placeholder="เช่น คุณกฤษฎา วางแผนดี"
-                          className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none pl-9 pr-3 py-2.5 rounded-xl text-xs text-slate-800 transition"
+                          className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none pl-9 pr-3 py-2.5 rounded-xl text-xs text-slate-800 transition"
                         />
                       </div>
                     </div>
@@ -4547,7 +4593,7 @@ export default function App() {
                         value={authEmail}
                         onChange={(e) => setAuthEmail(e.target.value)}
                         placeholder="เช่น name@company.co"
-                        className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none pl-9 pr-3 py-2.5 rounded-xl text-xs text-slate-800 transition"
+                        className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none pl-9 pr-3 py-2.5 rounded-xl text-xs text-slate-800 transition"
                       />
                     </div>
                   </div>
@@ -4562,7 +4608,7 @@ export default function App() {
                         value={authPassword}
                         onChange={(e) => setAuthPassword(e.target.value)}
                         placeholder="รหัสผ่านเข้าถึงประวัติ"
-                        className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none pl-9 pr-3 py-2.5 rounded-xl text-xs text-slate-800 transition"
+                        className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none pl-9 pr-3 py-2.5 rounded-xl text-xs text-slate-800 transition"
                       />
                     </div>
                   </div>
