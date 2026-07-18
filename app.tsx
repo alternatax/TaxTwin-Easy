@@ -101,6 +101,7 @@ export default function App() {
   const [revenue, setRevenue] = useState<number>(1800000); // 1.8M THB default (VAT limit)
   const [incomeType, setIncomeType] = useState<string>("40_8");
   const [selectedPersona, setSelectedPersona] = useState<string>("ขายของออนไลน์");
+  const [pnd94Dismissed, setPnd94Dismissed] = useState<boolean>(false);
   const [useMultipleIncomes, setUseMultipleIncomes] = useState<boolean>(false);
   const [incomes, setIncomes] = useState<{ id: string; typeId: string; amount: number }[]>([
     { id: "1", typeId: "40_8", amount: 1800000 }
@@ -277,6 +278,12 @@ export default function App() {
       setIncomes([{ id: "1", typeId: incomeType, amount: revenue }]);
     }
   }, [revenue, incomeType, useMultipleIncomes]);
+
+  // Re-show the ภ.ง.ด. 94 popup whenever the income type changes, even if the
+  // user had dismissed it for a previously-selected type.
+  useEffect(() => {
+    setPnd94Dismissed(false);
+  }, [incomeType, useMultipleIncomes]);
 
   // Keep total revenue and primary incomeType synchronized when managing multiple incomes
   useEffect(() => {
@@ -868,6 +875,76 @@ export default function App() {
   const hasPnd94Requirement = useMultipleIncomes
     ? incomes.some(item => ["40_5", "40_6_med", "40_6_other", "40_7", "40_8"].includes(item.typeId))
     : ["40_5", "40_6_med", "40_6_other", "40_7", "40_8"].includes(incomeType);
+
+  // ภ.ง.ด. 94 requirement notice — shown as a dismissible popup rather than
+  // an inline banner, since it's the same condition/content regardless of
+  // which tab triggered it.
+  const renderPnd94Modal = () => (
+    <AnimatePresence>
+      {hasPnd94Requirement && !pnd94Dismissed && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="relative bg-white rounded-2xl border border-amber-200/80 text-sm text-slate-800 space-y-4 shadow-2xl max-w-xl w-full p-6 max-h-[85vh] overflow-y-auto"
+          >
+            <button
+              type="button"
+              onClick={() => setPnd94Dismissed(true)}
+              aria-label="ปิดหน้าต่างนี้"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 cursor-pointer p-1 rounded-lg hover:bg-slate-100 transition"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-start gap-4 pr-8">
+              <div className="p-2 bg-amber-100 text-amber-800 rounded-lg shrink-0 mt-0.5">
+                <HelpCircle className="w-5 h-5 text-amber-700" />
+              </div>
+              <div>
+                <h4 className="font-extrabold text-amber-950 text-base md:text-lg flex items-center gap-1.5">
+                  💡 คำแนะนำ: ต้องยื่นแบบ &ldquo;ภ.ง.ด. 94&rdquo; (ภาษีเงินได้ครึ่งปี)
+                </h4>
+                <p className="text-slate-700 text-[13.5px] md:text-[14.5px] mt-1.5 leading-relaxed">
+                  เนื่องจากคุณมีเงินได้ตามมาตรา <span className="font-bold text-amber-850">40(5) - 40(8)</span> สรรพากรบังคับให้บุคคลธรรมดาต้องยื่นรายการภาษีครึ่งปี เพื่อความโปร่งใสและเฉลี่ยภาระภาษีไม่ให้กระจุกตัวตอนปลายปี
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-amber-200/55 pt-3.5">
+              <div className="space-y-1.5">
+                <p className="font-extrabold text-amber-950 text-[13.5px] md:text-[14px] flex items-center gap-1">
+                  📅 ยื่นเมื่อไหร่?
+                </p>
+                <ul className="list-disc list-inside text-slate-700 text-[12.5px] md:text-[13px] space-y-1.5 pl-1 leading-relaxed">
+                  <li><span className="font-semibold text-slate-900">ยื่นแบบกระดาษ:</span> 1 ก.ค. - 30 ก.ย. ของทุกปี</li>
+                  <li><span className="font-bold text-blue-800">ยื่นแบบออนไลน์ (E-Filing):</span> ได้ขยายเวลาเพิ่มอีก 8 วัน (ปกติถึง 8 ต.ค.)</li>
+                </ul>
+              </div>
+
+              <div className="space-y-1.5">
+                <p className="font-extrabold text-amber-950 text-[13.5px] md:text-[14px] flex items-center gap-1">
+                  📍 ยื่นได้ที่ไหนบ้าง?
+                </p>
+                <ul className="list-disc list-inside text-slate-700 text-[12.5px] md:text-[13px] space-y-1.5 pl-1 leading-relaxed">
+                  <li><span className="font-semibold text-slate-900">ออนไลน์สะดวกที่สุด:</span> เว็บไซต์สรรพากร <a href="https://rd.go.th" target="_blank" rel="noopener noreferrer" className="text-indigo-600 underline font-semibold">rd.go.th</a></li>
+                  <li>สำนักงานสรรพากรพื้นที่สาขาทุกแห่งทั่วประเทศ</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-amber-100/35 p-3.5 rounded-xl border border-amber-200/40 text-[12.5px] md:text-[13px] text-amber-905 leading-relaxed">
+              <p className="font-extrabold text-amber-950 text-[13.5px]">⚠️ วิธีคำนวณภาษี & เครดิตภาษี:</p>
+              <p className="text-slate-700 mt-1 leading-relaxed text-[12.5px] md:text-[13px]">
+                คำนวณจากรายได้ส่วนที่เกิดขึ้นระหว่าง ม.ค. - มิ.ย. หักค่าใช้จ่ายเหมา/จริงและลดหย่อนได้กึ่งหนึ่ง (50%) ของสิทธิ์ทั้งปี โดยภาษีที่จ่ายครึ่งปีนี้จะถูกนำไปเป็น <strong className="text-amber-800 font-bold">เครดิตหักล้างภาษีปลายปี (ภ.ง.ด. 90)</strong> ได้เต็มจำนวน ทำให้ไม่ต้องจ่ายซ้ำซ้อน
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
 
   // --- USER AUTHENTICATION HANDLERS ---
   const handleSignIn = (e: React.FormEvent) => {
@@ -1564,60 +1641,6 @@ export default function App() {
                   </motion.div>
                 )}
 
-                {/* ภ.ง.ด. 94 Guide Advisor Box */}
-                <AnimatePresence>
-                  {hasPnd94Requirement && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border border-amber-200/80 text-sm text-slate-800 space-y-4 shadow-xs overflow-hidden"
-                    >
-                      <div className="flex items-start gap-4">
-                        <div className="p-2 bg-amber-100 text-amber-800 rounded-lg shrink-0 mt-0.5">
-                          <HelpCircle className="w-5 h-5 text-amber-700" />
-                        </div>
-                        <div>
-                          <h4 className="font-extrabold text-amber-950 text-base md:text-lg flex items-center gap-1.5">
-                            💡 คำแนะนำ: ต้องยื่นแบบ &ldquo;ภ.ง.ด. 94&rdquo; (ภาษีเงินได้ครึ่งปี)
-                          </h4>
-                          <p className="text-slate-700 text-[13.5px] md:text-[14.5px] mt-1.5 leading-relaxed">
-                            เนื่องจากคุณมีเงินได้ตามมาตรา <span className="font-bold text-amber-850">40(5) - 40(8)</span> สรรพากรบังคับให้บุคคลธรรมดาต้องยื่นรายการภาษีครึ่งปี เพื่อความโปร่งใสและเฉลี่ยภาระภาษีไม่ให้กระจุกตัวตอนปลายปี
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-amber-200/55 pt-3.5">
-                        <div className="space-y-1.5">
-                          <p className="font-extrabold text-amber-950 text-[13.5px] md:text-[14px] flex items-center gap-1">
-                            📅 ยื่นเมื่อไหร่?
-                          </p>
-                          <ul className="list-disc list-inside text-slate-700 text-[12.5px] md:text-[13px] space-y-1.5 pl-1 leading-relaxed">
-                            <li><span className="font-semibold text-slate-900">ยื่นแบบกระดาษ:</span> 1 ก.ค. - 30 ก.ย. ของทุกปี</li>
-                            <li><span className="font-bold text-blue-800">ยื่นแบบออนไลน์ (E-Filing):</span> ได้ขยายเวลาเพิ่มอีก 8 วัน (ปกติถึง 8 ต.ค.)</li>
-                          </ul>
-                        </div>
-
-                        <div className="space-y-1.5">
-                          <p className="font-extrabold text-amber-950 text-[13.5px] md:text-[14px] flex items-center gap-1">
-                            📍 ยื่นได้ที่ไหนบ้าง?
-                          </p>
-                          <ul className="list-disc list-inside text-slate-700 text-[12.5px] md:text-[13px] space-y-1.5 pl-1 leading-relaxed">
-                            <li><span className="font-semibold text-slate-900">ออนไลน์สะดวกที่สุด:</span> เว็บไซต์สรรพากร <a href="https://rd.go.th" target="_blank" rel="noopener noreferrer" className="text-indigo-600 underline font-semibold">rd.go.th</a></li>
-                            <li>สำนักงานสรรพากรพื้นที่สาขาทุกแห่งทั่วประเทศ</li>
-                          </ul>
-                        </div>
-                      </div>
-
-                      <div className="bg-amber-100/35 p-3.5 rounded-xl border border-amber-200/40 text-[12.5px] md:text-[13px] text-amber-905 leading-relaxed">
-                        <p className="font-extrabold text-amber-950 text-[13.5px]">⚠️ วิธีคำนวณภาษี & เครดิตภาษี:</p>
-                        <p className="text-slate-700 mt-1 leading-relaxed text-[12.5px] md:text-[13px]">
-                          คำนวณจากรายได้ส่วนที่เกิดขึ้นระหว่าง ม.ค. - มิ.ย. หักค่าใช้จ่ายเหมา/จริงและลดหย่อนได้กึ่งหนึ่ง (50%) ของสิทธิ์ทั้งปี โดยภาษีที่จ่ายครึ่งปีนี้จะถูกนำไปเป็น <strong className="text-amber-800 font-bold">เครดิตหักล้างภาษีปลายปี (ภ.ง.ด. 90)</strong> ได้เต็มจำนวน ทำให้ไม่ต้องจ่ายซ้ำซ้อน
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
 
                 {/* Business Expense Toggle Selection */}
                 <div>
@@ -2592,54 +2615,6 @@ export default function App() {
                     )}
                   </div>
                 </div>
-
-                {/* ภ.ง.ด. 94 Guide Advisor Box */}
-                <AnimatePresence>
-                  {hasPnd94Requirement && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border border-amber-200/80 text-sm text-slate-800 space-y-4 shadow-xs overflow-hidden"
-                    >
-                      <div className="flex items-start gap-4">
-                        <div className="p-2 bg-amber-100 text-amber-800 rounded-lg shrink-0 mt-0.5">
-                          <HelpCircle className="w-5 h-5 text-amber-700" />
-                        </div>
-                        <div>
-                          <h4 className="font-extrabold text-amber-950 text-base md:text-lg flex items-center gap-1.5">
-                            💡 คำแนะนำ: ต้องยื่นแบบ &ldquo;ภ.ง.ด. 94&rdquo; (ภาษีเงินได้ครึ่งปี)
-                          </h4>
-                          <p className="text-slate-700 text-[13.5px] md:text-[14.5px] mt-1.5 leading-relaxed">
-                            เนื่องจากคุณมีเงินได้ตามมาตรา <span className="font-bold text-amber-850">40(5) - 40(8)</span> สรรพากรบังคับให้บุคคลธรรมดาต้องยื่นรายการภาษีครึ่งปี เพื่อความปลอดภัยและเฉลี่ยภาระภาษีไม่ให้กระจุกตัวตอนปลายปี
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-amber-200/55 pt-3.5">
-                        <div className="space-y-1.5">
-                          <p className="font-extrabold text-amber-950 text-[13.5px] md:text-[14px] flex items-center gap-1">
-                            📅 ยื่นเมื่อไหร่?
-                          </p>
-                          <ul className="list-disc list-inside text-slate-700 text-[12.5px] md:text-[13px] space-y-1.5 pl-1 leading-relaxed">
-                            <li><span className="font-semibold text-slate-900">ยื่นแบบกระดาษ:</span> 1 ก.ค. - 30 ก.ย. ของทุกปี</li>
-                            <li><span className="font-bold text-blue-800">ยื่นแบบออนไลน์ (E-Filing):</span> ปกติถึง 8 ต.ค.</li>
-                          </ul>
-                        </div>
-
-                        <div className="space-y-1.5">
-                          <p className="font-extrabold text-amber-950 text-[13.5px] md:text-[14px] flex items-center gap-1">
-                            📍 ยื่นได้ที่ไหนบ้าง?
-                          </p>
-                          <ul className="list-disc list-inside text-slate-700 text-[12.5px] md:text-[13px] space-y-1.5 pl-1 leading-relaxed">
-                            <li><span className="font-semibold text-slate-900">ออนไลน์สะดวกที่สุด:</span> เว็บไซต์ rd.go.th</li>
-                            <li>สำนักงานสรรพากรพื้นที่สาขาทุกแห่ง</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
 
                 {/* 2. Deductions Settings Card */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
@@ -4486,6 +4461,8 @@ export default function App() {
           <p>Tax Twin Easy © 2026</p>
         </div>
       </footer>
+
+      {renderPnd94Modal()}
 
       {/* Auth Modal Overlay */}
       <AnimatePresence>
