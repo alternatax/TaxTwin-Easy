@@ -100,6 +100,7 @@ export default function App() {
   // --- INPUT STATES ---
   const [revenue, setRevenue] = useState<number>(1800000); // 1.8M THB default (VAT limit)
   const [incomeType, setIncomeType] = useState<string>("40_8");
+  const [selectedPersona, setSelectedPersona] = useState<string>("ขายของออนไลน์");
   const [useMultipleIncomes, setUseMultipleIncomes] = useState<boolean>(false);
   const [incomes, setIncomes] = useState<{ id: string; typeId: string; amount: number }[]>([
     { id: "1", typeId: "40_8", amount: 1800000 }
@@ -1222,37 +1223,6 @@ export default function App() {
             {/* LEFT SIDE: Inputs / Parameter Panels */}
             <section className="lg:col-span-12 space-y-6">
 
-              {/* Persona Quick-Picker: jumps straight to a sensible income type */}
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full mb-3">
-                  ขั้นที่ 1
-                </span>
-                <h3 className="text-base font-bold text-slate-900 mb-3">ธุรกิจของคุณใกล้เคียงแบบไหนที่สุด?</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
-                  {[
-                    { id: "40_8", emoji: "🛍️", name: "ขายของออนไลน์", desc: "ค้าขาย ร้านอาหาร" },
-                    { id: "40_2", emoji: "💻", name: "ฟรีแลนซ์ / รับจ้าง", desc: "งานบริการ นายหน้า" },
-                    { id: "40_6_other", emoji: "🏠", name: "วิชาชีพ / ให้เช่า", desc: "หมอ ทนาย ให้เช่าบ้าน" },
-                    { id: "40_1", emoji: "🏛️", name: "ข้าราชการ", desc: "เงินเดือนประจำ" },
-                  ].map((p) => (
-                    <button
-                      key={p.id}
-                      type="button"
-                      onClick={() => { setIncomeType(p.id); setUseMultipleIncomes(false); }}
-                      className={`text-left p-3.5 rounded-xl border-2 transition cursor-pointer ${
-                        !useMultipleIncomes && incomeType === p.id
-                          ? "border-blue-600 bg-blue-50"
-                          : "border-slate-200 bg-slate-50 hover:border-blue-300"
-                      }`}
-                    >
-                      <span className="text-xl block mb-1">{p.emoji}</span>
-                      <span className="text-sm font-bold text-slate-900 block">{p.name}</span>
-                      <span className="text-xs text-slate-500 block mt-0.5">{p.desc}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               {/* Hero Result Summary: the headline takeaway, up front */}
               <div className="bg-blue-600 text-white rounded-2xl p-6 shadow-md">
                 <span className="text-xs font-bold uppercase tracking-wide opacity-80">ผลลัพธ์เบื้องต้นของคุณ</span>
@@ -2349,6 +2319,39 @@ export default function App() {
                 <p className="text-sm text-slate-600 font-medium">
                   สำรวจโครงสร้างรายรับ ค่าใช้จ่ายเหมา/จริง และรายการลดหย่อนทั้งหมด พร้อมวิเคราะห์อัตราภาษีก้าวหน้าทีละขั้น
                 </p>
+              </div>
+            </div>
+
+            {/* Persona Quick-Picker: jumps straight to a sensible income type */}
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full mb-3">
+                ขั้นที่ 1
+              </span>
+              <h3 className="text-base font-bold text-slate-900 mb-3">ธุรกิจของคุณใกล้เคียงแบบไหนที่สุด?</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                {[
+                  { id: "40_8", emoji: "🛍️", name: "ขายของออนไลน์", desc: "ค้าขาย ร้านอาหาร" },
+                  { id: "40_2", emoji: "💻", name: "ฟรีแลนซ์ / รับจ้าง", desc: "งานบริการ นายหน้า" },
+                  { id: "40_6_other", emoji: "🏠", name: "วิชาชีพ / ให้เช่า", desc: "หมอ ทนาย ให้เช่าบ้าน" },
+                  { id: "40_1", emoji: "🏛️", name: "ข้าราชการ", desc: "เงินเดือนประจำ" },
+                  { id: "40_8", emoji: "🌾", name: "เกษตรกร", desc: "ทำไร่ ทำนา สวนผลไม้" },
+                  { id: "40_2", emoji: "🛵", name: "ไรเดอร์", desc: "ส่งอาหาร ส่งพัสดุ" },
+                ].map((p) => (
+                  <button
+                    key={p.name}
+                    type="button"
+                    onClick={() => { setIncomeType(p.id); setUseMultipleIncomes(false); setSelectedPersona(p.name); }}
+                    className={`text-left p-3.5 rounded-xl border-2 transition cursor-pointer ${
+                      selectedPersona === p.name
+                        ? "border-blue-600 bg-blue-50"
+                        : "border-slate-200 bg-slate-50 hover:border-blue-300"
+                    }`}
+                  >
+                    <span className="text-xl block mb-1">{p.emoji}</span>
+                    <span className="text-sm font-bold text-slate-900 block">{p.name}</span>
+                    <span className="text-xs text-slate-500 block mt-0.5">{p.desc}</span>
+                  </button>
+                ))}
               </div>
             </div>
 
