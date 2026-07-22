@@ -1191,7 +1191,7 @@ export default function App() {
     <div className="bg-slate-50 min-h-screen text-slate-800 antialiased font-sans flex flex-col justify-between">
       {/* Header Bar - Sticky on Tablet and PC, Flow on Mobile to maximize viewport */}
       <header className="bg-white border-b border-slate-200 sm:sticky sm:top-0 z-30 shadow-xs">
-        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-12 py-3 md:py-4 flex flex-col md:flex-row items-center justify-between gap-3.5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-3 md:py-4 flex flex-col md:flex-row items-center justify-between gap-3.5">
           <div className="flex items-center gap-3">
             <div className="bg-blue-600 text-white p-2.5 rounded-xl shadow-md cursor-pointer hover:bg-blue-700 transition">
               <Calculator id="app-logo" className="w-6 h-6 animate-pulse" />
@@ -1294,7 +1294,7 @@ export default function App() {
       </header>
 
       {/* Main Container */}
-      <main className="flex-grow max-w-full w-full mx-auto px-4 sm:px-6 lg:px-12 py-8">
+      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-12 py-8">
         {activeTab === "calculator" ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
@@ -4541,7 +4541,7 @@ export default function App() {
 
       {/* Consultation Contact Banner */}
       <div className="bg-slate-900 text-white mt-12">
-        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-center md:text-left">
             <h4 className="font-bold text-base flex items-center justify-center md:justify-start gap-1.5">
               <Sparkles className="w-4 h-4 text-blue-400" />
@@ -4562,7 +4562,7 @@ export default function App() {
 
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 py-4">
-        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-12 text-center text-xs text-slate-400">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 text-center text-xs text-slate-400">
           <p>Tax Twin Easy © 2026</p>
         </div>
       </footer>
