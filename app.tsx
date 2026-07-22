@@ -101,6 +101,7 @@ export default function App() {
   const [revenue, setRevenue] = useState<number>(1800000); // 1.8M THB default (VAT limit)
   const [incomeType, setIncomeType] = useState<string>("40_8");
   const [selectedPersona, setSelectedPersona] = useState<string>("ขายของออนไลน์");
+  const [personalTaxStep, setPersonalTaxStep] = useState<number>(1);
   const [pnd94Dismissed, setPnd94Dismissed] = useState<boolean>(false);
   const [useMultipleIncomes, setUseMultipleIncomes] = useState<boolean>(false);
   const [incomes, setIncomes] = useState<{ id: string; typeId: string; amount: number }[]>([
@@ -2362,45 +2363,78 @@ export default function App() {
               </div>
             </div>
 
-            {/* Persona Quick-Picker: jumps straight to a sensible income type */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full mb-3">
-                ขั้นที่ 1
-              </span>
-              <h3 className="text-base font-bold text-slate-900 mb-3">ธุรกิจของคุณใกล้เคียงแบบไหนที่สุด?</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5">
-                {[
-                  { id: "40_8", emoji: "🛍️", name: "ขายของออนไลน์", desc: "ค้าขาย ร้านอาหาร" },
-                  { id: "40_2", emoji: "💻", name: "ฟรีแลนซ์ / รับจ้าง", desc: "งานบริการ นายหน้า" },
-                  { id: "40_6_other", emoji: "🏠", name: "วิชาชีพ / ให้เช่า", desc: "หมอ ทนาย ให้เช่าบ้าน" },
-                  { id: "40_1", emoji: "🏛️", name: "ข้าราชการ", desc: "เงินเดือนประจำ" },
-                  { id: "40_8", emoji: "🌾", name: "เกษตรกร", desc: "ทำไร่ ทำนา สวนผลไม้" },
-                  { id: "40_2", emoji: "🛵", name: "ไรเดอร์", desc: "ส่งอาหาร ส่งพัสดุ" },
-                ].map((p) => (
-                  <button
-                    key={p.name}
-                    type="button"
-                    onClick={() => { setIncomeType(p.id); setUseMultipleIncomes(false); setSelectedPersona(p.name); }}
-                    className={`text-left p-3.5 rounded-xl border-2 transition cursor-pointer ${
-                      selectedPersona === p.name
-                        ? "border-blue-600 bg-blue-50"
-                        : "border-slate-200 bg-slate-50 hover:border-blue-300"
-                    }`}
-                  >
-                    <span className="text-xl block mb-1">{p.emoji}</span>
-                    <span className="text-sm font-bold text-slate-900 block">{p.name}</span>
-                    <span className="text-xs text-slate-500 block mt-0.5">{p.desc}</span>
-                  </button>
-                ))}
+            {/* Step Progress Indicator */}
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-5">
+              <div className="flex items-center">
+                {["ประเภทอาชีพ", "รายได้-รายจ่าย", "ค่าลดหย่อน", "สรุปผล"].map((label, idx) => {
+                  const stepNum = idx + 1;
+                  const isDone = personalTaxStep > stepNum;
+                  const isActive = personalTaxStep === stepNum;
+                  return (
+                    <React.Fragment key={label}>
+                      <button
+                        type="button"
+                        onClick={() => { if (isDone || isActive) setPersonalTaxStep(stepNum); }}
+                        className={`flex flex-col items-center gap-1.5 shrink-0 ${isDone || isActive ? "cursor-pointer" : "cursor-default"}`}
+                      >
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition ${
+                          isActive || isDone ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-500"
+                        }`}>
+                          {isDone ? "✓" : stepNum}
+                        </div>
+                        <span className={`text-[11px] font-bold whitespace-nowrap ${isActive ? "text-blue-700" : "text-slate-500"}`}>{label}</span>
+                      </button>
+                      {stepNum < 4 && (
+                        <div className={`flex-1 h-0.5 mx-2 mb-5 rounded ${personalTaxStep > stepNum ? "bg-blue-600" : "bg-slate-200"}`} />
+                      )}
+                    </React.Fragment>
+                  );
+                })}
               </div>
             </div>
 
             {/* Content layout: 2 columns */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* LEFT COLUMN: INPUT PARAMETERS (5 cols) */}
+              {/* LEFT COLUMN: STEP CONTENT (5 cols) */}
               <div className="lg:col-span-5 space-y-6">
-                
+
+                {/* Persona Quick-Picker: jumps straight to a sensible income type */}
+                {personalTaxStep === 1 && (
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full mb-3">
+                    ขั้นที่ 1
+                  </span>
+                  <h3 className="text-base font-bold text-slate-900 mb-3">ธุรกิจของคุณใกล้เคียงแบบไหนที่สุด?</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
+                    {[
+                      { id: "40_8", emoji: "🛍️", name: "ขายของออนไลน์", desc: "ค้าขาย ร้านอาหาร" },
+                      { id: "40_2", emoji: "💻", name: "ฟรีแลนซ์ / รับจ้าง", desc: "งานบริการ นายหน้า" },
+                      { id: "40_6_other", emoji: "🏠", name: "วิชาชีพ / ให้เช่า", desc: "หมอ ทนาย ให้เช่าบ้าน" },
+                      { id: "40_1", emoji: "🏛️", name: "ข้าราชการ", desc: "เงินเดือนประจำ" },
+                      { id: "40_8", emoji: "🌾", name: "เกษตรกร", desc: "ทำไร่ ทำนา สวนผลไม้" },
+                      { id: "40_2", emoji: "🛵", name: "ไรเดอร์", desc: "ส่งอาหาร ส่งพัสดุ" },
+                    ].map((p) => (
+                      <button
+                        key={p.name}
+                        type="button"
+                        onClick={() => { setIncomeType(p.id); setUseMultipleIncomes(false); setSelectedPersona(p.name); }}
+                        className={`text-left p-3.5 rounded-xl border-2 transition cursor-pointer ${
+                          selectedPersona === p.name
+                            ? "border-blue-600 bg-blue-50"
+                            : "border-slate-200 bg-slate-50 hover:border-blue-300"
+                        }`}
+                      >
+                        <span className="text-xl block mb-1">{p.emoji}</span>
+                        <span className="text-sm font-bold text-slate-900 block">{p.name}</span>
+                        <span className="text-xs text-slate-500 block mt-0.5">{p.desc}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                )}
+
                 {/* 1. Core Income section */}
+                {personalTaxStep === 2 && (
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-5">
                   <span className="inline-block text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full">
                     ขั้นที่ 2
@@ -2636,8 +2670,10 @@ export default function App() {
                     )}
                   </div>
                 </div>
+                )}
 
                 {/* 2. Deductions Settings Card */}
+                {personalTaxStep === 3 && (
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
                   <span className="inline-block text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full">
                     ขั้นที่ 3
@@ -3269,41 +3305,19 @@ export default function App() {
                     </div>
                   )}
                 </div>
-              </div>
+                )}
 
-              {/* RIGHT COLUMN: TAX BREAKDOWN & INTERACTIVE PROGRESSIVE SLABS TABLE (7 cols) */}
-              <div className="lg:col-span-7 space-y-6">
-                
-                {/* 1. Final personal tax verdict widget */}
-                <div className="bg-blue-600 text-white rounded-3xl p-6 relative overflow-hidden shadow-lg animate-fade-in">
-                  <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                    <div className="space-y-1">
-                      <span className="text-[10px] uppercase font-bold text-white bg-white/15 px-2.5 py-1 rounded">
-                        สรุปการเสียภาษีเงินได้บุคคลธรรมดา
-                      </span>
-                      <p className="text-[11px] text-blue-100 mt-1">เงินได้สุทธิประจำปีหลังหักค่าใช้จ่ายและลดหย่อน</p>
-                      <h4 className="text-3xl font-black font-mono text-white tracking-tight">
-                        {personalResult.netTaxableIncome.toLocaleString()} <span className="text-lg">บาท</span>
-                      </h4>
-                    </div>
-
-                    <div className="bg-white/10 border border-white/20 p-4 rounded-2xl w-full md:w-56 text-center shrink-0">
-                      <span className="text-[10.5px] text-blue-100 block font-semibold">ยอดภาษีที่ต้องชำระสะสม:</span>
-                      <span className="text-3xl font-black font-mono text-white block mt-1">
-                        {personalResult.totalTax.toLocaleString()} <span className="text-sm font-sans font-normal">บาท</span>
-                      </span>
-                      <div className="mt-1.5 inline-block text-[10px] bg-white/15 text-white px-2.5 py-0.5 rounded-full font-bold">
-                        อัตราก้าวหน้าขั้นสุดท้าย {personalResult.marginalRate}%
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
+                {/* Step 4: Summary breakdown */}
+                {personalTaxStep === 4 && (
+                <>
                 {/* 2. Detailed computation summary (Waterfall list) */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+                  <span className="inline-block text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full mb-3">
+                    ขั้นที่ 4
+                  </span>
                   <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5 mb-4 pb-2.5 border-b border-slate-100">
                     <TrendingUp className="w-4 h-4 text-blue-600" />
-                    สมการการคำนวณภาษีเงินได้สุทธิขั้นพื้นฐาน
+                    สรุปการคำนวณภาษี
                   </h3>
 
                   <div className="space-y-3 font-medium text-xs text-slate-700">
@@ -3342,56 +3356,44 @@ export default function App() {
                   <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
                     <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
                       <Layers className="w-4 h-4 text-blue-600" />
-                      เกณฑ์ตารางภาษีอัตราก้าวหน้ารายบุคคล (Progressive Tax Slabs)
+                      เกณฑ์ตารางภาษีอัตราก้าวหน้ารายบุคคล
                     </h3>
                     <span className="text-[10px] bg-slate-100 text-slate-400 py-1 px-2 rounded-md font-bold uppercase">ปี 2026</span>
                   </div>
 
-                  <p className="text-xs text-slate-500 leading-normal">
-                    ตารางด้านล่างแสดงฐานภาษีของประเทศไทย และจำนวนเงินสุทธิที่ตกอยู่ในแต่ละช่วงพิกัด พร้อมมูลค่าภาษีที่คำนวณแยกแต่ละส่วน (ส่วนที่ทำงานอยู่จะแสดงไฮไลต์สีเขียว)
-                  </p>
-
                   <div className="overflow-x-auto border border-slate-200 rounded-xl scrollbar-thin">
-                    <table className="w-full min-w-[550px] text-left text-xs border-collapse font-sans">
+                    <table className="w-full min-w-[420px] text-left text-xs border-collapse font-sans">
                       <thead>
                         <tr className="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold">
-                          <th className="p-3">ช่วงฐานเงินได้สุทธิ (บาท)</th>
-                          <th className="p-3 text-center">อัตราภาษี</th>
-                          <th className="p-3 text-right">เงินสุทธิในขั้นนี้</th>
-                          <th className="p-3 text-right">ค่าภาษีในขั้น</th>
+                          <th className="p-2.5">ช่วงเงินได้สุทธิ (บาท)</th>
+                          <th className="p-2.5 text-center">อัตรา</th>
+                          <th className="p-2.5 text-right">ภาษีในขั้น</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
-                        {(() => {
-                          let sumComputedTax = 0;
-                          return personalResult.breakdown.map((row) => {
-                            const isActive = row.incomeInBracket > 0;
-                            sumComputedTax += row.taxInBracket;
-                            return (
-                              <tr 
-                                key={row.bracket} 
-                                className={`transition-all duration-150 ${
-                                  isActive 
-                                    ? "bg-blue-500/5 text-slate-950 font-medium border-l-4 border-blue-500" 
-                                    : "text-slate-500 hover:bg-slate-50/50"
-                                }`}
-                              >
-                                <td className="p-3 font-semibold text-slate-900">{row.bracket}</td>
-                                <td className="p-3 text-center font-bold font-mono">{(row.rate * 100)}%</td>
-                                <td className="p-3 text-right font-mono font-medium text-slate-900">
-                                  {isActive ? `${row.incomeInBracket.toLocaleString()} ฿` : "-"}
-                                </td>
-                                <td className="p-3 text-right font-mono font-bold text-slate-950">
-                                  {row.taxInBracket > 0 ? (
-                                    <span className="text-blue-700">+{row.taxInBracket.toLocaleString()} ฿</span>
-                                  ) : (
-                                    <span className="text-slate-400">0 ฿</span>
-                                  )}
-                                </td>
-                              </tr>
-                            );
-                          });
-                        })()}
+                        {personalResult.breakdown.map((row) => {
+                          const isActive = row.incomeInBracket > 0;
+                          return (
+                            <tr
+                              key={row.bracket}
+                              className={`transition-all duration-150 ${
+                                isActive
+                                  ? "bg-blue-500/5 text-slate-950 font-medium border-l-4 border-blue-500"
+                                  : "text-slate-500 hover:bg-slate-50/50"
+                              }`}
+                            >
+                              <td className="p-2.5 font-semibold text-slate-900">{row.bracket.split(" (")[0]}</td>
+                              <td className="p-2.5 text-center font-bold font-mono">{(row.rate * 100)}%</td>
+                              <td className="p-2.5 text-right font-mono font-bold text-slate-950">
+                                {row.taxInBracket > 0 ? (
+                                  <span className="text-blue-700">+{row.taxInBracket.toLocaleString()} ฿</span>
+                                ) : (
+                                  <span className="text-slate-400">0 ฿</span>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
@@ -3408,10 +3410,9 @@ export default function App() {
                 <div className="bg-amber-50/30 p-5 rounded-2xl border border-amber-200/60 space-y-3.5">
                   <h4 className="font-bold text-amber-900 text-xs flex items-center gap-1.5">
                     <Sparkles className="w-4 h-4 text-amber-600" />
-                    แนวทางการวางแผนประหยัดภาษีบุคคลธรรมดาของคุณ (Tax Planning Advisor)
+                    แนวทางการวางแผนประหยัดภาษีบุคคลธรรมดาของคุณ
                   </h4>
                   <ul className="text-xs text-slate-600 space-y-2 list-none p-0 m-0">
-                    {/* Advice 1: Insurance */}
                     {insuranceCost < 100000 && (
                       <li className="flex items-start gap-2 leading-relaxed bg-white/70 p-2.5 rounded-xl border border-amber-100">
                         <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
@@ -3420,7 +3421,6 @@ export default function App() {
                         </div>
                       </li>
                     )}
-                    {/* Advice 2: Investments */}
                     {investmentSavings < 200000 && (
                       <li className="flex items-start gap-2 leading-relaxed bg-white/70 p-2.5 rounded-xl border border-amber-100">
                         <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
@@ -3429,7 +3429,6 @@ export default function App() {
                         </div>
                       </li>
                     )}
-                    {/* Advice 3: Corporate Break-even analysis */}
                     {personalResult.netTaxableIncome > 1000000 ? (
                       <li className="flex items-start gap-2 leading-relaxed bg-amber-900/15 p-3 rounded-xl border border-amber-200 text-amber-950">
                         <AlertCircle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
@@ -3446,6 +3445,85 @@ export default function App() {
                       </li>
                     )}
                   </ul>
+                </div>
+                </>
+                )}
+
+                {/* Step navigation */}
+                <div className="flex items-center justify-between pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setPersonalTaxStep(Math.max(1, personalTaxStep - 1))}
+                    disabled={personalTaxStep === 1}
+                    className="px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-100 text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-200 transition cursor-pointer"
+                  >
+                    ย้อนกลับ
+                  </button>
+                  {personalTaxStep < 4 ? (
+                    <button
+                      type="button"
+                      onClick={() => setPersonalTaxStep(personalTaxStep + 1)}
+                      className="px-6 py-2.5 rounded-xl text-sm font-bold bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer shadow-sm"
+                    >
+                      ถัดไป
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setPersonalTaxStep(1)}
+                      className="px-6 py-2.5 rounded-xl text-sm font-bold bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer shadow-sm"
+                    >
+                      เริ่มใหม่
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* RIGHT COLUMN: persistent hero + recap (7 cols) */}
+              <div className="lg:col-span-7 space-y-6">
+                
+                {/* 1. Final personal tax verdict widget */}
+                <div className="bg-blue-600 text-white rounded-3xl p-6 relative overflow-hidden shadow-lg animate-fade-in">
+                  <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div className="space-y-1">
+                      <span className="text-[10px] uppercase font-bold text-white bg-white/15 px-2.5 py-1 rounded">
+                        สรุปการเสียภาษีเงินได้บุคคลธรรมดา
+                      </span>
+                      <p className="text-[11px] text-blue-100 mt-1">เงินได้สุทธิประจำปีหลังหักค่าใช้จ่ายและลดหย่อน</p>
+                      <h4 className="text-3xl font-black font-mono text-white tracking-tight">
+                        {personalResult.netTaxableIncome.toLocaleString()} <span className="text-lg">บาท</span>
+                      </h4>
+                    </div>
+
+                    <div className="bg-white/10 border border-white/20 p-4 rounded-2xl w-full md:w-56 text-center shrink-0">
+                      <span className="text-[10.5px] text-blue-100 block font-semibold">ยอดภาษีที่ต้องชำระสะสม:</span>
+                      <span className="text-3xl font-black font-mono text-white block mt-1">
+                        {personalResult.totalTax.toLocaleString()} <span className="text-sm font-sans font-normal">บาท</span>
+                      </span>
+                      <div className="mt-1.5 inline-block text-[10px] bg-white/15 text-white px-2.5 py-0.5 rounded-full font-bold">
+                        อัตราก้าวหน้าขั้นสุดท้าย {personalResult.marginalRate}%
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Recap card: shows what's been filled in so far */}
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">ข้อมูลที่กรอกแล้ว</h3>
+                  <div className="space-y-2.5 text-sm">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-500">อาชีพ</span>
+                      <span className="font-bold text-slate-900">{selectedPersona}</span>
+                    </div>
+                    <div className="flex justify-between items-center pt-2.5 border-t border-slate-100">
+                      <span className="text-slate-500">รายได้ต่อปี</span>
+                      <span className="font-bold font-mono text-slate-900">{revenue.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center pt-2.5 border-t border-slate-100">
+                      <span className="text-slate-500">ค่าลดหย่อนรวม</span>
+                      <span className="font-bold font-mono text-slate-900">{personalResult.totalDeductions.toLocaleString()}</span>
+                    </div>
+                  </div>
                 </div>
 
               </div>
