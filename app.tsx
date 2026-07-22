@@ -4036,17 +4036,17 @@ export default function App() {
                             </div>
 
                             <div className="space-y-3 text-xs md:text-[13px]">
-                              <div className="flex items-baseline justify-between gap-3">
-                                <span className="text-slate-500">รายได้ตลอดปี</span>
-                                <span className="font-mono text-slate-900 font-bold text-right">{plannerRevenue.toLocaleString()}</span>
+                              <div className="space-y-0.5">
+                                <span className="text-slate-500 block">รายได้ตลอดปี</span>
+                                <span className="font-mono text-slate-900 font-bold block">{plannerRevenue.toLocaleString()}</span>
                               </div>
-                              <div className="flex items-baseline justify-between gap-3">
-                                <span className="text-slate-500">หัก รายจ่ายทางภาษีเดิม</span>
-                                <span className="font-mono text-red-500 font-semibold text-right shrink-0">({plannerExpenses.toLocaleString()})</span>
+                              <div className="space-y-0.5">
+                                <span className="text-slate-500 block">หัก รายจ่ายทางภาษีเดิม</span>
+                                <span className="font-mono text-red-500 font-semibold block">({plannerExpenses.toLocaleString()})</span>
                               </div>
-                              <div className="flex items-baseline justify-between gap-3 border-t border-slate-100 pt-2">
-                                <span className="text-slate-800 font-bold">กำไรสุทธิทางภาษีเดิม</span>
-                                <span className="font-mono text-slate-900 font-bold text-right">{activeRes.profitBefore.toLocaleString()}</span>
+                              <div className="space-y-0.5 border-t border-slate-100 pt-2">
+                                <span className="text-slate-800 font-bold block">กำไรสุทธิทางภาษีเดิม</span>
+                                <span className="font-mono text-slate-900 font-bold block">{activeRes.profitBefore.toLocaleString()}</span>
                               </div>
 
                               {/* HIGHLIGHTED ROW FOR BEFORE */}
@@ -4057,14 +4057,14 @@ export default function App() {
                                 </span>
                               </div>
 
-                              <div className="flex items-baseline justify-between gap-3">
-                                <span className="text-slate-500">กำไรหลังภาษีเดิม</span>
-                                <span className="font-mono text-slate-900 font-bold text-right">{activeRes.netProfitBefore.toLocaleString()}</span>
+                              <div className="space-y-0.5">
+                                <span className="text-slate-500 block">กำไรหลังภาษีเดิม</span>
+                                <span className="font-mono text-slate-900 font-bold block">{activeRes.netProfitBefore.toLocaleString()}</span>
                               </div>
 
-                              <div className="flex items-baseline justify-between gap-3">
-                                <span className="text-slate-500">หัก ภาษี ณ ที่จ่าย (เดิม 10%)</span>
-                                <span className="font-mono text-red-400 text-right shrink-0">({activeRes.divTaxBefore.toLocaleString()})</span>
+                              <div className="space-y-0.5">
+                                <span className="text-slate-500 block">หัก ภาษี ณ ที่จ่าย (เดิม 10%)</span>
+                                <span className="font-mono text-red-400 block">({activeRes.divTaxBefore.toLocaleString()})</span>
                               </div>
 
                               <div className="border-t border-slate-100 pt-3 font-bold text-slate-900 bg-slate-50/50 p-2.5 rounded-lg space-y-1">
@@ -4093,17 +4093,17 @@ export default function App() {
                             </div>
 
                             <div className="space-y-3 text-xs md:text-[13px]">
-                              <div className="flex items-baseline justify-between gap-3">
-                                <span className="text-slate-500">รายได้ตลอดปี</span>
-                                <span className="font-mono text-slate-900 font-bold text-right">{plannerRevenue.toLocaleString()}</span>
+                              <div className="space-y-0.5">
+                                <span className="text-slate-500 block">รายได้ตลอดปี</span>
+                                <span className="font-mono text-slate-900 font-bold block">{plannerRevenue.toLocaleString()}</span>
                               </div>
-                              <div className="flex items-baseline justify-between gap-3">
-                                <span className="text-slate-500">หัก รายจ่ายรวม (บวกเงินเดือน)</span>
-                                <span className="font-mono text-red-500 font-bold text-right shrink-0">({(plannerExpenses + activeRes.corporationAdditionalExpenses).toLocaleString()})</span>
+                              <div className="space-y-0.5">
+                                <span className="text-slate-500 block">หัก รายจ่ายรวม (บวกเงินเดือน)</span>
+                                <span className="font-mono text-red-500 font-bold block">({(plannerExpenses + activeRes.corporationAdditionalExpenses).toLocaleString()})</span>
                               </div>
-                              <div className="flex items-baseline justify-between gap-3 border-t border-slate-100 pt-2">
-                                <span className="text-slate-800 font-bold">กำไรสุทธิทางภาษี</span>
-                                <span className="font-mono text-blue-700 font-bold text-right">{activeRes.profitAfter.toLocaleString()}</span>
+                              <div className="space-y-0.5 border-t border-slate-100 pt-2">
+                                <span className="text-slate-800 font-bold block">กำไรสุทธิทางภาษี</span>
+                                <span className="font-mono text-blue-700 font-bold block">{activeRes.profitAfter.toLocaleString()}</span>
                               </div>
 
                               {/* HIGHLIGHTED GREEN ROW */}
@@ -4114,14 +4114,14 @@ export default function App() {
                                 </span>
                               </div>
 
-                              <div className="flex items-baseline justify-between gap-3">
-                                <span className="text-slate-500">กำไรหลังภาษี</span>
-                                <span className="font-mono text-slate-900 font-bold text-right">{activeRes.netProfitAfter.toLocaleString()}</span>
+                              <div className="space-y-0.5">
+                                <span className="text-slate-500 block">กำไรหลังภาษี</span>
+                                <span className="font-mono text-slate-900 font-bold block">{activeRes.netProfitAfter.toLocaleString()}</span>
                               </div>
 
-                              <div className="flex items-baseline justify-between gap-3">
-                                <span className="text-slate-500">หัก ภาษี ณ ที่จ่าย (10%)</span>
-                                <span className="font-mono text-red-500 text-right shrink-0">({activeRes.divTaxAfter.toLocaleString()})</span>
+                              <div className="space-y-0.5">
+                                <span className="text-slate-500 block">หัก ภาษี ณ ที่จ่าย (10%)</span>
+                                <span className="font-mono text-red-500 block">({activeRes.divTaxAfter.toLocaleString()})</span>
                               </div>
 
                               <div className="border-t border-slate-100 pt-3 font-bold text-slate-900 bg-blue-50/40 p-2.5 rounded-lg space-y-1">
@@ -4183,49 +4183,49 @@ export default function App() {
                       </div>
 
                       <div className="space-y-3.5 text-xs md:text-[13px]">
-                        <div className="flex items-baseline justify-between gap-3">
-                          <span className="text-slate-500 font-medium">เงินเดือนรวมปีละ</span>
-                          <span className="font-mono text-slate-900 font-bold text-right">{(plannerSalary * 12).toLocaleString()}</span>
+                        <div className="space-y-0.5">
+                          <span className="text-slate-500 font-medium block">เงินเดือนรวมปีละ</span>
+                          <span className="font-mono text-slate-900 font-bold block">{(plannerSalary * 12).toLocaleString()}</span>
                         </div>
-                        <div className="flex items-baseline justify-between gap-3">
-                          <span className="text-slate-500 font-medium">หัก ค่าใช้จ่ายตามกฎหมาย (50% max 100k)</span>
-                          <span className="font-mono text-red-500 text-right shrink-0">({Math.min(plannerSalary * 12 * 0.5, 100000).toLocaleString()})</span>
+                        <div className="space-y-0.5">
+                          <span className="text-slate-500 font-medium block">หัก ค่าใช้จ่ายตามกฎหมาย (50% max 100k)</span>
+                          <span className="font-mono text-red-500 block">({Math.min(plannerSalary * 12 * 0.5, 100000).toLocaleString()})</span>
                         </div>
 
                         {plannerInterestIncome > 0 && (
-                          <div className="flex items-baseline justify-between gap-3 bg-slate-50 p-2 rounded-xl font-medium text-slate-800 text-xs">
-                            <span className="text-slate-500">💰 รายได้ดอกเบี้ยของกรรมการ</span>
-                            <span className="font-mono text-blue-600 text-right shrink-0">+{plannerInterestIncome.toLocaleString()}</span>
+                          <div className="space-y-0.5 bg-slate-50 p-2 rounded-xl font-medium text-slate-800 text-xs">
+                            <span className="text-slate-500 block">💰 รายได้ดอกเบี้ยของกรรมการ</span>
+                            <span className="font-mono text-blue-600 block">+{plannerInterestIncome.toLocaleString()}</span>
                           </div>
                         )}
 
                         {plannerRentalIncome > 0 && (
-                          <div className="space-y-1.5 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                            <div className="flex items-baseline justify-between gap-3 font-medium text-slate-800 text-xs">
-                              <span className="text-slate-500">🔑 รายได้ค่าเช่าของกรรมการ</span>
-                              <span className="font-mono text-blue-600 text-right shrink-0">+{plannerRentalIncome.toLocaleString()}</span>
+                          <div className="space-y-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                            <div className="space-y-0.5 font-medium text-slate-800 text-xs">
+                              <span className="text-slate-500 block">🔑 รายได้ค่าเช่าของกรรมการ</span>
+                              <span className="font-mono text-blue-600 block">+{plannerRentalIncome.toLocaleString()}</span>
                             </div>
-                            <div className="flex items-baseline justify-between gap-3 text-red-500 text-[10px]">
-                              <span className="text-slate-400">หัก ค่าใช้จ่ายค่าเช่า (เหมา 30%)</span>
-                              <span className="font-mono text-right shrink-0">(-{(plannerRentalIncome * 0.3).toLocaleString()})</span>
+                            <div className="space-y-0.5 text-red-500 text-[10px]">
+                              <span className="text-slate-400 block">หัก ค่าใช้จ่ายค่าเช่า (เหมา 30%)</span>
+                              <span className="font-mono block">(-{(plannerRentalIncome * 0.3).toLocaleString()})</span>
                             </div>
                           </div>
                         )}
 
-                        <div className="flex items-baseline justify-between gap-3">
-                          <span className="text-slate-500 font-medium">หัก ลดหย่อนส่วนตัว</span>
-                          <span className="font-mono text-red-500 text-right shrink-0">(60,000)</span>
+                        <div className="space-y-0.5">
+                          <span className="text-slate-500 font-medium block">หัก ลดหย่อนส่วนตัว</span>
+                          <span className="font-mono text-red-500 block">(60,000)</span>
                         </div>
                         {plannerUseCustomDeductions && (
-                          <div className="flex items-baseline justify-between gap-3 bg-slate-50 p-2 rounded-xl text-[11px]">
-                            <span className="text-slate-500">หัก ลดหย่อนเพิ่มเติมสะสม</span>
-                            <span className="font-mono text-red-500 text-right shrink-0">(-{((hasSpouse ? 60000 : 0) + (childrenCount * 30000) + socialSecurity + insuranceCost + investmentSavings).toLocaleString()})</span>
+                          <div className="space-y-0.5 bg-slate-50 p-2 rounded-xl text-[11px]">
+                            <span className="text-slate-500 block">หัก ลดหย่อนเพิ่มเติมสะสม</span>
+                            <span className="font-mono text-red-500 block">(-{((hasSpouse ? 60000 : 0) + (childrenCount * 30000) + socialSecurity + insuranceCost + investmentSavings).toLocaleString()})</span>
                           </div>
                         )}
 
-                        <div className="flex items-baseline justify-between gap-3 border-t border-slate-100 pt-3 font-bold">
-                          <span className="text-slate-800">เงินได้สุทธิประเมิน</span>
-                          <span className="font-mono text-indigo-700 font-extrabold text-[14px] text-right">
+                        <div className="space-y-0.5 border-t border-slate-100 pt-3 font-bold">
+                          <span className="text-slate-800 block">เงินได้สุทธิประเมิน</span>
+                          <span className="font-mono text-indigo-700 font-extrabold text-[14px] block">
                             {activeRes.taxable.toLocaleString()}
                           </span>
                         </div>
