@@ -797,7 +797,7 @@ export default function App() {
           <div className="flex justify-between items-center text-[10px] font-bold text-slate-500">
             <span>📊 สัดส่วนกระจายรายรับรวม</span>
             <span className="font-mono text-slate-700 bg-white px-1.5 py-0.2 rounded border border-slate-200/60 font-bold">
-              {compIncomesVal.toLocaleString()} ฿
+              {compIncomesVal.toLocaleString()}
             </span>
           </div>
 
@@ -834,7 +834,7 @@ export default function App() {
               <span className="text-rose-650 font-bold truncate">ภาษี ({(caseTax / compIncomesVal * 100).toFixed(0)}%)</span>
             </div>
             <span className="font-mono font-extrabold text-rose-600 block text-[11px] mt-0.5">
-              {caseTax.toLocaleString()} ฿
+              {caseTax.toLocaleString()}
             </span>
           </div>
           <div className="border-l border-slate-200 pl-1">
@@ -843,7 +843,7 @@ export default function App() {
               <span className="truncate">ใช้/เหมา ({expPercent.toFixed(0)}%)</span>
             </div>
             <span className="font-mono font-bold text-slate-800 block text-[11px] mt-0.5">
-              {caseExpenses.toLocaleString()} ฿
+              {caseExpenses.toLocaleString()}
             </span>
           </div>
           <div className="border-l border-slate-200 pl-1">
@@ -852,7 +852,7 @@ export default function App() {
               <span className="truncate">เหลือเก็บ ({cashLeftPercent.toFixed(0)}%)</span>
             </div>
             <span className="font-mono font-bold text-slate-800 block text-[11px] mt-0.5">
-              {cashLeft.toLocaleString()} ฿
+              {cashLeft.toLocaleString()}
             </span>
           </div>
         </div>
@@ -1355,7 +1355,7 @@ export default function App() {
                         placeholder="เช่น 1,500,000"
                       />
                       <div className="absolute inset-y-0 right-0 py-3 pr-4 flex items-center pointer-events-none text-slate-400 font-bold font-mono">
-                        ฿
+                       
                       </div>
                     </div>
 
@@ -1490,7 +1490,7 @@ export default function App() {
                                       className="w-full pl-2 pr-7 py-2 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-950 font-mono text-right focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                     <span className="absolute right-2.5 inset-y-0 flex items-center text-[10px] font-bold text-slate-400">
-                                      ฿
+                                     
                                     </span>
                                   </div>
                                 </div>
@@ -1578,7 +1578,7 @@ export default function App() {
                             placeholder="0"
                             className="w-full pl-2 pr-5 py-1 text-right font-mono text-blue-600 font-bold bg-white focus:ring-1 focus:ring-indigo-500 rounded border border-slate-200 focus:border-indigo-500 text-xs focus:outline-none"
                           />
-                          <span className="absolute right-1.5 text-slate-400 font-semibold text-[10px]">฿</span>
+                          <span className="absolute right-1.5 text-slate-400 font-semibold text-[10px]"></span>
                         </div>
                       </div>
                       
@@ -1586,7 +1586,7 @@ export default function App() {
                         <div className="flex items-center gap-1">
                           <span className="text-slate-400">กำไรหลังภาษีสูงสุด:</span>
                           <span className="font-mono font-medium text-slate-700">
-                            {corporateResult.netProfitAfterTax.toLocaleString()} ฿
+                            {corporateResult.netProfitAfterTax.toLocaleString()}
                           </span>
                         </div>
                         {corporateResult.netProfitAfterTax > 0 && (
@@ -1603,7 +1603,7 @@ export default function App() {
                       <div className="flex justify-between items-center bg-indigo-50/50 p-2 rounded-lg text-[10px] border border-indigo-100/30">
                         <span className="text-slate-600 font-semibold">ภาษีเงินปันผลหัก ณ ที่จ่าย (10%):</span>
                         <span className="font-mono font-bold text-indigo-600 text-[11px]">
-                          {Math.round(dividendPayout * 0.10).toLocaleString()} ฿
+                          {Math.round(dividendPayout * 0.10).toLocaleString()}
                         </span>
                       </div>
                     </div>
@@ -1784,7 +1784,7 @@ export default function App() {
                               value={revenue.toLocaleString()}
                               className="w-full pl-2 pr-4 py-1 text-right font-mono text-slate-900 font-bold bg-slate-50/50 rounded border border-slate-100 transition-all focus:outline-none cursor-default"
                             />
-                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]">฿</span>
+                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]"></span>
                           </div>
                         </div>
                         <div className="flex justify-between items-center py-0.5">
@@ -1797,7 +1797,7 @@ export default function App() {
                               value={personalFlatResult.totalExpenses.toLocaleString()}
                               className="w-full pl-4 pr-4 py-1 text-right font-mono text-red-600 font-bold bg-slate-50/50 rounded border border-slate-100 transition-all focus:outline-none cursor-default"
                             />
-                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]">฿</span>
+                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]"></span>
                           </div>
                         </div>
                         <div className="flex justify-between items-center py-0.5">
@@ -1815,7 +1815,7 @@ export default function App() {
                               placeholder={defaultPersonalDeductions.toLocaleString()}
                               className="w-full pl-4 pr-4 py-1 text-right font-mono text-red-600 font-bold bg-slate-50 hover:bg-slate-100 focus:bg-white focus:ring-1 focus:ring-blue-500 rounded border border-slate-200 focus:border-blue-500 transition-all focus:outline-none placeholder-red-400/70"
                             />
-                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]">฿</span>
+                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]"></span>
                           </div>
                         </div>
 
@@ -1823,7 +1823,7 @@ export default function App() {
                           <div className="flex justify-between items-center">
                             <span className="font-bold text-slate-600 text-xs sm:text-sm">เงินได้สุทธิสุทธิ:</span>
                             <span className="font-mono font-bold text-sm sm:text-base text-blue-700">
-                              {personalFlatResult.netTaxableIncome.toLocaleString()} ฿
+                              {personalFlatResult.netTaxableIncome.toLocaleString()}
                             </span>
                           </div>
                         </div>
@@ -1900,7 +1900,7 @@ export default function App() {
                               value={revenue.toLocaleString()}
                               className="w-full pl-2 pr-4 py-1 text-right font-mono text-slate-900 font-bold bg-slate-50/50 rounded border border-slate-100 transition-all focus:outline-none cursor-default"
                             />
-                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]">฿</span>
+                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]"></span>
                           </div>
                         </div>
                         <div className="flex justify-between items-center py-0.5">
@@ -1917,7 +1917,7 @@ export default function App() {
                               }}
                               className="w-full pl-4 pr-4 py-1 text-right font-mono text-red-600 font-bold bg-slate-50 hover:bg-slate-100 focus:bg-white focus:ring-1 focus:ring-amber-500 rounded border border-slate-200 focus:border-amber-500 transition-all focus:outline-none"
                             />
-                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]">฿</span>
+                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]"></span>
                           </div>
                         </div>
                         <div className="flex justify-between items-center py-0.5">
@@ -1935,7 +1935,7 @@ export default function App() {
                               placeholder="12,000"
                               className="w-full pl-4 pr-4 py-1 text-right font-mono text-red-600 font-bold bg-slate-50 hover:bg-slate-100 focus:bg-white focus:ring-1 focus:ring-amber-500 rounded border border-slate-200 focus:border-amber-500 transition-all focus:outline-none placeholder-red-400/70"
                             />
-                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]">฿</span>
+                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]"></span>
                           </div>
                         </div>
                         <div className="flex justify-between items-center py-0.5">
@@ -1953,7 +1953,7 @@ export default function App() {
                               placeholder={defaultPersonalDeductions.toLocaleString()}
                               className="w-full pl-4 pr-4 py-1 text-right font-mono text-red-600 font-bold bg-slate-50 hover:bg-slate-100 focus:bg-white focus:ring-1 focus:ring-amber-500 rounded border border-slate-200 focus:border-amber-500 transition-all focus:outline-none placeholder-red-400/70"
                             />
-                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]">฿</span>
+                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]"></span>
                           </div>
                         </div>
 
@@ -1961,7 +1961,7 @@ export default function App() {
                           <div className="flex justify-between items-center">
                             <span className="font-bold text-slate-600 text-xs sm:text-sm">เงินได้สุทธิสุทธิ:</span>
                             <span className="font-mono font-bold text-sm sm:text-base text-amber-700">
-                              {personalActualResult.netTaxableIncome.toLocaleString()} ฿
+                              {personalActualResult.netTaxableIncome.toLocaleString()}
                             </span>
                           </div>
                         </div>
@@ -2030,7 +2030,7 @@ export default function App() {
                               value={revenue.toLocaleString()}
                               className="w-full pl-2 pr-4 py-1 text-right font-mono text-slate-900 font-bold bg-slate-50/50 rounded border border-slate-100 transition-all focus:outline-none cursor-default"
                             />
-                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]">฿</span>
+                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]"></span>
                           </div>
                         </div>
                         <div className="flex justify-between items-center py-0.5">
@@ -2056,7 +2056,7 @@ export default function App() {
                               placeholder={(expenseType === "flat" ? revenue * 0.45 : actualExpenseInput).toLocaleString()}
                               className="w-full pl-4 pr-4 py-1 text-right font-mono text-red-600 font-bold bg-slate-50 hover:bg-slate-100 focus:bg-white focus:ring-1 focus:ring-indigo-500 rounded border border-slate-200 focus:border-indigo-500 transition-all focus:outline-none placeholder-red-400/70"
                             />
-                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]">฿</span>
+                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]"></span>
                           </div>
                         </div>
                         <div className="flex justify-between items-center py-0.5 mb-1">
@@ -2074,7 +2074,7 @@ export default function App() {
                               placeholder="20,000"
                               className="w-full pl-4 pr-4 py-1 text-right font-mono text-red-600 font-bold bg-slate-50 hover:bg-slate-100 focus:bg-white focus:ring-1 focus:ring-indigo-500 rounded border border-slate-200 focus:border-indigo-500 transition-all focus:outline-none"
                             />
-                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]">฿</span>
+                            <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]"></span>
                           </div>
                         </div>
 
@@ -2082,7 +2082,7 @@ export default function App() {
                           <div className="flex justify-between items-center">
                             <span className="font-bold text-slate-600 text-xs sm:text-sm">กำไรสุทธิทางภาษี:</span>
                             <span className="font-mono font-bold text-sm sm:text-base text-indigo-700">
-                              {corporateResult.netProfit.toLocaleString()} ฿
+                              {corporateResult.netProfit.toLocaleString()}
                             </span>
                           </div>
                         </div>
@@ -2097,7 +2097,7 @@ export default function App() {
                                 value={corporateResult.corpTax.toLocaleString()}
                                 className="w-full pr-4 py-1 text-right font-mono text-slate-700 font-semibold bg-slate-50/50 rounded border border-slate-100 transition-all focus:outline-none cursor-default text-xs"
                               />
-                              <span className="absolute right-1.5 text-slate-400 font-bold text-[10px]">฿</span>
+                              <span className="absolute right-1.5 text-slate-400 font-bold text-[10px]"></span>
                             </div>
                           </div>
                           {corporateResult.dividendTax > 0 && (
@@ -2110,7 +2110,7 @@ export default function App() {
                                   value={corporateResult.dividendTax.toLocaleString()}
                                   className="w-full pr-4 py-1 text-right font-mono text-slate-700 font-semibold bg-slate-50/50 rounded border border-slate-100 transition-all focus:outline-none cursor-default text-xs"
                                 />
-                                <span className="absolute right-1.5 text-slate-400 font-bold text-[10px]">฿</span>
+                                <span className="absolute right-1.5 text-slate-400 font-bold text-[10px]"></span>
                               </div>
                             </div>
                           )}
@@ -2123,7 +2123,7 @@ export default function App() {
                                 value={auditFee.toLocaleString()}
                                 className="w-full pr-4 py-1 text-right font-mono text-slate-750 font-semibold bg-slate-50/50 rounded border border-slate-100 transition-all focus:outline-none cursor-default text-xs"
                               />
-                              <span className="absolute right-1.5 text-slate-400 font-bold text-[10px]">฿</span>
+                              <span className="absolute right-1.5 text-slate-400 font-bold text-[10px]"></span>
                             </div>
                           </div>
                         </div>
@@ -2452,7 +2452,7 @@ export default function App() {
                             : "bg-white border-slate-300 text-slate-900"
                         }`}
                       />
-                      <span className="absolute inset-y-0 right-3 flex items-center text-slate-400 font-bold text-xs">฿</span>
+                      <span className="absolute inset-y-0 right-3 flex items-center text-slate-400 font-bold text-xs"></span>
                     </div>
                     {!useMultipleIncomes && (
                       <input
@@ -2739,7 +2739,7 @@ export default function App() {
                           <span className="font-bold text-slate-700 block text-xs">จำนวนบุตรผู้เข้าเกณฑ์ลดหย่อน</span>
                           <span className="text-[9.5px] text-slate-400 block leading-tight">* ลดหย่อนคนละ 30,000 บาทต่อปี (สูงสุด 5 คน)</span>
                           <span className="font-semibold text-[10.5px] text-indigo-700 block mt-0.5">
-                            สิทธิ์ลดหย่อนรวม: -{(childrenCount * 30000).toLocaleString()} ฿
+                            สิทธิ์ลดหย่อนรวม: -{(childrenCount * 30000).toLocaleString()}
                           </span>
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0">
@@ -2759,7 +2759,7 @@ export default function App() {
                       <div className="space-y-1.5 p-3 px-3.5 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between gap-4">
                         <div className="space-y-0.5">
                           <span className="font-bold text-slate-700 block text-xs">กองทุนประกันสังคม</span>
-                          <span className="text-[9.5px] text-slate-400 block leading-tight">สูงสุดไม่เกิน 9,000 ฿ ต่อปี (ม.33)</span>
+                          <span className="text-[9.5px] text-slate-400 block leading-tight">สูงสุดไม่เกิน 9,000 ต่อปี (ม.33)</span>
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0">
                           <input
@@ -2780,7 +2780,7 @@ export default function App() {
                       <div className="space-y-1.5 p-3 px-3.5 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between gap-4">
                         <div className="space-y-0.5">
                           <span className="font-bold text-slate-700 block text-xs">เบี้ยประกันสุขภาพและชีวิตรวม</span>
-                          <span className="text-[9.5px] text-slate-400 block leading-tight">ลดหย่อนตามจริงได้สูงสุดไม่เกิน 100,000 ฿ ต่อปี</span>
+                          <span className="text-[9.5px] text-slate-400 block leading-tight">ลดหย่อนตามจริงได้สูงสุดไม่เกิน 100,000 ต่อปี</span>
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0">
                           <input
@@ -2801,7 +2801,7 @@ export default function App() {
                       <div className="space-y-1.5 p-3 px-3.5 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between gap-4">
                         <div className="space-y-0.5">
                           <span className="font-bold text-slate-700 block text-xs">การลงทุนลดหย่อนภาษี SSF/RMF/ThaiESG</span>
-                          <span className="text-[9.5px] text-slate-400 block leading-tight">สูงสุดไม่เกิน 30% ของเงินได้รวม (รวมไม่เกิน 500,000 ฿)</span>
+                          <span className="text-[9.5px] text-slate-400 block leading-tight">สูงสุดไม่เกิน 30% ของเงินได้รวม (รวมไม่เกิน 500,000)</span>
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0">
                           <input
@@ -2923,7 +2923,7 @@ export default function App() {
                               </div>
                             </div>
                             <div className="text-right text-[10px] font-bold text-indigo-700">
-                              ยอดลดหย่อนรวม: -{((childCountFirst * 30000) + (childCountSecondPlus * 60000)).toLocaleString()} ฿
+                              ยอดลดหย่อนรวม: -{((childCountFirst * 30000) + (childCountSecondPlus * 60000)).toLocaleString()}
                             </div>
                           </div>
 
@@ -3380,9 +3380,9 @@ export default function App() {
                               <td className="p-2.5 text-center font-bold font-mono">{(row.rate * 100)}%</td>
                               <td className="p-2.5 text-right font-mono font-bold text-slate-950">
                                 {row.taxInBracket > 0 ? (
-                                  <span className="text-blue-700">+{row.taxInBracket.toLocaleString()} ฿</span>
+                                  <span className="text-blue-700">+{row.taxInBracket.toLocaleString()}</span>
                                 ) : (
-                                  <span className="text-slate-400">0 ฿</span>
+                                  <span className="text-slate-400">0</span>
                                 )}
                               </td>
                             </tr>
@@ -4038,15 +4038,15 @@ export default function App() {
                             <div className="space-y-3 text-xs md:text-[13px]">
                               <div className="flex justify-between">
                                 <span className="text-slate-500">รายได้ตลอดปี</span>
-                                <span className="font-mono text-slate-900 font-bold">{plannerRevenue.toLocaleString()} ฿</span>
+                                <span className="font-mono text-slate-900 font-bold">{plannerRevenue.toLocaleString()}</span>
                               </div>
                               <div className="flex justify-between items-center">
                                 <span className="text-slate-500">หัก รายจ่ายทางภาษีเดิม</span>
-                                <span className="font-mono text-red-500 font-semibold">({plannerExpenses.toLocaleString()}) ฿</span>
+                                <span className="font-mono text-red-500 font-semibold">({plannerExpenses.toLocaleString()})</span>
                               </div>
                               <div className="flex justify-between border-t border-slate-100 pt-2">
                                 <span className="text-slate-800 font-bold">กำไรสุทธิทางภาษีเดิม</span>
-                                <span className="font-mono text-slate-900 font-bold">{activeRes.profitBefore.toLocaleString()} ฿</span>
+                                <span className="font-mono text-slate-900 font-bold">{activeRes.profitBefore.toLocaleString()}</span>
                               </div>
 
                               {/* HIGHLIGHTED ROW FOR BEFORE */}
@@ -4054,24 +4054,24 @@ export default function App() {
                                 <div className="flex justify-between items-center text-xs">
                                   <span className="font-bold text-slate-600">หัก ภาษีเงินได้ (เดิม)</span>
                                   <span className="font-mono text-slate-800 font-black">
-                                    ({activeRes.corpTaxBefore.toLocaleString()}) ฿
+                                    ({activeRes.corpTaxBefore.toLocaleString()})
                                   </span>
                                 </div>
                               </div>
 
                               <div className="flex justify-between">
                                 <span className="text-slate-500">กำไรหลังภาษีเดิม</span>
-                                <span className="font-mono text-slate-900 font-bold">{activeRes.netProfitBefore.toLocaleString()} ฿</span>
+                                <span className="font-mono text-slate-900 font-bold">{activeRes.netProfitBefore.toLocaleString()}</span>
                               </div>
 
                               <div className="flex justify-between">
                                 <span className="text-slate-500">หัก ภาษี ณ ที่จ่าย (เดิม 10%)</span>
-                                <span className="font-mono text-red-400">({activeRes.divTaxBefore.toLocaleString()}) ฿</span>
+                                <span className="font-mono text-red-400">({activeRes.divTaxBefore.toLocaleString()})</span>
                               </div>
 
                               <div className="flex justify-between border-t border-slate-100 pt-3 font-bold text-slate-900 bg-slate-50/50 p-2.5 rounded-lg">
                                 <span>คงเหลือเงินได้รับจริง (เดิม)</span>
-                                <span className="font-mono text-slate-900 font-black">{activeRes.netReceivedBefore.toLocaleString()} ฿</span>
+                                <span className="font-mono text-slate-900 font-black">{activeRes.netReceivedBefore.toLocaleString()}</span>
                               </div>
                             </div>
                           </div>
@@ -4080,7 +4080,7 @@ export default function App() {
                             <div className="bg-slate-50 border border-slate-150 rounded-xl p-3 flex justify-between items-center text-sm font-extrabold text-slate-700">
                               <span>ภาระภาษีบริษัทรวมเดิม:</span>
                               <span className="font-mono font-black text-slate-900 text-base">
-                                {(activeRes.corpTaxBefore + activeRes.divTaxBefore).toLocaleString()} ฿/ปี
+                                {(activeRes.corpTaxBefore + activeRes.divTaxBefore).toLocaleString()} ต่อปี
                               </span>
                             </div>
                           </div>
@@ -4097,17 +4097,17 @@ export default function App() {
                             <div className="space-y-3 text-xs md:text-[13px]">
                               <div className="flex justify-between">
                                 <span className="text-slate-500">รายได้ตลอดปี</span>
-                                <span className="font-mono text-slate-900 font-bold">{plannerRevenue.toLocaleString()} ฿</span>
+                                <span className="font-mono text-slate-900 font-bold">{plannerRevenue.toLocaleString()}</span>
                               </div>
                               <div className="flex justify-between items-center">
                                 <span className="text-slate-500">หัก รายจ่ายรวม (บวกเงินเดือน)</span>
                                 <div className="text-right">
-                                  <div className="font-mono text-red-500 font-bold">({(plannerExpenses + activeRes.corporationAdditionalExpenses).toLocaleString()}) ฿</div>
+                                  <div className="font-mono text-red-500 font-bold">({(plannerExpenses + activeRes.corporationAdditionalExpenses).toLocaleString()})</div>
                                 </div>
                               </div>
                               <div className="flex justify-between border-t border-slate-100 pt-2">
                                 <span className="text-slate-800 font-bold">กำไรสุทธิทางภาษี</span>
-                                <span className="font-mono text-blue-700 font-bold">{activeRes.profitAfter.toLocaleString()} ฿</span>
+                                <span className="font-mono text-blue-700 font-bold">{activeRes.profitAfter.toLocaleString()}</span>
                               </div>
 
                               {/* HIGHLIGHTED GREEN ROW */}
@@ -4115,24 +4115,24 @@ export default function App() {
                                 <div className="flex justify-between items-center text-xs">
                                   <span className="font-extrabold text-blue-950">หัก ภาษีเงินได้ {plannerSme ? "SME" : "20%"} (ใหม่)</span>
                                   <span className="font-mono text-blue-800 font-black">
-                                    ({activeRes.corpTaxAfter.toLocaleString()}) ฿
+                                    ({activeRes.corpTaxAfter.toLocaleString()})
                                   </span>
                                 </div>
                               </div>
 
                               <div className="flex justify-between">
                                 <span className="text-slate-500">กำไรหลังภาษี</span>
-                                <span className="font-mono text-slate-900 font-bold">{activeRes.netProfitAfter.toLocaleString()} ฿</span>
+                                <span className="font-mono text-slate-900 font-bold">{activeRes.netProfitAfter.toLocaleString()}</span>
                               </div>
 
                               <div className="flex justify-between">
                                 <span className="text-slate-500">หัก ภาษี ณ ที่จ่าย (10%)</span>
-                                <span className="font-mono text-red-500">({activeRes.divTaxAfter.toLocaleString()}) ฿</span>
+                                <span className="font-mono text-red-500">({activeRes.divTaxAfter.toLocaleString()})</span>
                               </div>
 
                               <div className="flex justify-between border-t border-slate-100 pt-3 font-bold text-slate-900 bg-blue-50/40 p-2.5 rounded-lg">
                                 <span className="text-blue-950">คงเหลือเงินได้รับจริง</span>
-                                <span className="font-mono text-blue-900 font-black">{activeRes.netReceivedAfter.toLocaleString()} ฿</span>
+                                <span className="font-mono text-blue-900 font-black">{activeRes.netReceivedAfter.toLocaleString()}</span>
                               </div>
                             </div>
                           </div>
@@ -4141,7 +4141,7 @@ export default function App() {
                             <div className="bg-blue-50/50 border border-blue-200 rounded-xl p-3 flex justify-between items-center text-sm font-extrabold text-blue-900">
                               <span>ภาระภาษีบริษัทรวมใหม่:</span>
                               <span className="font-mono font-black text-blue-700 text-base">
-                                {(activeRes.corpTaxAfter + activeRes.divTaxAfter).toLocaleString()} ฿/ปี
+                                {(activeRes.corpTaxAfter + activeRes.divTaxAfter).toLocaleString()} ต่อปี
                               </span>
                             </div>
                           </div>
@@ -4170,7 +4170,7 @@ export default function App() {
                               (plannerRevenue - (plannerExpenses + (plannerSalary * 12)) > 3000000 ? ((plannerRevenue - (plannerExpenses + (plannerSalary * 12)) - 3000000) * 0.2 + 405000) : Math.max(0, plannerRevenue - (plannerExpenses + (plannerSalary * 12)) - 300000) * 0.15)
                             ) : (plannerRevenue - (plannerExpenses + (plannerSalary * 12))) * 0.2) : 0) + 
                             Math.max(0, (plannerRevenue - (plannerExpenses + (plannerSalary * 12))) - (plannerRevenue - (plannerExpenses + (plannerSalary * 12)) > 0 ? (plannerSme ? ( (plannerRevenue - (plannerExpenses + (plannerSalary * 12)) > 3000000 ? ((plannerRevenue - (plannerExpenses + (plannerSalary * 12)) - 3000000) * 0.2 + 405000) : Math.max(0, plannerRevenue - (plannerExpenses + (plannerSalary * 12)) - 300000) * 0.15) ) : (plannerRevenue - (plannerExpenses + (plannerSalary * 12))) * 0.2) : 0)) * (plannerDividendTax ? 0.1 : 0))
-                          ).toLocaleString()} ฿/ปี
+                          ).toLocaleString()} ต่อปี
                         </span>
                       </div>
                     </div>
@@ -4191,17 +4191,17 @@ export default function App() {
                       <div className="space-y-3.5 text-xs md:text-[13px]">
                         <div className="flex justify-between">
                           <span className="text-slate-500 font-medium">เงินเดือนรวมปีละ</span>
-                          <span className="font-mono text-slate-900 font-bold">{(plannerSalary * 12).toLocaleString()} ฿</span>
+                          <span className="font-mono text-slate-900 font-bold">{(plannerSalary * 12).toLocaleString()}</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-slate-500 font-medium">หัก ค่าใช้จ่ายตามกฎหมาย (50% max 100k)</span>
-                          <span className="font-mono text-red-500">({Math.min(plannerSalary * 12 * 0.5, 100000).toLocaleString()}) ฿</span>
+                          <span className="font-mono text-red-500">({Math.min(plannerSalary * 12 * 0.5, 100000).toLocaleString()})</span>
                         </div>
 
                         {plannerInterestIncome > 0 && (
                           <div className="flex justify-between bg-slate-50 p-2 rounded-xl font-medium text-slate-800 text-xs">
                             <span className="text-slate-500">💰 รายได้ดอกเบี้ยของกรรมการ</span>
-                            <span className="font-mono text-blue-600">+{plannerInterestIncome.toLocaleString()} ฿</span>
+                            <span className="font-mono text-blue-600">+{plannerInterestIncome.toLocaleString()}</span>
                           </div>
                         )}
 
@@ -4209,30 +4209,30 @@ export default function App() {
                           <div className="space-y-1 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
                             <div className="flex justify-between font-medium text-slate-800 text-xs">
                               <span className="text-slate-500">🔑 รายได้ค่าเช่าของกรรมการ</span>
-                              <span className="font-mono text-blue-600">+{plannerRentalIncome.toLocaleString()} ฿</span>
+                              <span className="font-mono text-blue-600">+{plannerRentalIncome.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between text-red-500 text-[10px]">
                               <span className="text-slate-400">หัก ค่าใช้จ่ายค่าเช่า (เหมา 30%)</span>
-                              <span className="font-mono">(-{(plannerRentalIncome * 0.3).toLocaleString()}) ฿</span>
+                              <span className="font-mono">(-{(plannerRentalIncome * 0.3).toLocaleString()})</span>
                             </div>
                           </div>
                         )}
 
                         <div className="flex justify-between">
                           <span className="text-slate-500 font-medium">หัก ลดหย่อนส่วนตัว</span>
-                          <span className="font-mono text-red-500">(60,000) ฿</span>
+                          <span className="font-mono text-red-500">(60,000)</span>
                         </div>
                         {plannerUseCustomDeductions && (
                           <div className="flex justify-between bg-slate-50 p-2 rounded-xl text-[11px]">
                             <span className="text-slate-500">หัก ลดหย่อนเพิ่มเติมสะสม</span>
-                            <span className="font-mono text-red-500">(-{((hasSpouse ? 60000 : 0) + (childrenCount * 30000) + socialSecurity + insuranceCost + investmentSavings).toLocaleString()}) ฿</span>
+                            <span className="font-mono text-red-500">(-{((hasSpouse ? 60000 : 0) + (childrenCount * 30000) + socialSecurity + insuranceCost + investmentSavings).toLocaleString()})</span>
                           </div>
                         )}
 
                         <div className="flex justify-between border-t border-slate-100 pt-3 font-bold">
                           <span className="text-slate-800">เงินได้สุทธิประเมิน</span>
                           <span className="font-mono text-indigo-700 font-extrabold text-[14px]">
-                            {activeRes.taxable.toLocaleString()} ฿
+                            {activeRes.taxable.toLocaleString()}
                           </span>
                         </div>
 
@@ -4241,7 +4241,7 @@ export default function App() {
                           <div className="flex justify-between items-center text-xs">
                             <span className="font-extrabold text-red-950">หัก ภาษีเงินได้บุคคลธรรมดา</span>
                             <span className="font-mono text-red-600 font-black">
-                              ({activeRes.persTax.toLocaleString()}) ฿
+                              ({activeRes.persTax.toLocaleString()})
                             </span>
                           </div>
                         </div>
@@ -4255,7 +4255,7 @@ export default function App() {
                       <div className="bg-red-50 border-2 border-red-500 rounded-2xl p-4 flex justify-between items-center">
                         <span className="font-black text-red-950 text-xs md:text-sm">📈 ภาษีบุคคลฯ ที่ต้องจ่าย:</span>
                         <span className="font-mono font-black text-red-700 bg-white px-3 py-1.5 rounded-xl border border-red-200 shadow-sm text-sm shrink-0">
-                          +{activeRes.persTax.toLocaleString()} ฿/ปี
+                          +{activeRes.persTax.toLocaleString()} ต่อปี
                         </span>
                       </div>
                     </div>
