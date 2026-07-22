@@ -1298,24 +1298,7 @@ export default function App() {
               {/* Plain-language intro for first-time users */}
               <div className="bg-blue-50 border border-blue-100 rounded-2xl px-5 py-3.5 text-sm text-blue-900 flex items-start gap-2.5">
                 <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                <span>กรอกข้อมูล 3 ขั้นตอนด้านล่าง ผลลัพธ์ด้านบนจะอัปเดตให้ทันทีทุกครั้งที่แก้ตัวเลข ไม่ต้องกดปุ่มคำนวณ</span>
-              </div>
-
-              {/* Hero Result Summary: the headline takeaway, up front */}
-              <div className="bg-blue-600 text-white rounded-2xl p-6 shadow-md">
-                <span className="text-xs font-bold uppercase tracking-wide opacity-80">ผลลัพธ์เบื้องต้นของคุณ</span>
-                <h3 className="text-xl font-bold mt-1.5">
-                  {corporateIsBetter ? "จดนิติบุคคลคุ้มกว่า" : "อยู่แบบบุคคลธรรมดาคุ้มกว่า"}
-                </h3>
-                <p className="text-sm opacity-90 mt-1 max-w-md">
-                  {corporateIsBetter
-                    ? "การจดบริษัทจะช่วยประหยัดภาษีได้มากกว่าการทำในนามบุคคลธรรมดาสำหรับรายรับนี้"
-                    : "ค่าใช้จ่ายในการจดบริษัทและทำบัญชีอาจสูงกว่าภาษีที่ประหยัดได้ ยังไม่คุ้มที่จะจดในตอนนี้"}
-                </p>
-                <div className="flex items-baseline gap-2 mt-4">
-                  <span className="text-3xl font-black font-mono">{costDiff.toLocaleString()}</span>
-                  <span className="text-sm opacity-85">บาท/ปี ที่ประหยัดได้เพิ่ม</span>
-                </div>
+                <span>กรอกข้อมูล 3 ขั้นตอนด้านล่าง ผลลัพธ์สรุปจะอัปเดตให้ทันทีทุกครั้งที่แก้ตัวเลข ไม่ต้องกดปุ่มคำนวณ</span>
               </div>
 
               {/* Top Row: Revenue and Corporate Settings side-by-side on md+ screens */}
@@ -2171,7 +2154,22 @@ export default function App() {
 
               </div>
 
-
+              {/* Hero Result Summary: the headline takeaway, after the detailed comparison */}
+              <div className="bg-blue-600 text-white rounded-2xl p-6 shadow-md">
+                <span className="text-xs font-bold uppercase tracking-wide opacity-80">ผลลัพธ์เบื้องต้นของคุณ</span>
+                <h3 className="text-xl font-bold mt-1.5">
+                  {corporateIsBetter ? "จดนิติบุคคลคุ้มกว่า" : "อยู่แบบบุคคลธรรมดาคุ้มกว่า"}
+                </h3>
+                <p className="text-sm opacity-90 mt-1 max-w-md">
+                  {corporateIsBetter
+                    ? "การจดบริษัทจะช่วยประหยัดภาษีได้มากกว่าการทำในนามบุคคลธรรมดาสำหรับรายรับนี้"
+                    : "ค่าใช้จ่ายในการจดบริษัทและทำบัญชีอาจสูงกว่าภาษีที่ประหยัดได้ ยังไม่คุ้มที่จะจดในตอนนี้"}
+                </p>
+                <div className="flex items-baseline gap-2 mt-4">
+                  <span className="text-3xl font-black font-mono">{costDiff.toLocaleString()}</span>
+                  <span className="text-sm opacity-85">บาท/ปี ที่ประหยัดได้เพิ่ม</span>
+                </div>
+              </div>
 
               {/* AI SEGMENT: ADVANCED TAX STRATEGY & DEDUCTIONS PLANNER (GEMINI PROXY) */}
               <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm relative overflow-hidden">
