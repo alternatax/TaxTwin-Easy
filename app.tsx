@@ -2341,26 +2341,16 @@ export default function App() {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-8"
+            className="space-y-5"
           >
             {/* Top header block */}
-            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-fade-in">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="p-1 px-2.5 bg-blue-50 text-blue-700 font-bold rounded-lg text-xs">
-                     ภ.ง.ด. 90/91 
-                  </span>
-                  <span className="text-xs bg-slate-100 text-slate-800 font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
-                    <User className="w-3 h-3 text-blue-600" /> คำนวณภาษีเงินได้บุคคลธรรมดารายปี
-                  </span>
-                </div>
-                <h2 className="text-2xl font-black text-slate-900 leading-tight">
-                  ระบบคำนวณและแจกแจงภาษีบุคคลธรรมดาอย่างละเอียด
-                </h2>
-                <p className="text-sm text-slate-600 font-medium">
-                  สำรวจโครงสร้างรายรับ ค่าใช้จ่ายเหมา/จริง และรายการลดหย่อนทั้งหมด พร้อมวิเคราะห์อัตราภาษีก้าวหน้าทีละขั้น
-                </p>
-              </div>
+            <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center gap-3 animate-fade-in">
+              <span className="p-1 px-2.5 bg-blue-50 text-blue-700 font-bold rounded-lg text-xs shrink-0">
+                 ภ.ง.ด. 90/91
+              </span>
+              <h2 className="text-sm font-bold text-slate-900 leading-tight">
+                คำนวณและแจกแจงภาษีบุคคลธรรมดา
+              </h2>
             </div>
 
             {/* Step Progress Indicator */}
@@ -2394,39 +2384,43 @@ export default function App() {
             </div>
 
             {/* Content layout: 2 columns */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
               {/* LEFT COLUMN: STEP CONTENT (5 cols) */}
-              <div className="lg:col-span-5 space-y-6">
+              <div className="lg:col-span-5 space-y-5">
 
                 {/* Persona Quick-Picker: jumps straight to a sensible income type */}
                 {personalTaxStep === 1 && (
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
-                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full mb-3">
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full mb-2.5">
                     ขั้นที่ 1
                   </span>
-                  <h3 className="text-base font-bold text-slate-900 mb-3">ธุรกิจของคุณใกล้เคียงแบบไหนที่สุด?</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
+                  <h3 className="text-base font-bold text-slate-900 mb-0.5">ธุรกิจของคุณใกล้เคียงแบบไหนที่สุด?</h3>
+                  <p className="text-xs text-slate-500 mb-3">ครอบคลุมเงินได้ทุกประเภทตามมาตรา 40(1)-40(8)</p>
+                  <div className="grid grid-cols-3 gap-2">
                     {[
-                      { id: "40_8", emoji: "🛍️", name: "ขายของออนไลน์", desc: "ค้าขาย ร้านอาหาร" },
-                      { id: "40_2", emoji: "💻", name: "ฟรีแลนซ์ / รับจ้าง", desc: "งานบริการ นายหน้า" },
-                      { id: "40_6_other", emoji: "🏠", name: "วิชาชีพ / ให้เช่า", desc: "หมอ ทนาย ให้เช่าบ้าน" },
-                      { id: "40_1", emoji: "🏛️", name: "ข้าราชการ", desc: "เงินเดือนประจำ" },
-                      { id: "40_8", emoji: "🌾", name: "เกษตรกร", desc: "ทำไร่ ทำนา สวนผลไม้" },
-                      { id: "40_2", emoji: "🛵", name: "ไรเดอร์", desc: "ส่งอาหาร ส่งพัสดุ" },
+                      { id: "40_1", emoji: "🏛️", name: "ข้าราชการ/พนักงาน", desc: "เงินเดือน โบนัส · 40(1)" },
+                      { id: "40_2", emoji: "💻", name: "ฟรีแลนซ์/รับจ้าง", desc: "นายหน้า ไรเดอร์ · 40(2)" },
+                      { id: "40_3", emoji: "🎨", name: "ค่าลิขสิทธิ์", desc: "งานเขียน เพลง · 40(3)" },
+                      { id: "40_4", emoji: "💰", name: "เงินลงทุน/ปันผล", desc: "ดอกเบี้ย ปันผล · 40(4)" },
+                      { id: "40_5", emoji: "🏠", name: "ให้เช่าทรัพย์สิน", desc: "บ้าน ที่ดิน รถ · 40(5)" },
+                      { id: "40_6_med", emoji: "🩺", name: "แพทย์/พยาบาล", desc: "วิชาชีพเวชกรรม · 40(6)" },
+                      { id: "40_6_other", emoji: "⚖️", name: "วิชาชีพอิสระอื่น", desc: "ทนาย บัญชี วิศวกร · 40(6)" },
+                      { id: "40_7", emoji: "🏗️", name: "รับเหมาก่อสร้าง", desc: "งานก่อสร้าง · 40(7)" },
+                      { id: "40_8", emoji: "🛍️", name: "ค้าขาย/เกษตรกร", desc: "ขายของ ร้านอาหาร ทำไร่ · 40(8)" },
                     ].map((p) => (
                       <button
                         key={p.name}
                         type="button"
                         onClick={() => { setIncomeType(p.id); setUseMultipleIncomes(false); setSelectedPersona(p.name); }}
-                        className={`text-left p-3.5 rounded-xl border-2 transition cursor-pointer ${
+                        className={`text-left p-2.5 rounded-xl border-2 transition cursor-pointer ${
                           selectedPersona === p.name
                             ? "border-blue-600 bg-blue-50"
                             : "border-slate-200 bg-slate-50 hover:border-blue-300"
                         }`}
                       >
-                        <span className="text-xl block mb-1">{p.emoji}</span>
-                        <span className="text-sm font-bold text-slate-900 block">{p.name}</span>
-                        <span className="text-xs text-slate-500 block mt-0.5">{p.desc}</span>
+                        <span className="text-lg block mb-0.5">{p.emoji}</span>
+                        <span className="text-xs font-bold text-slate-900 block leading-tight">{p.name}</span>
+                        <span className="text-[10.5px] text-slate-500 block mt-0.5 leading-tight">{p.desc}</span>
                       </button>
                     ))}
                   </div>
@@ -3480,8 +3474,8 @@ export default function App() {
               </div>
 
               {/* RIGHT COLUMN: persistent hero + recap (7 cols) */}
-              <div className="lg:col-span-7 space-y-6">
-                
+              <div className="lg:col-span-7 space-y-5">
+
                 {/* 1. Final personal tax verdict widget */}
                 <div className="bg-blue-600 text-white rounded-3xl p-6 relative overflow-hidden shadow-lg animate-fade-in">
                   <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
