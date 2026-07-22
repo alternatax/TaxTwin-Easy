@@ -2726,14 +2726,18 @@ export default function App() {
                           <span className="font-bold text-slate-800 block">มีคู่สมรสไม่มีเงินได้</span>
                           <span className="text-[10px] text-slate-400">+ ลดหย่อนเพิ่มเติม 60,000 บาท</span>
                         </div>
-                        <label className="relative inline-flex items-center cursor-pointer select-none">
-                          <input 
-                            type="checkbox" 
-                            checked={hasSpouse} 
-                            onChange={() => setHasSpouse(!hasSpouse)} 
-                            className="sr-only peer" 
+                        <label className="inline-flex items-center cursor-pointer select-none shrink-0">
+                          <input
+                            type="checkbox"
+                            checked={hasSpouse}
+                            onChange={() => setHasSpouse(!hasSpouse)}
+                            className="sr-only peer"
                           />
-                          <div className="w-8 h-4.5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-indigo-600"></div>
+                          <div className={`w-7 h-7 rounded-lg border-2 flex items-center justify-center transition-colors ${
+                            hasSpouse ? "bg-emerald-500 border-emerald-500" : "bg-white border-slate-300"
+                          }`}>
+                            {hasSpouse && <span className="text-white text-sm font-bold leading-none">✓</span>}
+                          </div>
                         </label>
                       </div>
 
@@ -2880,14 +2884,18 @@ export default function App() {
                               <span className="font-bold text-slate-800 block">2. ค่าลดหย่อนคู่สมรส (+60,000 บาท)</span>
                               <span className="text-[9.5px] text-slate-400 block leading-tight">กรณีคู่สมรสไม่มีรายได้ และยื่นรวมกัน (สูงสุด 1 คน)</span>
                             </div>
-                            <label className="relative inline-flex items-center cursor-pointer select-none">
-                              <input 
-                                type="checkbox" 
-                                checked={hasSpouse} 
-                                onChange={() => setHasSpouse(!hasSpouse)} 
-                                className="sr-only peer" 
+                            <label className="inline-flex items-center cursor-pointer select-none shrink-0">
+                              <input
+                                type="checkbox"
+                                checked={hasSpouse}
+                                onChange={() => setHasSpouse(!hasSpouse)}
+                                className="sr-only peer"
                               />
-                              <div className="w-8 h-4.5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-indigo-600"></div>
+                              <div className={`w-7 h-7 rounded-lg border-2 flex items-center justify-center transition-colors ${
+                                hasSpouse ? "bg-emerald-500 border-emerald-500" : "bg-white border-slate-300"
+                              }`}>
+                                {hasSpouse && <span className="text-white text-sm font-bold leading-none">✓</span>}
+                              </div>
                             </label>
                           </div>
 
@@ -2933,7 +2941,7 @@ export default function App() {
                               <span className="font-bold text-slate-800 block">4. ค่าชำระฝากครรภ์ & คลอดบุตร</span>
                               <span className="text-[9.5px] text-slate-400 block leading-tight">หักตามจริงสูงสุดไม่เกินท้องละ 60,000 บาท (ค่าใช้จ่ายตรวจ ทำคลอด กินอยู่ รพ.)</span>
                             </div>
-                            <div className="flex items-center gap-1 shrink-0">
+                            <div className="flex items-center gap-1.5 shrink-0">
                               <input
                                 type="text"
                                 value={pregnancyExpense === 0 ? "" : pregnancyExpense.toLocaleString("en-US")}
@@ -2941,7 +2949,7 @@ export default function App() {
                                   const val = parseInt(e.target.value.replace(/[^0-9]/g, "")) || 0;
                                   setPregnancyExpense(Math.min(60000, val));
                                 }}
-                                className="w-20 p-1.5 border border-slate-300 rounded-lg text-xs font-bold text-right font-mono text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                className="w-28 p-2.5 border border-slate-300 rounded-lg text-sm font-bold text-right font-mono text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
                                 placeholder="0"
                               />
                               <span className="text-slate-500 text-[10px]">บ.</span>
@@ -2961,7 +2969,7 @@ export default function App() {
                                 max="4"
                                 value={parentCount}
                                 onChange={(e) => setParentCount(Math.min(4, Math.max(0, parseInt(e.target.value) || 0)))}
-                                className="w-12 p-1 border border-slate-300 rounded-lg text-xs font-bold text-center font-mono text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                className="w-20 p-2.5 border border-slate-300 rounded-lg text-sm font-bold text-center font-mono text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
                               />
                               <span className="text-slate-500 text-[10px]">ท่าน</span>
                             </div>
@@ -2980,7 +2988,7 @@ export default function App() {
                                 max="10"
                                 value={disabledCount}
                                 onChange={(e) => setDisabledCount(Math.max(0, parseInt(e.target.value) || 0))}
-                                className="w-12 p-1 border border-slate-300 rounded-lg text-xs font-bold text-center font-mono text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                className="w-20 p-2.5 border border-slate-300 rounded-lg text-sm font-bold text-center font-mono text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
                               />
                               <span className="text-slate-500 text-[10px]">คน</span>
                             </div>
