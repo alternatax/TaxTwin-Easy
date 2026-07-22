@@ -280,12 +280,6 @@ export default function App() {
     }
   }, [revenue, incomeType, useMultipleIncomes]);
 
-  // Re-show the ภ.ง.ด. 94 popup whenever the income type changes, even if the
-  // user had dismissed it for a previously-selected type.
-  useEffect(() => {
-    setPnd94Dismissed(false);
-  }, [incomeType, useMultipleIncomes]);
-
   // Keep total revenue and primary incomeType synchronized when managing multiple incomes
   useEffect(() => {
     if (useMultipleIncomes) {
