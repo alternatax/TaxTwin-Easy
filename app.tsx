@@ -2660,28 +2660,47 @@ export default function App() {
                         )}
                       </div>
 
-                      {/* Sub-choice panel for professions whose income can fall under more than one มาตรา 40 bracket */}
+                      {/* Sub-choice modal for professions whose income can fall under more than one มาตรา 40 bracket —
+                          a modal instead of an inline panel so it's always visible regardless of where the clicked
+                          card sits in a long, scrollable grid, and doesn't require scrolling to reach. */}
                       {expandedProf && (
-                        <div className="mt-3 p-3.5 bg-blue-50 border border-blue-100 rounded-xl space-y-2.5">
-                          <p className="text-xs font-semibold text-blue-900">{expandedProf.name} รับรายได้แบบไหน?</p>
-                          <p className="text-[11px] text-slate-500">เลือกแบบที่ตรงกับคุณมากที่สุด ปรับเปลี่ยนภายหลังได้เสมอ</p>
-                          <div className="space-y-1.5">
-                            {expandedProf.options.map((opt, idx) => (
-                              <button
-                                key={idx}
-                                type="button"
-                                onClick={() => selectOption(expandedProf.name, opt, false)}
-                                className="w-full flex items-start gap-2 p-2.5 rounded-lg border-2 border-slate-200 bg-white hover:border-blue-400 transition cursor-pointer text-left"
-                              >
-                                <span className="text-[10px] font-extrabold text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded shrink-0 mt-0.5">
-                                  {bracketOf(opt.incomeType)}
-                                </span>
-                                <span className="flex-1">
-                                  <span className="text-xs font-bold text-slate-900 block">{opt.label}</span>
-                                  <span className="text-[10px] text-slate-500 block mt-0.5">{opt.desc}</span>
-                                </span>
-                              </button>
-                            ))}
+                        <div
+                          className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4"
+                          onClick={() => setExpandedProfessionId(null)}
+                        >
+                          <div
+                            className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-sm w-full p-5 relative"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <button
+                              type="button"
+                              onClick={() => setExpandedProfessionId(null)}
+                              aria-label="ปิดหน้าต่างนี้"
+                              className="absolute top-3.5 right-3.5 text-slate-400 hover:text-slate-700 cursor-pointer p-1 rounded-lg hover:bg-slate-100 transition"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                            <p className="text-lg">{expandedProf.emoji}</p>
+                            <p className="text-sm font-bold text-slate-900 mt-1 pr-6">{expandedProf.name} รับรายได้แบบไหน?</p>
+                            <p className="text-[11px] text-slate-500 mt-0.5 mb-3.5">เลือกแบบที่ตรงกับคุณมากที่สุด ปรับเปลี่ยนภายหลังได้เสมอ</p>
+                            <div className="space-y-1.5">
+                              {expandedProf.options.map((opt, idx) => (
+                                <button
+                                  key={idx}
+                                  type="button"
+                                  onClick={() => selectOption(expandedProf.name, opt, false)}
+                                  className="w-full flex items-start gap-2 p-2.5 rounded-lg border-2 border-slate-200 bg-white hover:border-blue-400 transition cursor-pointer text-left"
+                                >
+                                  <span className="text-[10px] font-extrabold text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded shrink-0 mt-0.5">
+                                    {bracketOf(opt.incomeType)}
+                                  </span>
+                                  <span className="flex-1">
+                                    <span className="text-xs font-bold text-slate-900 block">{opt.label}</span>
+                                    <span className="text-[10px] text-slate-500 block mt-0.5">{opt.desc}</span>
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       )}
