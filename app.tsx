@@ -1220,8 +1220,14 @@ export default function App() {
   return (
     <div className="bg-white min-h-screen text-slate-800 antialiased font-sans lg:flex">
       {/* Sidebar - desktop/wide screens only; mobile uses the header + tab row below */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:shrink-0 lg:sticky lg:top-0 lg:h-screen relative overflow-hidden bg-linear-to-br from-blue-900 via-blue-700 to-blue-500">
-        <div className="absolute -top-12 -right-20 w-64 h-64 bg-blue-400/30 rounded-full blur-3xl pointer-events-none" />
+      <aside
+        className="hidden lg:flex lg:flex-col lg:w-64 lg:shrink-0 lg:sticky lg:top-0 lg:h-screen relative overflow-hidden"
+        style={{ background: "linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 55%, #3b82f6 100%)" }}
+      >
+        <div
+          className="absolute -top-12 -right-20 w-64 h-64 rounded-full blur-3xl pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(147,197,253,0.55) 0%, rgba(147,197,253,0) 70%)" }}
+        />
         <div className="relative flex items-center gap-3 px-5 py-5 border-b border-white/10">
           <div className="bg-white text-blue-700 p-2.5 rounded-xl shadow-md">
             <Calculator className="w-6 h-6" />
