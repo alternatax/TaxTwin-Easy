@@ -1185,51 +1185,55 @@ export default function App() {
     <div className="bg-white min-h-screen text-slate-800 antialiased font-sans flex flex-col justify-between">
       {/* Header Bar - Sticky on Tablet and PC, Flow on Mobile to maximize viewport */}
       <header className="bg-white border-b border-slate-200 sm:sticky sm:top-0 z-30 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-3 md:py-4 flex flex-col md:flex-row items-center justify-between gap-3.5">
-          <div className="flex items-center gap-3">
-            <div className="bg-blue-600 text-white p-2.5 rounded-xl shadow-md cursor-pointer hover:bg-blue-700 transition">
-              <Calculator id="app-logo" className="w-6 h-6 animate-pulse" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-3 md:py-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3.5">
+            <div className="flex items-center gap-3 w-full md:w-auto">
+              <div className="bg-blue-600 text-white p-2.5 rounded-xl shadow-md cursor-pointer hover:bg-blue-700 transition">
+                <Calculator id="app-logo" className="w-6 h-6 animate-pulse" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
+                  Tax Twin Easy
+                </h1>
+                <p className="text-xs text-slate-500">
+                  เครื่องมือเปรียบเทียบคำนวณและประเมินภาษีบุคคลธรรมดา VS จดนิติบุคคลไทย
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
-                Tax Twin Easy
-              </h1>
-              <p className="text-xs text-slate-500">
-                เครื่องมือเปรียบเทียบคำนวณและประเมินภาษีบุคคลธรรมดา VS จดนิติบุคคลไทย
-              </p>
+
+            {/* User Account Capsule */}
+            <div className="w-full sm:w-auto">
+              {currentUser && !currentUser.isGuest ? (
+                <div className="flex items-center gap-2.5 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-2xl text-xs w-full sm:w-auto justify-between sm:justify-start">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                    <div className="text-left">
+                      <span className="font-semibold text-slate-800 block text-[10px] leading-none max-w-[120px] truncate">{currentUser.name}</span>
+                      <span className="font-mono text-slate-500 text-[9px] leading-tight max-w-[150px] truncate">{currentUser.email}</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleSignOut}
+                    title="ออกจากระบบ เพื่อความพึ่งใจส่วนบุคคล"
+                    className="bg-white hover:bg-red-50 text-slate-500 hover:text-red-600 p-1 rounded-lg border border-slate-200 hover:border-red-200 transition cursor-pointer flex items-center justify-center shrink-0"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setIsAuthModalOpen(true)}
+                  className="flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 px-3.5 py-2 rounded-2xl cursor-pointer transition select-none w-full sm:w-auto justify-center shadow-xs"
+                >
+                  <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <span>🔐 ล็อกอินสร้างบัญชีส่วนตัว</span>
+                </button>
+              )}
             </div>
           </div>
 
-          {/* User Account Capsule & Tab Navigation */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
-            {currentUser && !currentUser.isGuest ? (
-              <div className="flex items-center gap-2.5 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-2xl text-xs w-full sm:w-auto justify-between sm:justify-start">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                  <div className="text-left">
-                    <span className="font-semibold text-slate-800 block text-[10px] leading-none max-w-[120px] truncate">{currentUser.name}</span>
-                    <span className="font-mono text-slate-500 text-[9px] leading-tight max-w-[150px] truncate">{currentUser.email}</span>
-                  </div>
-                </div>
-                <button
-                  onClick={handleSignOut}
-                  title="ออกจากระบบ เพื่อความพึ่งใจส่วนบุคคล"
-                  className="bg-white hover:bg-red-50 text-slate-500 hover:text-red-600 p-1 rounded-lg border border-slate-200 hover:border-red-200 transition cursor-pointer flex items-center justify-center shrink-0"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => setIsAuthModalOpen(true)}
-                className="flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 px-3.5 py-2 rounded-2xl cursor-pointer transition select-none w-full sm:w-auto justify-center shadow-xs"
-              >
-                <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                <span>🔐 ล็อกอินสร้างบัญชีส่วนตัว</span>
-              </button>
-            )}
-
-            <div className="flex items-center bg-slate-100 p-1 rounded-xl w-full sm:w-auto justify-center overflow-x-auto whitespace-nowrap">
+          {/* Tab Navigation - left-aligned row of its own so it never gets squeezed */}
+          <div className="mt-3.5 flex items-center gap-0.5 bg-slate-100 p-1 rounded-xl w-full md:w-fit justify-start overflow-x-auto whitespace-nowrap">
               <button
                 onClick={() => setActiveTab("personal_tax")}
                 className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition ${
@@ -1282,7 +1286,6 @@ export default function App() {
                   🛡️ ระบบผู้ดูแล (Sheets & Logs)
                 </button>
               )}
-            </div>
           </div>
         </div>
       </header>
