@@ -263,6 +263,7 @@ export default function App() {
   const [insuranceCost, setInsuranceCost] = useState<number>(25000); // Slider up to 100,000 THB
   const [investmentSavings, setInvestmentSavings] = useState<number>(30000); // SSF/RMF/ThaiESG up to 200,000 THB
   const [hasSpouse, setHasSpouse] = useState<boolean>(false); // Spouse allowance: 60,000 THB
+  const [withheldTax, setWithheldTax] = useState<number>(0); // ภาษีหัก ณ ที่จ่าย สะสมระหว่างปี (เครดิตหักจากยอดที่ต้องชำระตอนยื่นแบบ)
 
   // --- DETAILED TAX DEDUCTIONS (20 ITEMS) ---
   const [useDetailedDeductions, setUseDetailedDeductions] = useState<boolean>(false);
@@ -3713,6 +3714,44 @@ export default function App() {
                     <span className="font-mono font-black text-blue-800 text-sm">
                       {personalResult.totalTax.toLocaleString()} บาท
                     </span>
+                  </div>
+
+                  {/* ภาษีหัก ณ ที่จ่าย: what's already been withheld during the year is a credit against
+                      the tax owed above, not an extra cost — shown separately so it never touches the
+                      totalTax figure used elsewhere (compare tab, corporate comparison, etc). */}
+                  <div className="p-3 bg-white rounded-xl border border-slate-200 space-y-2.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <label className="text-xs font-bold text-slate-700">ภาษีที่ถูกหัก ณ ที่จ่ายไว้แล้ว (บาท)</label>
+                      <div className="relative w-[145px]">
+                        <input
+                          type="text"
+                          value={withheldTax === 0 ? "" : withheldTax.toLocaleString("en-US")}
+                          onChange={(e) => setWithheldTax(Math.max(0, parseInt(e.target.value.replace(/[^0-9]/g, "")) || 0))}
+                          placeholder="0"
+                          className="w-full pl-2 pr-2 py-1.5 text-right rounded-lg border border-slate-300 font-mono text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-[10.5px] text-slate-400 leading-relaxed">
+                      ดูยอดสะสมได้จากหนังสือรับรองการหักภาษี ณ ที่จ่าย (50 ทวิ) ที่ลูกค้า/นายจ้างออกให้ตลอดปี — ยอดนี้ไม่ใช่ภาษีเพิ่ม แต่เป็นเครดิตหักลบจากยอดภาษีที่คำนวณได้ด้านบน
+                    </p>
+                    {withheldTax > 0 && (
+                      personalResult.totalTax - withheldTax > 0 ? (
+                        <div className="flex justify-between items-center bg-amber-50 border border-amber-200 p-2.5 rounded-lg">
+                          <span className="text-xs font-bold text-amber-900">ต้องชำระเพิ่มตอนยื่นแบบ</span>
+                          <span className="font-mono font-black text-amber-700 text-sm">
+                            {(personalResult.totalTax - withheldTax).toLocaleString()} บาท
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="flex justify-between items-center bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg">
+                          <span className="text-xs font-bold text-emerald-900">ได้รับเงินคืนภาษี</span>
+                          <span className="font-mono font-black text-emerald-700 text-sm">
+                            {(withheldTax - personalResult.totalTax).toLocaleString()} บาท
+                          </span>
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
 
