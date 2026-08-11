@@ -1181,10 +1181,91 @@ export default function App() {
 
   const activeRes = computeCaseSummary(plannerSalary);
 
+  const navItems = [
+    { id: "personal_tax", emoji: "👤", label: "ภาษีบุคคลธรรมดา" },
+    { id: "calculator", emoji: "📊", label: "เปรียบเทียบสองระบบ" },
+    { id: "director_salary", emoji: "💼", label: "แผนเงินเดือนกรรมการ" },
+    { id: "learn", emoji: "💡", label: "โครงสร้างภาษี" },
+  ];
+  const isAdmin = currentUser?.email.toLowerCase() === "acct.prom@gmail.com";
+
+  const accountCapsule =
+    currentUser && !currentUser.isGuest ? (
+      <div className="flex items-center gap-2.5 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-2xl text-xs w-full sm:w-auto justify-between sm:justify-start">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+          <div className="text-left">
+            <span className="font-semibold text-slate-800 block text-[10px] leading-none max-w-[120px] truncate">{currentUser.name}</span>
+            <span className="font-mono text-slate-500 text-[9px] leading-tight max-w-[150px] truncate">{currentUser.email}</span>
+          </div>
+        </div>
+        <button
+          onClick={handleSignOut}
+          title="ออกจากระบบ เพื่อความพึ่งใจส่วนบุคคล"
+          className="bg-white hover:bg-red-50 text-slate-500 hover:text-red-600 p-1 rounded-lg border border-slate-200 hover:border-red-200 transition cursor-pointer flex items-center justify-center shrink-0"
+        >
+          <LogOut className="w-3.5 h-3.5" />
+        </button>
+      </div>
+    ) : (
+      <button
+        onClick={() => setIsAuthModalOpen(true)}
+        className="flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 px-3.5 py-2 rounded-2xl cursor-pointer transition select-none w-full sm:w-auto justify-center shadow-xs"
+      >
+        <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+        <span>🔐 ล็อกอินสร้างบัญชีส่วนตัว</span>
+      </button>
+    );
+
   return (
-    <div className="bg-white min-h-screen text-slate-800 antialiased font-sans flex flex-col justify-between">
-      {/* Header Bar - Sticky on Tablet and PC, Flow on Mobile to maximize viewport */}
-      <header className="bg-white border-b border-slate-200 sm:sticky sm:top-0 z-30 shadow-xs">
+    <div className="bg-white min-h-screen text-slate-800 antialiased font-sans lg:flex">
+      {/* Sidebar - desktop/wide screens only; mobile uses the header + tab row below */}
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:shrink-0 lg:sticky lg:top-0 lg:h-screen border-r border-slate-200 bg-white">
+        <div className="flex items-center gap-3 px-5 py-5 border-b border-slate-100">
+          <div className="bg-blue-600 text-white p-2.5 rounded-xl shadow-md">
+            <Calculator className="w-6 h-6" />
+          </div>
+          <div>
+            <h1 className="text-base font-bold tracking-tight text-slate-900 leading-tight">Tax Twin Easy</h1>
+            <p className="text-[11px] text-slate-500 leading-tight">เปรียบเทียบภาษีบุคคล VS นิติบุคคล</p>
+          </div>
+        </div>
+        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-medium text-left transition cursor-pointer ${
+                activeTab === item.id
+                  ? "bg-blue-50 text-blue-700 font-bold"
+                  : "text-slate-600 hover:bg-slate-50"
+              }`}
+            >
+              <span>{item.emoji}</span>
+              <span>{item.label}</span>
+            </button>
+          ))}
+          {isAdmin && (
+            <button
+              onClick={() => setActiveTab("admin_logs")}
+              className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-left transition cursor-pointer ${
+                activeTab === "admin_logs"
+                  ? "bg-slate-900 text-white"
+                  : "text-rose-600 hover:bg-rose-50"
+              }`}
+            >
+              <span>🛡️</span>
+              <span>ระบบผู้ดูแล</span>
+            </button>
+          )}
+        </nav>
+        <div className="p-3 border-t border-slate-100">{accountCapsule}</div>
+      </aside>
+
+      {/* Content column */}
+      <div className="flex-1 min-w-0 flex flex-col justify-between">
+      {/* Header Bar - mobile/tablet only; sidebar covers navigation on lg+ */}
+      <header className="bg-white border-b border-slate-200 sm:sticky sm:top-0 z-30 shadow-xs lg:hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-3 md:py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-3.5">
             <div className="flex items-center gap-3 w-full md:w-auto">
@@ -1202,79 +1283,25 @@ export default function App() {
             </div>
 
             {/* User Account Capsule */}
-            <div className="w-full sm:w-auto">
-              {currentUser && !currentUser.isGuest ? (
-                <div className="flex items-center gap-2.5 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-2xl text-xs w-full sm:w-auto justify-between sm:justify-start">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                    <div className="text-left">
-                      <span className="font-semibold text-slate-800 block text-[10px] leading-none max-w-[120px] truncate">{currentUser.name}</span>
-                      <span className="font-mono text-slate-500 text-[9px] leading-tight max-w-[150px] truncate">{currentUser.email}</span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={handleSignOut}
-                    title="ออกจากระบบ เพื่อความพึ่งใจส่วนบุคคล"
-                    className="bg-white hover:bg-red-50 text-slate-500 hover:text-red-600 p-1 rounded-lg border border-slate-200 hover:border-red-200 transition cursor-pointer flex items-center justify-center shrink-0"
-                  >
-                    <LogOut className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setIsAuthModalOpen(true)}
-                  className="flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 px-3.5 py-2 rounded-2xl cursor-pointer transition select-none w-full sm:w-auto justify-center shadow-xs"
-                >
-                  <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                  <span>🔐 ล็อกอินสร้างบัญชีส่วนตัว</span>
-                </button>
-              )}
-            </div>
+            <div className="w-full sm:w-auto">{accountCapsule}</div>
           </div>
 
           {/* Tab Navigation - left-aligned row of its own so it never gets squeezed */}
           <div className="mt-3.5 flex items-center gap-0.5 bg-slate-100 p-1 rounded-xl w-full md:w-fit justify-start overflow-x-auto whitespace-nowrap">
-              <button
-                onClick={() => setActiveTab("personal_tax")}
-                className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition ${
-                  activeTab === "personal_tax"
-                    ? "bg-white text-slate-900 shadow-xs animate-fade-in"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                👤 ภาษีบุคคลธรรมดา
-              </button>
-              <button
-                onClick={() => setActiveTab("calculator")}
-                className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition ${
-                  activeTab === "calculator"
-                    ? "bg-white text-slate-900 shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                📊 เปรียบเทียบสองระบบ
-              </button>
-              <button
-                onClick={() => setActiveTab("director_salary")}
-                className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition ${
-                  activeTab === "director_salary"
-                    ? "bg-white text-slate-900 shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                💼 แผนเงินเดือนกรรมการ
-              </button>
-              <button
-                onClick={() => setActiveTab("learn")}
-                className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition ${
-                  activeTab === "learn"
-                    ? "bg-white text-slate-900 shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                💡 โครงสร้างภาษี
-              </button>
-              {currentUser?.email.toLowerCase() === "acct.prom@gmail.com" && (
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition ${
+                    activeTab === item.id
+                      ? "bg-white text-slate-900 shadow-xs"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  {item.emoji} {item.label}
+                </button>
+              ))}
+              {isAdmin && (
                 <button
                   onClick={() => setActiveTab("admin_logs")}
                   className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition ${
@@ -1289,6 +1316,11 @@ export default function App() {
           </div>
         </div>
       </header>
+
+      {/* Slim top strip - lg+ only, shows the account capsule next to the sidebar */}
+      <div className="hidden lg:flex items-center justify-end px-8 py-3 border-b border-slate-200">
+        {accountCapsule}
+      </div>
 
       {/* Main Container */}
       <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-12 py-8">
@@ -4592,6 +4624,7 @@ export default function App() {
           <p>Tax Twin Easy © 2026</p>
         </div>
       </footer>
+      </div>
 
       {renderPnd94Modal()}
 
