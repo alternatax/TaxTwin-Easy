@@ -100,7 +100,7 @@ export default function App() {
   // --- INPUT STATES ---
   const [revenue, setRevenue] = useState<number>(1800000); // 1.8M THB default (VAT limit)
   const [incomeType, setIncomeType] = useState<string>("40_8");
-  const [selectedPersona, setSelectedPersona] = useState<string>("ขายของออนไลน์");
+  const [selectedPersona, setSelectedPersona] = useState<string>("ค้าขาย/เกษตรกร");
   const [personalTaxStep, setPersonalTaxStep] = useState<number>(1);
   const [pnd94Dismissed, setPnd94Dismissed] = useState<boolean>(false);
   const [useMultipleIncomes, setUseMultipleIncomes] = useState<boolean>(false);
@@ -1182,7 +1182,7 @@ export default function App() {
   const activeRes = computeCaseSummary(plannerSalary);
 
   return (
-    <div className="bg-slate-50 min-h-screen text-slate-800 antialiased font-sans flex flex-col justify-between">
+    <div className="bg-white min-h-screen text-slate-800 antialiased font-sans flex flex-col justify-between">
       {/* Header Bar - Sticky on Tablet and PC, Flow on Mobile to maximize viewport */}
       <header className="bg-white border-b border-slate-200 sm:sticky sm:top-0 z-30 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-3 md:py-4 flex flex-col md:flex-row items-center justify-between gap-3.5">
@@ -2404,14 +2404,17 @@ export default function App() {
                         key={p.name}
                         type="button"
                         onClick={() => { setIncomeType(p.id); setUseMultipleIncomes(false); setSelectedPersona(p.name); }}
-                        className={`text-left p-2.5 rounded-xl border-2 transition cursor-pointer ${
+                        className={`relative text-left p-2.5 rounded-xl border-2 bg-white transition cursor-pointer ${
                           selectedPersona === p.name
-                            ? "border-blue-600 bg-blue-50"
-                            : "border-slate-200 bg-slate-50 hover:border-blue-300"
+                            ? "border-blue-600"
+                            : "border-slate-200 hover:border-blue-300"
                         }`}
                       >
+                        {selectedPersona === p.name && (
+                          <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-blue-600 text-white text-[9px] font-bold flex items-center justify-center">✓</span>
+                        )}
                         <span className="text-lg block mb-0.5">{p.emoji}</span>
-                        <span className="text-xs font-bold text-slate-900 block leading-tight">{p.name}</span>
+                        <span className="text-xs font-bold text-slate-900 block leading-tight pr-4">{p.name}</span>
                         <span className="text-[10.5px] text-slate-500 block mt-0.5 leading-tight">{p.desc}</span>
                       </button>
                     ))}
