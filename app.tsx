@@ -2448,7 +2448,7 @@ export default function App() {
                   <div className="grid grid-cols-3 gap-2">
                     {[
                       { id: "40_1", emoji: "🏛️", name: "ข้าราชการ/พนักงาน", desc: "เงินเดือน โบนัส · 40(1)" },
-                      { id: "40_2", emoji: "💻", name: "ฟรีแลนซ์/รับจ้าง", desc: "นายหน้า ไรเดอร์ · 40(2)" },
+                      { id: "40_2", emoji: "💻", name: "ฟรีแลนซ์/รับจ้าง", desc: "ช่างภาพ กราฟิก นายหน้า ไรเดอร์ · 40(2)" },
                       { id: "40_3", emoji: "🎨", name: "ค่าลิขสิทธิ์", desc: "งานเขียน เพลง · 40(3)" },
                       { id: "40_4", emoji: "💰", name: "เงินลงทุน/ปันผล", desc: "ดอกเบี้ย ปันผล · 40(4)" },
                       { id: "40_5", emoji: "🏠", name: "ให้เช่าทรัพย์สิน", desc: "บ้าน ที่ดิน รถ · 40(5)" },
@@ -2514,6 +2514,7 @@ export default function App() {
                         >
                           <span className="text-lg block mb-0.5">🛍️</span>
                           <span className="text-xs font-bold text-slate-900 block">ขายสินค้า/ผลิตภัณฑ์</span>
+                          <span className="text-[10px] text-slate-400 block mt-0.5 leading-tight">เช่น ทำขนม ปลูกต้นไม้ขาย</span>
                         </button>
                         <button
                           type="button"
@@ -2528,6 +2529,7 @@ export default function App() {
                         >
                           <span className="text-lg block mb-0.5">🤝</span>
                           <span className="text-xs font-bold text-slate-900 block">ให้บริการ/รับจ้าง</span>
+                          <span className="text-[10px] text-slate-400 block mt-0.5 leading-tight">เช่น ช่างภาพ ติวเตอร์ ช่างตัดผม</span>
                         </button>
                       </div>
                     </div>
