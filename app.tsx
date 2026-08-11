@@ -102,6 +102,7 @@ export default function App() {
   const [incomeType, setIncomeType] = useState<string>("40_8");
   const [selectedPersona, setSelectedPersona] = useState<string>("ค้าขาย/เกษตรกร");
   const [personalTaxStep, setPersonalTaxStep] = useState<number>(1);
+  const [incomeTypeEditorOpen, setIncomeTypeEditorOpen] = useState<boolean>(false);
   const [pnd94Dismissed, setPnd94Dismissed] = useState<boolean>(false);
   const [useMultipleIncomes, setUseMultipleIncomes] = useState<boolean>(false);
   const [incomes, setIncomes] = useState<{ id: string; typeId: string; amount: number }[]>([
@@ -871,12 +872,19 @@ export default function App() {
     ? incomes.some(item => ["40_5", "40_6_med", "40_6_other", "40_7", "40_8"].includes(item.typeId))
     : ["40_5", "40_6_med", "40_6_other", "40_7", "40_8"].includes(incomeType);
 
+  // Only surface this once the user has engaged with real data — either
+  // reached the wizard's results step, or is actively using the detailed
+  // compare tab — never on first landing while default demo values are
+  // still in place.
+  const shouldShowPnd94Notice =
+    activeTab === "calculator" || (activeTab === "personal_tax" && personalTaxStep === 4);
+
   // ภ.ง.ด. 94 requirement notice — shown as a dismissible popup rather than
   // an inline banner, since it's the same condition/content regardless of
   // which tab triggered it.
   const renderPnd94Modal = () => (
     <AnimatePresence>
-      {hasPnd94Requirement && !pnd94Dismissed && (
+      {hasPnd94Requirement && shouldShowPnd94Notice && !pnd94Dismissed && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -1210,10 +1218,14 @@ export default function App() {
     ) : (
       <button
         onClick={() => setIsAuthModalOpen(true)}
+        title="ไม่บังคับ — ใช้เพื่อบันทึกประวัติการคำนวณของคุณเท่านั้น"
         className="flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 px-3.5 py-2 rounded-2xl cursor-pointer transition select-none w-full sm:w-auto justify-center shadow-xs"
       >
         <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-        <span>🔐 ล็อกอินสร้างบัญชีส่วนตัว</span>
+        <span className="text-left leading-tight">
+          🔐 ล็อกอินสร้างบัญชีส่วนตัว
+          <span className="block text-[10px] font-medium text-amber-700/80">ไม่บังคับ · ใช้บันทึกประวัติการคำนวณ</span>
+        </span>
       </button>
     );
 
@@ -1340,7 +1352,9 @@ export default function App() {
               {/* Plain-language intro for first-time users */}
               <div className="bg-blue-50 border border-blue-100 rounded-2xl px-5 py-3.5 text-sm text-blue-900 flex items-start gap-2.5">
                 <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                <span>กรอกข้อมูล 3 ขั้นตอนด้านล่าง ผลลัพธ์สรุปจะอัปเดตให้ทันทีทุกครั้งที่แก้ตัวเลข ไม่ต้องกดปุ่มคำนวณ</span>
+                <span>
+                  ใช้ข้อมูลเดียวกับที่กรอกไว้ในแท็บ &ldquo;ภาษีบุคคลธรรมดา&rdquo; ไม่ต้องกรอกใหม่ — หน้านี้ให้รายละเอียดเพิ่มเติมสำหรับเทียบกับการจดนิติบุคคลโดยเฉพาะ กรอก/แก้ตัวเลขตรงไหนก็ได้ ผลลัพธ์สรุปจะอัปเดตให้ทันที ไม่ต้องกดปุ่มคำนวณ
+                </span>
               </div>
 
               {/* Top Row: Revenue and Corporate Settings side-by-side on md+ screens */}
@@ -2445,7 +2459,7 @@ export default function App() {
                       <button
                         key={p.name}
                         type="button"
-                        onClick={() => { setIncomeType(p.id); setUseMultipleIncomes(false); setSelectedPersona(p.name); }}
+                        onClick={() => { setIncomeType(p.id); setUseMultipleIncomes(false); setSelectedPersona(p.name); setIncomeTypeEditorOpen(false); }}
                         className={`relative text-left p-2.5 rounded-xl border-2 bg-white transition cursor-pointer ${
                           selectedPersona === p.name
                             ? "border-blue-600"
@@ -2532,22 +2546,41 @@ export default function App() {
                     </div>
 
                     {!useMultipleIncomes ? (
-                      <div className="relative">
-                        <select
-                          value={incomeType}
-                          onChange={(e) => setIncomeType(e.target.value)}
-                          className="w-full pl-3 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-500 appearance-none cursor-pointer"
-                        >
-                          {INCOME_TYPES.map((type) => (
-                            <option key={type.id} value={type.id}>
-                              {type.name}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
-                          <ChevronDown className="w-4 h-4" />
+                      incomeTypeEditorOpen ? (
+                        <div className="relative">
+                          <select
+                            value={incomeType}
+                            onChange={(e) => { setIncomeType(e.target.value); setIncomeTypeEditorOpen(false); }}
+                            className="w-full pl-3 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-500 appearance-none cursor-pointer"
+                            autoFocus
+                          >
+                            {INCOME_TYPES.map((type) => (
+                              <option key={type.id} value={type.id}>
+                                {type.name}
+                              </option>
+                            ))}
+                          </select>
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                            <ChevronDown className="w-4 h-4" />
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="flex items-center justify-between gap-2 pl-3 pr-2 py-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+                          <div className="text-xs">
+                            <span className="font-semibold text-slate-900">
+                              {INCOME_TYPES.find((t) => t.id === incomeType)?.name}
+                            </span>
+                            <span className="block text-[10px] text-slate-400 mt-0.5">เลือกไว้ให้แล้วจากขั้นที่ 1</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setIncomeTypeEditorOpen(true)}
+                            className="text-[11px] font-bold text-blue-600 hover:text-blue-800 px-2 py-1 rounded-lg hover:bg-blue-50 cursor-pointer shrink-0"
+                          >
+                            เปลี่ยน
+                          </button>
+                        </div>
+                      )
                     ) : (
                       <div className="space-y-2">
                         {incomes.map((item, idx) => {
@@ -3588,6 +3621,12 @@ export default function App() {
                     เปรียบเทียบผลลัพธ์ภาษีเงินได้บุคคลธรรมดาและภาษีนิติบุคคล (สำหรับวางแผนเงินเดือนกรรมการ)
                   </p>
                 </div>
+              </div>
+              <div className="mt-4 bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 text-xs text-amber-900 flex items-start gap-2">
+                <Info className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <span>
+                  เครื่องมือนี้สำหรับผู้ที่<strong>จดทะเบียนนิติบุคคลแล้ว</strong>และมีรายได้ระดับหนึ่ง ใช้วางแผนว่าควรจ่ายเงินเดือนกรรมการเท่าไหร่ ตัวเลขตั้งต้นด้านล่างเป็นตัวอย่างเท่านั้น หากยังไม่มีบริษัท แนะนำให้เริ่มที่แท็บ &ldquo;ภาษีบุคคลธรรมดา&rdquo; ก่อน
+                </span>
               </div>
             </div>
 
