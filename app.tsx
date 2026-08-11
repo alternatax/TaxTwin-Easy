@@ -1220,25 +1220,26 @@ export default function App() {
   return (
     <div className="bg-white min-h-screen text-slate-800 antialiased font-sans lg:flex">
       {/* Sidebar - desktop/wide screens only; mobile uses the header + tab row below */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:shrink-0 lg:sticky lg:top-0 lg:h-screen border-r border-slate-200 bg-white">
-        <div className="flex items-center gap-3 px-5 py-5 border-b border-slate-100">
-          <div className="bg-blue-600 text-white p-2.5 rounded-xl shadow-md">
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:shrink-0 lg:sticky lg:top-0 lg:h-screen relative overflow-hidden bg-linear-to-br from-blue-900 via-blue-700 to-blue-500">
+        <div className="absolute -top-12 -right-20 w-64 h-64 bg-blue-400/30 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative flex items-center gap-3 px-5 py-5 border-b border-white/10">
+          <div className="bg-white text-blue-700 p-2.5 rounded-xl shadow-md">
             <Calculator className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-base font-bold tracking-tight text-slate-900 leading-tight">Tax Twin Easy</h1>
-            <p className="text-[11px] text-slate-500 leading-tight">เปรียบเทียบภาษีบุคคล VS นิติบุคคล</p>
+            <h1 className="text-base font-bold tracking-tight text-white leading-tight">Tax Twin Easy</h1>
+            <p className="text-[11px] text-blue-100 leading-tight">เปรียบเทียบภาษีบุคคล VS นิติบุคคล</p>
           </div>
         </div>
-        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+        <nav className="relative flex-1 p-3 space-y-1 overflow-y-auto">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-medium text-left transition cursor-pointer ${
                 activeTab === item.id
-                  ? "bg-blue-50 text-blue-700 font-bold"
-                  : "text-slate-600 hover:bg-slate-50"
+                  ? "bg-white text-blue-700 font-bold shadow-md"
+                  : "text-blue-100 hover:bg-white/10 hover:text-white"
               }`}
             >
               <span>{item.emoji}</span>
@@ -1250,8 +1251,8 @@ export default function App() {
               onClick={() => setActiveTab("admin_logs")}
               className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-left transition cursor-pointer ${
                 activeTab === "admin_logs"
-                  ? "bg-slate-900 text-white"
-                  : "text-rose-600 hover:bg-rose-50"
+                  ? "bg-rose-600 text-white shadow-md"
+                  : "text-rose-200 hover:bg-rose-500/20 hover:text-rose-100"
               }`}
             >
               <span>🛡️</span>
@@ -1259,7 +1260,7 @@ export default function App() {
             </button>
           )}
         </nav>
-        <div className="p-3 border-t border-slate-100">{accountCapsule}</div>
+        <div className="relative p-3 border-t border-white/10">{accountCapsule}</div>
       </aside>
 
       {/* Content column */}
