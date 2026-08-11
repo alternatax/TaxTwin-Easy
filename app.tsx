@@ -1855,7 +1855,7 @@ export default function App() {
                           : "text-slate-600 hover:bg-slate-200"
                       }`}
                     >
-                      หักแบบเหมา (60%)
+                      หักแบบเหมา ({((INCOME_TYPES.find(t => t.id === incomeType) || INCOME_TYPES[4]).rate * 100)}%)
                     </button>
                     <button
                       type="button"
@@ -1870,19 +1870,25 @@ export default function App() {
                     </button>
                   </div>
 
-                  {expenseType === "flat" ? (
-                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-1.5 align-middle">
-                      <p className="flex justify-between font-medium text-slate-900">
-                        <span>ฐานหักค่าใช้จ่ายเหมา (60%):</span>
-                        <span className="font-mono text-slate-950 font-bold">
-                          {(revenue * 0.60).toLocaleString()} บาท
-                        </span>
-                      </p>
-                      <p className="text-[11px] text-slate-400 border-t border-slate-200/60 pt-1.5 mt-1">
-                        *หักค่าใช้จ่ายเหมาอัตราร้อยละ 60 อัตโนมัติจากรายได้ทั้งหมด
-                      </p>
-                    </div>
-                  ) : (
+                  {expenseType === "flat" ? (() => {
+                    const t = INCOME_TYPES.find(x => x.id === incomeType) || INCOME_TYPES[4];
+                    const pct = t.rate * 100;
+                    const base = t.hasCap ? Math.min(revenue * t.rate, t.maxCap) : revenue * t.rate;
+                    return (
+                      <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-1.5 align-middle">
+                        <p className="flex justify-between font-medium text-slate-900">
+                          <span>ฐานหักค่าใช้จ่ายเหมา ({pct}%):</span>
+                          <span className="font-mono text-slate-950 font-bold">
+                            {base.toLocaleString()} บาท
+                          </span>
+                        </p>
+                        <p className="text-[11px] text-slate-400 border-t border-slate-200/60 pt-1.5 mt-1">
+                          *หักค่าใช้จ่ายเหมาอัตราร้อยละ {pct} อัตโนมัติจากรายได้ทั้งหมด
+                          {t.hasCap ? ` แต่ไม่เกิน ${t.maxCap.toLocaleString()} บาท` : " ไม่มีเพดานจำกัด"}
+                        </p>
+                      </div>
+                    );
+                  })() : (
                     <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                       <div className="grid grid-cols-2 gap-3">
                         <div className="space-y-1">
@@ -1989,7 +1995,9 @@ export default function App() {
                           </div>
                         </div>
                         <div className="flex justify-between items-center py-0.5">
-                          <span className="text-slate-500 font-medium">หักเหมา (60%)</span>
+                          <span className="text-slate-500 font-medium">
+                            หักเหมา ({((INCOME_TYPES.find(t => t.id === incomeType) || INCOME_TYPES[4]).rate * 100)}%)
+                          </span>
                           <div className="relative flex items-center w-[145px]">
                             <span className="absolute left-1.5 text-red-600 font-medium">-</span>
                             <input
