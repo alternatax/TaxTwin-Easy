@@ -103,6 +103,7 @@ export default function App() {
   const [selectedPersona, setSelectedPersona] = useState<string>("ค้าขาย/เกษตรกร");
   const [personalTaxStep, setPersonalTaxStep] = useState<number>(1);
   const [incomeTypeEditorOpen, setIncomeTypeEditorOpen] = useState<boolean>(false);
+  const [otherPersonaOpen, setOtherPersonaOpen] = useState<boolean>(false);
   const [pnd94Dismissed, setPnd94Dismissed] = useState<boolean>(false);
   const [useMultipleIncomes, setUseMultipleIncomes] = useState<boolean>(false);
   const [incomes, setIncomes] = useState<{ id: string; typeId: string; amount: number }[]>([
@@ -2459,7 +2460,7 @@ export default function App() {
                       <button
                         key={p.name}
                         type="button"
-                        onClick={() => { setIncomeType(p.id); setUseMultipleIncomes(false); setSelectedPersona(p.name); setIncomeTypeEditorOpen(false); }}
+                        onClick={() => { setIncomeType(p.id); setUseMultipleIncomes(false); setSelectedPersona(p.name); setIncomeTypeEditorOpen(false); setOtherPersonaOpen(false); }}
                         className={`relative text-left p-2.5 rounded-xl border-2 bg-white transition cursor-pointer ${
                           selectedPersona === p.name
                             ? "border-blue-600"
@@ -2474,7 +2475,63 @@ export default function App() {
                         <span className="text-[10.5px] text-slate-500 block mt-0.5 leading-tight">{p.desc}</span>
                       </button>
                     ))}
+
+                    {/* Fallback for anyone whose job doesn't match the 9 cards above */}
+                    <button
+                      type="button"
+                      onClick={() => setOtherPersonaOpen(true)}
+                      className={`relative text-left p-2.5 rounded-xl border-2 bg-white transition cursor-pointer ${
+                        selectedPersona.startsWith("อาชีพอื่นๆ") || otherPersonaOpen
+                          ? "border-blue-600"
+                          : "border-slate-200 hover:border-blue-300"
+                      }`}
+                    >
+                      {selectedPersona.startsWith("อาชีพอื่นๆ") && !otherPersonaOpen && (
+                        <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-blue-600 text-white text-[9px] font-bold flex items-center justify-center">✓</span>
+                      )}
+                      <span className="text-lg block mb-0.5">🤔</span>
+                      <span className="text-xs font-bold text-slate-900 block leading-tight pr-4">ไม่แน่ใจ / อาชีพอื่นๆ</span>
+                      <span className="text-[10.5px] text-slate-500 block mt-0.5 leading-tight">ไม่ตรงกับข้างบนสักอัน</span>
+                    </button>
                   </div>
+
+                  {/* Plain-language fallback: skip the legal categories entirely, ask what they'd actually say out loud */}
+                  {otherPersonaOpen && (
+                    <div className="mt-3 p-3.5 bg-blue-50 border border-blue-100 rounded-xl space-y-2.5">
+                      <p className="text-xs font-semibold text-blue-900">ไม่เป็นไร ตอบแค่นี้ก็พอ ปรับเปลี่ยนภายหลังได้เสมอ</p>
+                      <p className="text-xs text-slate-600">รายได้หลักของคุณมาจากการ...</p>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIncomeType("40_8");
+                            setUseMultipleIncomes(false);
+                            setSelectedPersona("อาชีพอื่นๆ (ขายสินค้า)");
+                            setIncomeTypeEditorOpen(false);
+                            setOtherPersonaOpen(false);
+                          }}
+                          className="p-2.5 rounded-xl border-2 border-slate-200 bg-white hover:border-blue-400 transition cursor-pointer text-left"
+                        >
+                          <span className="text-lg block mb-0.5">🛍️</span>
+                          <span className="text-xs font-bold text-slate-900 block">ขายสินค้า/ผลิตภัณฑ์</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIncomeType("40_2");
+                            setUseMultipleIncomes(false);
+                            setSelectedPersona("อาชีพอื่นๆ (ให้บริการ)");
+                            setIncomeTypeEditorOpen(false);
+                            setOtherPersonaOpen(false);
+                          }}
+                          className="p-2.5 rounded-xl border-2 border-slate-200 bg-white hover:border-blue-400 transition cursor-pointer text-left"
+                        >
+                          <span className="text-lg block mb-0.5">🤝</span>
+                          <span className="text-xs font-bold text-slate-900 block">ให้บริการ/รับจ้าง</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 )}
 
