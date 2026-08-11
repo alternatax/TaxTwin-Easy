@@ -33,7 +33,8 @@ import {
   FileBarChart2,
   Printer,
   Settings,
-  Clock
+  Clock,
+  Search
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import ReactMarkdown from "react-markdown";
@@ -96,14 +97,157 @@ export const INCOME_TYPES = [
   { id: "40_8", name: "40(8) อื่นๆ ค้าปลีก ค้าส่ง ขายสินค้าออนไลน์ พรีออเดอร์ ร้านอาหาร ธุรกิจทั่วไป", desc: "หักแบบเหมา 60% ดึงเกณฑ์คำนวณเต็มจำนวน ไม่มีเพดานจำกัด (43 ประเภทธุรกิจ)", rate: 0.60, hasCap: false, maxCap: 0 },
 ];
 
+// Thai profession database for the Step 1 picker — maps everyday job titles to the
+// underlying มาตรา 40(x) income category. Professions whose income can legally fall
+// under more than one bracket (e.g. a YouTuber's sponsorship fee vs. AdSense payout)
+// list multiple `options`; picking the card directly is only allowed when there's
+// exactly one unambiguous option.
+export const PROFESSIONS = [
+  {
+    id: "content_creator", emoji: "🎥", name: "คอนเทนต์ครีเอเตอร์ / YouTuber / TikToker",
+    aliases: ["youtuber", "tiktok", "tiktoker", "อินฟลู", "influencer", "สตรีมเมอร์", "streamer", "รีวิวสินค้า", "คอนเทนต์", "ครีเอเตอร์"],
+    options: [
+      { incomeType: "40_2", label: "รับจ้างรีวิว/สปอนเซอร์คลิป", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
+      { incomeType: "40_8", label: "ส่วนแบ่งโฆษณา/โดเนท/ขายสินค้าช่องตัวเอง", desc: "หักเหมา 60% ไม่จำกัดเพดาน" },
+    ],
+  },
+  {
+    id: "programmer", emoji: "💻", name: "โปรแกรมเมอร์ / ไอที",
+    aliases: ["programmer", "developer", "dev", "it", "ไอที", "เขียนโปรแกรม", "ซอฟต์แวร์", "software"],
+    options: [
+      { incomeType: "40_1", label: "พนักงานประจำ", desc: "เงินเดือน" },
+      { incomeType: "40_2", label: "ฟรีแลนซ์รับจ้างทำโปรเจกต์รายชิ้น", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
+      { incomeType: "40_8", label: "สร้าง/ขายแอป SaaS หรือ Digital Asset เอง", desc: "หักเหมา 60% ไม่จำกัดเพดาน" },
+    ],
+  },
+  {
+    id: "doctor", emoji: "🩺", name: "หมอ / พยาบาล / ทันตแพทย์",
+    aliases: ["doctor", "nurse", "dentist", "แพทย์", "หมอฟัน", "พยาบาล", "ทันตแพทย์"],
+    options: [
+      { incomeType: "40_1", label: "เงินเดือนประจำโรงพยาบาล", desc: "พนักงาน/ข้าราชการ" },
+      { incomeType: "40_6_med", label: "ออกตรวจอิสระ / รพ.เอกชน / คลินิกนอก", desc: "ใช้ใบประกอบโรคศิลปะ หักเหมา 60% ไม่จำกัดเพดาน" },
+      { incomeType: "40_8", label: "เปิดคลินิกส่วนตัว / ขายยาในคลินิกเอง", desc: "หักเหมา 60% ไม่จำกัดเพดาน" },
+    ],
+  },
+  {
+    id: "designer", emoji: "🎨", name: "กราฟิกดีไซเนอร์ / นักวาด",
+    aliases: ["designer", "graphic", "วาดรูป", "วาดภาพ", "illustrator", "ออกแบบ", "ดีไซเนอร์"],
+    options: [
+      { incomeType: "40_2", label: "รับจ้างวาด/ออกแบบตามบรีฟลูกค้า", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
+      { incomeType: "40_8", label: "ขายลายเส้น/สินค้าจากภาพวาดของตัวเอง", desc: "หักเหมา 60% ไม่จำกัดเพดาน" },
+    ],
+  },
+  {
+    id: "online_seller", emoji: "🛍️", name: "พ่อค้าแม่ค้าออนไลน์ / Dropship",
+    aliases: ["dropship", "ขายของออนไลน์", "ร้านค้าออนไลน์", "seller", "ค้าขาย", "พ่อค้า", "แม่ค้า", "พรีออเดอร์"],
+    options: [
+      { incomeType: "40_8", label: "ขายสินค้า/พรีออเดอร์/dropship", desc: "หักเหมา 60% ไม่จำกัดเพดาน" },
+    ],
+  },
+  {
+    id: "engineer_architect", emoji: "📐", name: "วิศวกร / สถาปนิก",
+    aliases: ["engineer", "architect", "วิศวกรรม", "สถาปัตย์", "สถาปนิก"],
+    options: [
+      { incomeType: "40_1", label: "พนักงานประจำ", desc: "เงินเดือน" },
+      { incomeType: "40_6_other", label: "รับงานอิสระ ใช้ใบประกอบวิชาชีพ", desc: "หักเหมา 30% ไม่จำกัดเพดาน" },
+    ],
+  },
+  {
+    id: "contractor", emoji: "🏗️", name: "ผู้รับเหมาก่อสร้าง",
+    aliases: ["contractor", "ก่อสร้าง", "รับเหมา", "ช่างก่อสร้าง"],
+    options: [
+      { incomeType: "40_7", label: "รับเหมาก่อสร้าง (รวมค่าแรง+วัสดุ)", desc: "หักเหมา 60% ไม่จำกัดเพดาน" },
+    ],
+  },
+  {
+    id: "tutor", emoji: "📚", name: "ติวเตอร์ / ครูสอนพิเศษ",
+    aliases: ["tutor", "teacher", "ครู", "สอนพิเศษ", "กวดวิชา"],
+    options: [
+      { incomeType: "40_2", label: "รับจ้างสอน/เป็นติวเตอร์อิสระ", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
+      { incomeType: "40_8", label: "เปิดสถาบันกวดวิชาเป็นกิจการของตัวเอง", desc: "หักเหมา 60% ไม่จำกัดเพดาน" },
+    ],
+  },
+  {
+    id: "rider", emoji: "🏍️", name: "ไรเดอร์ / ขนส่ง",
+    aliases: ["rider", "delivery", "grab", "แกร็บ", "ส่งของ", "ขนส่ง", "มอเตอร์ไซค์รับจ้าง"],
+    options: [
+      { incomeType: "40_2", label: "ค่าจ้าง/ค่าบริการส่งของ", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
+    ],
+  },
+  {
+    id: "broker_agent", emoji: "🤝", name: "นายหน้า / ตัวแทนประกัน",
+    aliases: ["broker", "agent", "ประกัน", "insurance", "อสังหา", "นายหน้าที่ดิน", "ตัวแทน"],
+    options: [
+      { incomeType: "40_2", label: "ค่านายหน้า/ค่าคอมมิชชั่น", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
+    ],
+  },
+  {
+    id: "accountant_lawyer", emoji: "⚖️", name: "นักบัญชี / ทนาย",
+    aliases: ["accountant", "lawyer", "บัญชี", "ทนายความ", "กฎหมาย", "สอบบัญชี"],
+    options: [
+      { incomeType: "40_1", label: "พนักงานประจำ", desc: "เงินเดือน" },
+      { incomeType: "40_6_other", label: "รับงานอิสระ ใช้ใบประกอบวิชาชีพ", desc: "หักเหมา 30% ไม่จำกัดเพดาน" },
+    ],
+  },
+  {
+    id: "photographer", emoji: "📷", name: "ช่างภาพ / ตัดต่อ",
+    aliases: ["photographer", "editor", "ถ่ายภาพ", "ตัดต่อวิดีโอ", "videographer", "camera", "ตากล้อง"],
+    options: [
+      { incomeType: "40_2", label: "รับจ้างถ่าย/ตัดต่อตามบรีฟลูกค้า", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
+      { incomeType: "40_8", label: "ขายภาพสต็อก/พรีเซ็ตของตัวเอง", desc: "หักเหมา 60% ไม่จำกัดเพดาน" },
+    ],
+  },
+  {
+    id: "performer", emoji: "🎤", name: "นักร้อง / นักแสดง",
+    aliases: ["singer", "actor", "actress", "ร้องเพลง", "แสดง", "ดารา", "ศิลปิน", "นักดนตรี"],
+    options: [
+      { incomeType: "40_2", label: "รับจ้างแสดง/ร้องเพลงตามงาน (ค่าตัว)", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
+      { incomeType: "40_3", label: "ค่าลิขสิทธิ์เพลง/ผลงานที่แต่งเอง", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
+    ],
+  },
+  {
+    id: "writer", emoji: "✍️", name: "นักเขียน / นักแปล",
+    aliases: ["writer", "translator", "เขียนหนังสือ", "แปลภาษา", "author", "นักแปล"],
+    options: [
+      { incomeType: "40_2", label: "รับจ้างเขียน/แปลตามบรีฟลูกค้า", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
+      { incomeType: "40_3", label: "ค่าลิขสิทธิ์ผลงาน/หนังสือของตัวเอง", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
+    ],
+  },
+  {
+    id: "investor", emoji: "💰", name: "นักลงทุน",
+    aliases: ["investor", "หุ้น", "คริปโต", "crypto", "trader", "เทรด", "กองทุน"],
+    options: [
+      { incomeType: "40_4", label: "ดอกเบี้ย/เงินปันผล/กำไรจากการลงทุน", desc: "หักค่าใช้จ่ายไม่ได้" },
+    ],
+  },
+  {
+    id: "landlord", emoji: "🏠", name: "เจ้าของคอนโดปล่อยเช่า",
+    aliases: ["landlord", "rent", "ปล่อยเช่า", "ห้องเช่า", "คอนโด", "อพาร์ตเม้นท์", "หอพัก"],
+    options: [
+      { incomeType: "40_5", label: "ค่าเช่าบ้าน/คอนโด/ที่ดิน/รถ", desc: "หักเหมา 30% ไม่จำกัดเพดาน" },
+    ],
+  },
+];
+
+// Always-visible catch-all for anyone whose job isn't in the 16 profession cards above.
+export const OTHER_PROFESSION = {
+  id: "other", emoji: "🤔", name: "ไม่แน่ใจ / อาชีพอื่นๆ",
+  aliases: [],
+  options: [
+    { incomeType: "40_8", label: "ขายสินค้า/ผลิตภัณฑ์", desc: "เช่น ทำขนม ปลูกต้นไม้ขาย" },
+    { incomeType: "40_2", label: "ให้บริการ/รับจ้าง", desc: "เช่น ช่างตัดผม ช่างซ่อม" },
+  ],
+};
+
 export default function App() {
   // --- INPUT STATES ---
   const [revenue, setRevenue] = useState<number>(1800000); // 1.8M THB default (VAT limit)
   const [incomeType, setIncomeType] = useState<string>("40_8");
-  const [selectedPersona, setSelectedPersona] = useState<string>("ค้าขาย/เกษตรกร");
+  const [selectedPersona, setSelectedPersona] = useState<string>("พ่อค้าแม่ค้าออนไลน์ / Dropship");
   const [personalTaxStep, setPersonalTaxStep] = useState<number>(1);
   const [incomeTypeEditorOpen, setIncomeTypeEditorOpen] = useState<boolean>(false);
-  const [otherPersonaOpen, setOtherPersonaOpen] = useState<boolean>(false);
+  const [professionSearch, setProfessionSearch] = useState<string>("");
+  const [expandedProfessionId, setExpandedProfessionId] = useState<string | null>(null);
   const [pnd94Dismissed, setPnd94Dismissed] = useState<boolean>(false);
   const [useMultipleIncomes, setUseMultipleIncomes] = useState<boolean>(false);
   const [incomes, setIncomes] = useState<{ id: string; typeId: string; amount: number }[]>([
@@ -2438,104 +2582,110 @@ export default function App() {
               <div className="lg:col-span-5 space-y-5">
 
                 {/* Persona Quick-Picker: jumps straight to a sensible income type */}
-                {personalTaxStep === 1 && (
-                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full mb-2.5">
-                    ขั้นที่ 1
-                  </span>
-                  <h3 className="text-base font-bold text-slate-900 mb-0.5">ธุรกิจของคุณใกล้เคียงแบบไหนที่สุด?</h3>
-                  <p className="text-xs text-slate-500 mb-3">ครอบคลุมเงินได้ทุกประเภทตามมาตรา 40(1)-40(8)</p>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[
-                      { id: "40_1", emoji: "🏛️", name: "ข้าราชการ/พนักงาน", desc: "เงินเดือน โบนัส · 40(1)" },
-                      { id: "40_2", emoji: "💻", name: "ฟรีแลนซ์/รับจ้าง", desc: "ช่างภาพ กราฟิก นายหน้า ไรเดอร์ · 40(2)" },
-                      { id: "40_3", emoji: "🎨", name: "ค่าลิขสิทธิ์", desc: "งานเขียน เพลง · 40(3)" },
-                      { id: "40_4", emoji: "💰", name: "เงินลงทุน/ปันผล", desc: "ดอกเบี้ย ปันผล · 40(4)" },
-                      { id: "40_5", emoji: "🏠", name: "ให้เช่าทรัพย์สิน", desc: "บ้าน ที่ดิน รถ · 40(5)" },
-                      { id: "40_6_med", emoji: "🩺", name: "แพทย์/พยาบาล", desc: "วิชาชีพเวชกรรม · 40(6)" },
-                      { id: "40_6_other", emoji: "⚖️", name: "วิชาชีพอิสระอื่น", desc: "ทนาย บัญชี วิศวกร · 40(6)" },
-                      { id: "40_7", emoji: "🏗️", name: "รับเหมาก่อสร้าง", desc: "งานก่อสร้าง · 40(7)" },
-                      { id: "40_8", emoji: "🛍️", name: "ค้าขาย/เกษตรกร", desc: "ขายของ ร้านอาหาร ทำไร่ · 40(8)" },
-                    ].map((p) => (
-                      <button
-                        key={p.name}
-                        type="button"
-                        onClick={() => { setIncomeType(p.id); setUseMultipleIncomes(false); setSelectedPersona(p.name); setIncomeTypeEditorOpen(false); setOtherPersonaOpen(false); }}
-                        className={`relative text-left p-2.5 rounded-xl border-2 bg-white transition cursor-pointer ${
-                          selectedPersona === p.name
-                            ? "border-blue-600"
-                            : "border-slate-200 hover:border-blue-300"
-                        }`}
-                      >
-                        {selectedPersona === p.name && (
-                          <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-blue-600 text-white text-[9px] font-bold flex items-center justify-center">✓</span>
-                        )}
-                        <span className="text-lg block mb-0.5">{p.emoji}</span>
-                        <span className="text-xs font-bold text-slate-900 block leading-tight pr-4">{p.name}</span>
-                        <span className="text-[10.5px] text-slate-500 block mt-0.5 leading-tight">{p.desc}</span>
-                      </button>
-                    ))}
+                {personalTaxStep === 1 && (() => {
+                  const q = professionSearch.trim().toLowerCase();
+                  const filteredProfessions = q
+                    ? PROFESSIONS.filter((prof) =>
+                        prof.name.toLowerCase().includes(q) || prof.aliases.some((a) => a.toLowerCase().includes(q))
+                      )
+                    : PROFESSIONS;
+                  const allCards = [...filteredProfessions, OTHER_PROFESSION];
+                  const bracketOf = (incomeTypeId: string) =>
+                    INCOME_TYPES.find((t) => t.id === incomeTypeId)?.name.match(/40\([^)]+\)/)?.[0] || "";
+                  const selectOption = (profName: string, opt: { incomeType: string; label: string }, isSingle: boolean) => {
+                    setIncomeType(opt.incomeType);
+                    setUseMultipleIncomes(false);
+                    setSelectedPersona(isSingle ? profName : `${profName} (${opt.label})`);
+                    setIncomeTypeEditorOpen(false);
+                    setRevenue(0);
+                    setExpandedProfessionId(null);
+                  };
+                  const expandedProf = allCards.find((p) => p.id === expandedProfessionId);
+                  return (
+                    <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full mb-2.5">
+                        ขั้นที่ 1
+                      </span>
+                      <h3 className="text-base font-bold text-slate-900 mb-0.5">อาชีพของคุณคืออะไร?</h3>
+                      <p className="text-xs text-slate-500 mb-3">พิมพ์ค้นหา หรือเลือกจากรายการด้านล่าง ครอบคลุมเงินได้ทุกประเภทตามมาตรา 40(1)-40(8)</p>
 
-                    {/* Fallback for anyone whose job doesn't match the 9 cards above */}
-                    <button
-                      type="button"
-                      onClick={() => setOtherPersonaOpen(true)}
-                      className={`relative text-left p-2.5 rounded-xl border-2 bg-white transition cursor-pointer ${
-                        selectedPersona.startsWith("อาชีพอื่นๆ") || otherPersonaOpen
-                          ? "border-blue-600"
-                          : "border-slate-200 hover:border-blue-300"
-                      }`}
-                    >
-                      {selectedPersona.startsWith("อาชีพอื่นๆ") && !otherPersonaOpen && (
-                        <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-blue-600 text-white text-[9px] font-bold flex items-center justify-center">✓</span>
-                      )}
-                      <span className="text-lg block mb-0.5">🤔</span>
-                      <span className="text-xs font-bold text-slate-900 block leading-tight pr-4">ไม่แน่ใจ / อาชีพอื่นๆ</span>
-                      <span className="text-[10.5px] text-slate-500 block mt-0.5 leading-tight">ไม่ตรงกับข้างบนสักอัน</span>
-                    </button>
-                  </div>
-
-                  {/* Plain-language fallback: skip the legal categories entirely, ask what they'd actually say out loud */}
-                  {otherPersonaOpen && (
-                    <div className="mt-3 p-3.5 bg-blue-50 border border-blue-100 rounded-xl space-y-2.5">
-                      <p className="text-xs font-semibold text-blue-900">ไม่เป็นไร ตอบแค่นี้ก็พอ ปรับเปลี่ยนภายหลังได้เสมอ</p>
-                      <p className="text-xs text-slate-600">รายได้หลักของคุณมาจากการ...</p>
-                      <div className="grid grid-cols-2 gap-2">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setIncomeType("40_8");
-                            setUseMultipleIncomes(false);
-                            setSelectedPersona("อาชีพอื่นๆ (ขายสินค้า)");
-                            setIncomeTypeEditorOpen(false);
-                            setOtherPersonaOpen(false);
-                          }}
-                          className="p-2.5 rounded-xl border-2 border-slate-200 bg-white hover:border-blue-400 transition cursor-pointer text-left"
-                        >
-                          <span className="text-lg block mb-0.5">🛍️</span>
-                          <span className="text-xs font-bold text-slate-900 block">ขายสินค้า/ผลิตภัณฑ์</span>
-                          <span className="text-[10px] text-slate-400 block mt-0.5 leading-tight">เช่น ทำขนม ปลูกต้นไม้ขาย</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setIncomeType("40_2");
-                            setUseMultipleIncomes(false);
-                            setSelectedPersona("อาชีพอื่นๆ (ให้บริการ)");
-                            setIncomeTypeEditorOpen(false);
-                            setOtherPersonaOpen(false);
-                          }}
-                          className="p-2.5 rounded-xl border-2 border-slate-200 bg-white hover:border-blue-400 transition cursor-pointer text-left"
-                        >
-                          <span className="text-lg block mb-0.5">🤝</span>
-                          <span className="text-xs font-bold text-slate-900 block">ให้บริการ/รับจ้าง</span>
-                          <span className="text-[10px] text-slate-400 block mt-0.5 leading-tight">เช่น ช่างภาพ ติวเตอร์ ช่างตัดผม</span>
-                        </button>
+                      <div className="relative mb-3">
+                        <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <input
+                          type="text"
+                          value={professionSearch}
+                          onChange={(e) => setProfessionSearch(e.target.value)}
+                          placeholder="ค้นหาอาชีพ เช่น หมอ, วาดรูป, ขายของออนไลน์, youtuber..."
+                          className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
                       </div>
+
+                      <div className="grid grid-cols-3 gap-2">
+                        {allCards.map((prof) => {
+                          const isSingle = prof.options.length === 1;
+                          const isSelected = selectedPersona === prof.name || selectedPersona.startsWith(`${prof.name} (`);
+                          const isExpanded = expandedProfessionId === prof.id;
+                          return (
+                            <button
+                              key={prof.id}
+                              type="button"
+                              onClick={() => {
+                                if (isSingle) {
+                                  selectOption(prof.name, prof.options[0], true);
+                                } else {
+                                  setExpandedProfessionId(isExpanded ? null : prof.id);
+                                }
+                              }}
+                              className={`relative text-left p-2.5 rounded-xl border-2 bg-white transition cursor-pointer ${
+                                isSelected || isExpanded ? "border-blue-600" : "border-slate-200 hover:border-blue-300"
+                              }`}
+                            >
+                              {isSelected && !isExpanded && (
+                                <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-blue-600 text-white text-[9px] font-bold flex items-center justify-center">✓</span>
+                              )}
+                              <span className="text-lg block mb-0.5">{prof.emoji}</span>
+                              <span className="text-xs font-bold text-slate-900 block leading-tight pr-4">{prof.name}</span>
+                              <span className="text-[10.5px] text-slate-500 block mt-0.5 leading-tight">
+                                {isSingle ? `${prof.options[0].label} · ${bracketOf(prof.options[0].incomeType)}` : "มีได้หลายแบบ · แตะเพื่อเลือก"}
+                              </span>
+                            </button>
+                          );
+                        })}
+                        {filteredProfessions.length === 0 && (
+                          <div className="col-span-3 text-center text-xs text-slate-400 py-4">
+                            ไม่พบอาชีพที่ค้นหา เลือก &ldquo;ไม่แน่ใจ / อาชีพอื่นๆ&rdquo; ด้านบนแทนได้เลย
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Sub-choice panel for professions whose income can fall under more than one มาตรา 40 bracket */}
+                      {expandedProf && (
+                        <div className="mt-3 p-3.5 bg-blue-50 border border-blue-100 rounded-xl space-y-2.5">
+                          <p className="text-xs font-semibold text-blue-900">{expandedProf.name} รับรายได้แบบไหน?</p>
+                          <p className="text-[11px] text-slate-500">เลือกแบบที่ตรงกับคุณมากที่สุด ปรับเปลี่ยนภายหลังได้เสมอ</p>
+                          <div className="space-y-1.5">
+                            {expandedProf.options.map((opt, idx) => (
+                              <button
+                                key={idx}
+                                type="button"
+                                onClick={() => selectOption(expandedProf.name, opt, false)}
+                                className="w-full flex items-start gap-2 p-2.5 rounded-lg border-2 border-slate-200 bg-white hover:border-blue-400 transition cursor-pointer text-left"
+                              >
+                                <span className="text-[10px] font-extrabold text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded shrink-0 mt-0.5">
+                                  {bracketOf(opt.incomeType)}
+                                </span>
+                                <span className="flex-1">
+                                  <span className="text-xs font-bold text-slate-900 block">{opt.label}</span>
+                                  <span className="text-[10px] text-slate-500 block mt-0.5">{opt.desc}</span>
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                )}
+                  );
+                })()}
 
                 {/* 1. Core Income section */}
                 {personalTaxStep === 2 && (
