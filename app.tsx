@@ -2623,7 +2623,9 @@ export default function App() {
                       <div className="grid grid-cols-3 gap-2">
                         {allCards.map((prof) => {
                           const isSingle = prof.options.length === 1;
-                          const isSelected = selectedPersona === prof.name || selectedPersona.startsWith(`${prof.name} (`);
+                          const isSelected =
+                            !expandedProfessionId &&
+                            (selectedPersona === prof.name || selectedPersona.startsWith(`${prof.name} (`));
                           const isExpanded = expandedProfessionId === prof.id;
                           return (
                             <button
