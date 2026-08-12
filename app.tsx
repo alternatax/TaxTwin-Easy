@@ -989,7 +989,7 @@ export default function App() {
 
         {/* Small Legend Values Grid */}
         <div className="grid grid-cols-3 gap-1 pt-0.5 text-[10px] text-slate-500 leading-tight">
-          <div>
+          <div title={caseId === "corporate" ? `ภาษี ${corporateResult.corpTax.toLocaleString()} + ค่าทำบัญชี ${auditFee.toLocaleString()} = ${caseTax.toLocaleString()}` : undefined}>
             <div className="flex items-center gap-0.5">
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
               <span className="text-rose-650 font-bold truncate">{caseId === "corporate" ? "ภาษี+ค่าธรรมเนียม" : "ภาษี"} ({(caseTax / compIncomesVal * 100).toFixed(0)}%)</span>
@@ -2463,6 +2463,12 @@ export default function App() {
                         </span>
                       </div>
                     </div>
+                    {/* Spell out the addition so the total is never a mystery number */}
+                    <p className="text-[10.5px] text-slate-400 text-right mt-1 font-mono">
+                      ภาษี {corporateResult.corpTax.toLocaleString()}
+                      {corporateResult.dividendTax > 0 ? ` + ปันผล ${corporateResult.dividendTax.toLocaleString()}` : ""}
+                      {" "}+ ค่าทำบัญชี {auditFee.toLocaleString()} = {corporateResult.totalCost.toLocaleString()}
+                    </p>
                   </div>
                 </div>
 
