@@ -317,12 +317,12 @@ export default function App() {
 
   // --- DIRECTOR SALARY PLANNER STATES ---
   const [plannerCase, setPlannerCase] = useState<number>(1); // 1 = Case 1, 2 = Case 2, 3 = Case 3, 0 = Custom
-  const [plannerRevenue, setPlannerRevenue] = useState<number>(50000000);
-  const [plannerExpenses, setPlannerExpenses] = useState<number>(40000000);
-  const [plannerSalary, setPlannerSalary] = useState<number>(200000); // Monthly salary
-  const [plannerCase1Salary, setPlannerCase1Salary] = useState<number>(200000); // Case 1 Monthly salary
-  const [plannerCase2Salary, setPlannerCase2Salary] = useState<number>(100000); // Case 2 Monthly salary
-  const [plannerCase3Salary, setPlannerCase3Salary] = useState<number>(50000); // Case 3 Monthly salary
+  const [plannerRevenue, setPlannerRevenue] = useState<number>(0);
+  const [plannerExpenses, setPlannerExpenses] = useState<number>(0);
+  const [plannerSalary, setPlannerSalary] = useState<number>(0); // Monthly salary
+  const [plannerCase1Salary, setPlannerCase1Salary] = useState<number>(0); // Case 1 Monthly salary
+  const [plannerCase2Salary, setPlannerCase2Salary] = useState<number>(0); // Case 2 Monthly salary
+  const [plannerCase3Salary, setPlannerCase3Salary] = useState<number>(0); // Case 3 Monthly salary
   const [plannerSme, setPlannerSme] = useState<boolean>(false);
   const [plannerDividendTax, setPlannerDividendTax] = useState<boolean>(true);
   const [plannerUseCustomDeductions, setPlannerUseCustomDeductions] = useState<boolean>(false);
@@ -4103,7 +4103,7 @@ export default function App() {
               <div className="mt-4 bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 text-xs text-amber-900 flex items-start gap-2">
                 <Info className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                 <span>
-                  เครื่องมือนี้สำหรับผู้ที่<strong>จดทะเบียนนิติบุคคลแล้ว</strong>และมีรายได้ระดับหนึ่ง ใช้วางแผนว่าควรจ่ายเงินเดือนกรรมการเท่าไหร่ ตัวเลขตั้งต้นด้านล่างเป็นตัวอย่างเท่านั้น หากยังไม่มีบริษัท แนะนำให้เริ่มที่แท็บ &ldquo;ภาษีบุคคลธรรมดา&rdquo; ก่อน
+                  เครื่องมือนี้สำหรับผู้ที่<strong>จดทะเบียนนิติบุคคลแล้ว</strong>และมีรายได้ระดับหนึ่ง ใช้วางแผนว่าควรจ่ายเงินเดือนกรรมการเท่าไหร่ กรอกตัวเลขของบริษัทคุณด้านล่างเพื่อเริ่มคำนวณ หากยังไม่มีบริษัท แนะนำให้เริ่มที่แท็บ &ldquo;ภาษีบุคคลธรรมดา&rdquo; ก่อน
                 </span>
               </div>
             </div>
