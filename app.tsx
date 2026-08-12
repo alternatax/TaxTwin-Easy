@@ -4558,9 +4558,6 @@ export default function App() {
                             <Sparkles className="w-5 h-5 text-blue-400" />
                             เจาะลึกเฉพาะจุด: Case {plannerCase > 0 ? plannerCase : "กำหนดเอง"} (กำหนดเงินเดือน {plannerSalary.toLocaleString()} บาท/เดือน)
                           </h3>
-                          <p className="text-xs md:text-sm font-semibold text-slate-300 mt-1">
-                            ตารางเปรียบเทียบเชิงลึกแสดงภาระรวมระหว่านิติบุคคล ปะทะ ภาษีบุคคลเพื่อเกณฑ์ประหยัดครอบครัวสูงสุด
-                          </p>
                         </div>
                       </div>
 
@@ -5263,7 +5260,7 @@ export default function App() {
                         autoComplete="off"
                         value={authEmail}
                         onChange={(e) => setAuthEmail(e.target.value)}
-                        placeholder="เช่น name@company.co"
+                        placeholder="เช่น taxtwineasy@gmail.com"
                         className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none pl-9 pr-3 py-2.5 rounded-xl text-xs text-slate-800 transition"
                       />
                     </div>
