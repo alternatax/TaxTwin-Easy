@@ -1655,6 +1655,7 @@ export default function App() {
                       <label className="text-sm font-semibold text-slate-950 flex items-center gap-1.5">
                         <Coins className="w-4 h-4 text-blue-600" />
                         รายรับทั้งหมดต่อปี (Revenue)
+                        {revenue === 0 && !useMultipleIncomes && <span className="text-red-500">*</span>}
                       </label>
                       {!useMultipleIncomes && (
                         <div className="flex flex-wrap gap-1">
@@ -1691,9 +1692,11 @@ export default function App() {
                         className={`w-full pl-4 pr-12 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-lg font-semibold transition-all ${
                           useMultipleIncomes
                             ? "bg-slate-100 border-slate-200 text-slate-500 cursor-not-allowed select-none"
+                            : revenue === 0
+                            ? "bg-amber-50 border-amber-300 text-slate-900"
                             : "bg-white border-slate-300 text-slate-900"
                         }`}
-                        placeholder="เช่น 1,500,000"
+                        placeholder="กรอกรายได้ต่อปีของคุณ เช่น 1,500,000"
                       />
                       <div className="absolute inset-y-0 right-0 py-3 pr-4 flex items-center pointer-events-none text-slate-400 font-bold font-mono">
                        
@@ -2880,7 +2883,10 @@ export default function App() {
                   {/* Revenue Input */}
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <label className="text-xs font-bold text-slate-700">รายรับทั้งหมดต่อปี (บาท)</label>
+                      <label className="text-xs font-bold text-slate-700 flex items-center gap-1">
+                        รายรับทั้งหมดต่อปี (บาท)
+                        {revenue === 0 && !useMultipleIncomes && <span className="text-red-500">*</span>}
+                      </label>
                       <span className="text-xs font-mono font-bold text-slate-900">{revenue.toLocaleString()} บาท</span>
                     </div>
                     <div className="relative">
@@ -2889,10 +2895,12 @@ export default function App() {
                         value={revenue === 0 ? "" : revenue.toLocaleString("en-US")}
                         disabled={useMultipleIncomes}
                         onChange={(e) => setRevenue(Math.max(0, parseInt(e.target.value.replace(/[^0-9]/g, "")) || 0))}
-                        placeholder="0"
+                        placeholder="กรอกรายได้ต่อปีของคุณ เช่น 500,000"
                         className={`w-full pl-4 pr-10 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm font-semibold transition-all ${
                           useMultipleIncomes
                             ? "bg-slate-100 border-slate-200 text-slate-500 cursor-not-allowed select-none"
+                            : revenue === 0
+                            ? "bg-amber-50 border-amber-300 text-slate-900"
                             : "bg-white border-slate-300 text-slate-900"
                         }`}
                       />
