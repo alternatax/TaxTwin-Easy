@@ -2441,10 +2441,10 @@ export default function App() {
 
                         {/* Headline number: the plain answer to "เสียภาษีเท่าไหร่" — kept separate
                             from the fee-inclusive total below so it's never buried as a small line item. */}
-                        <div className="p-4 bg-indigo-50 rounded-xl border-2 border-indigo-200 text-center mt-2">
-                          <span className="text-[11px] font-bold text-indigo-700 uppercase tracking-wide">ภาษีนิติบุคคล (ภ.ง.ด.50)</span>
-                          <div className="text-2xl font-black font-mono text-indigo-800 mt-0.5">
-                            {corporateResult.corpTax.toLocaleString()} <span className="text-sm font-bold">บ.</span>
+                        <div className="p-2.5 bg-indigo-50 rounded-xl border border-indigo-200 text-center mt-2">
+                          <span className="text-[10px] font-bold text-indigo-700 uppercase tracking-wide">ภาษีนิติบุคคล (ภ.ง.ด.50)</span>
+                          <div className="text-base font-black font-mono text-indigo-800 mt-0.5">
+                            {corporateResult.corpTax.toLocaleString()} <span className="text-xs font-bold">บ.</span>
                           </div>
                         </div>
 
