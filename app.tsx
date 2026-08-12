@@ -963,7 +963,7 @@ export default function App() {
               <div
                 style={{ width: `${taxPercent}%` }}
                 className="bg-rose-500 h-full transition-all duration-320 hover:opacity-90"
-                title={`ส่วนจ่ายภาษี ${(caseTax / compIncomesVal * 100).toFixed(1)}%`}
+                title={`${caseId === "corporate" ? "ส่วนภาษี+ค่าธรรมเนียม" : "ส่วนจ่ายภาษี"} ${(caseTax / compIncomesVal * 100).toFixed(1)}%`}
               />
             )}
             {expPercent > 0 && (
@@ -988,7 +988,7 @@ export default function App() {
           <div>
             <div className="flex items-center gap-0.5">
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
-              <span className="text-rose-650 font-bold truncate">ภาษี ({(caseTax / compIncomesVal * 100).toFixed(0)}%)</span>
+              <span className="text-rose-650 font-bold truncate">{caseId === "corporate" ? "ภาษี+ค่าธรรมเนียม" : "ภาษี"} ({(caseTax / compIncomesVal * 100).toFixed(0)}%)</span>
             </div>
             <span className="font-mono font-extrabold text-rose-600 block text-[11px] mt-0.5">
               {caseTax.toLocaleString()}
@@ -2384,6 +2384,9 @@ export default function App() {
                             <span className="absolute right-1.5 text-slate-400 font-bold text-[11px]"></span>
                           </div>
                         </div>
+                        <p className="text-[10px] text-slate-400 leading-relaxed -mt-1 mb-2">
+                          ค่าทำบัญชี/สอบบัญชีเป็นค่าใช้จ่ายบังคับรายปีของนิติบุคคล (บุคคลธรรมดาไม่ต้องจ่าย) จึงถูกนับรวมกับภาษีนิติบุคคลเป็น &ldquo;ภาระรวม&rdquo; เพื่อเทียบกับภาษีบุคคลธรรมดาอย่างเป็นธรรม
+                        </p>
 
                         <div className="p-3 bg-slate-50 rounded-xl border border-dashed border-slate-200 mt-2">
                           <div className="flex justify-between items-center">
