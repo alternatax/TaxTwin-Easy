@@ -104,6 +104,13 @@ export const INCOME_TYPES = [
 // exactly one unambiguous option.
 export const PROFESSIONS = [
   {
+    id: "employee", emoji: "🏛️", name: "พนักงาน/ข้าราชการ (เงินเดือนประจำ)",
+    aliases: ["employee", "staff", "office worker", "เงินเดือน", "ข้าราชการ", "พนักงานบริษัท", "ลูกจ้าง", "officer", "มนุษย์เงินเดือน"],
+    options: [
+      { incomeType: "40_1", label: "เงินเดือน ค่าจ้าง เบี้ยเลี้ยง โบนัส", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
+    ],
+  },
+  {
     id: "content_creator", emoji: "🎥", name: "คอนเทนต์ครีเอเตอร์ / YouTuber / TikToker",
     aliases: ["youtuber", "tiktok", "tiktoker", "อินฟลู", "influencer", "สตรีมเมอร์", "streamer", "รีวิวสินค้า", "คอนเทนต์", "ครีเอเตอร์"],
     options: [
