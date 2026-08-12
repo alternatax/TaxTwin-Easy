@@ -4448,9 +4448,9 @@ export default function App() {
                           </div>
 
                           <div className="pt-2">
-                            <div className="bg-slate-50 border border-slate-150 rounded-xl p-3 flex justify-between items-center gap-2 text-slate-700">
-                              <span className="text-xs font-extrabold">ภาระภาษีบริษัทรวมเดิม (ต่อปี):</span>
-                              <div className="shrink-0 px-3 py-1.5 rounded-lg border border-slate-200 bg-white font-mono font-black text-slate-900 text-base">
+                            <div className="bg-slate-50 border border-slate-150 rounded-xl p-3 text-slate-700">
+                              <div className="text-xs font-extrabold mb-1.5">ภาระภาษีบริษัทรวมเดิม (ต่อปี):</div>
+                              <div className="w-full text-right px-3 py-1.5 rounded-lg border border-slate-200 bg-white font-mono font-black text-slate-900 text-base">
                                 {(activeRes.corpTaxBefore + activeRes.divTaxBefore).toLocaleString()}
                               </div>
                             </div>
@@ -4517,9 +4517,9 @@ export default function App() {
                           </div>
 
                           <div className="pt-2">
-                            <div className="bg-blue-50/50 border border-blue-200 rounded-xl p-3 flex justify-between items-center gap-2 text-blue-900">
-                              <span className="text-xs font-extrabold">ภาระภาษีบริษัทรวมใหม่ (ต่อปี):</span>
-                              <div className="shrink-0 px-3 py-1.5 rounded-lg border border-blue-200 bg-white font-mono font-black text-blue-700 text-base">
+                            <div className="bg-blue-50/50 border border-blue-200 rounded-xl p-3 text-blue-900">
+                              <div className="text-xs font-extrabold mb-1.5">ภาระภาษีบริษัทรวมใหม่ (ต่อปี):</div>
+                              <div className="w-full text-right px-3 py-1.5 rounded-lg border border-blue-200 bg-white font-mono font-black text-blue-700 text-base">
                                 {(activeRes.corpTaxAfter + activeRes.divTaxAfter).toLocaleString()}
                               </div>
                             </div>
@@ -4641,11 +4641,11 @@ export default function App() {
 
                     {/* RED BORDER PILL AT THE BOTTOM */}
                     <div className="mt-8 pt-4 border-t border-slate-100">
-                      <div className="bg-red-50 border-2 border-red-500 rounded-2xl p-4 flex justify-between items-center gap-2">
-                        <span className="font-black text-red-950 text-xs">📈 ภาษีบุคคลฯ ที่ต้องจ่าย (ต่อปี):</span>
-                        <span className="font-mono font-black text-red-700 bg-white px-3 py-1.5 rounded-xl border border-red-200 shadow-sm text-base inline-block shrink-0">
+                      <div className="bg-red-50 border-2 border-red-500 rounded-2xl p-4">
+                        <div className="font-black text-red-950 text-xs mb-1.5">📈 ภาษีเงินได้บุคคลธรรมดาที่ต้องชำระ (ต่อปี):</div>
+                        <div className="w-full text-right font-mono font-black text-red-700 bg-white px-3 py-1.5 rounded-xl border border-red-200 shadow-sm text-base">
                           +{activeRes.persTax.toLocaleString()}
-                        </span>
+                        </div>
                       </div>
                     </div>
                   </div>
