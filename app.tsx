@@ -2401,19 +2401,16 @@ export default function App() {
                           </div>
                         </div>
 
-                        <div className="space-y-2 pt-1 border-t border-slate-100 mt-2">
-                          <div className="flex justify-between items-center py-0.5">
-                            <span className="text-slate-500 text-xs font-medium">ภาษีนิติบุคคล (ภ.ง.ด.50):</span>
-                            <div className="relative flex items-center w-[145px]">
-                              <input
-                                type="text"
-                                readOnly
-                                value={corporateResult.corpTax.toLocaleString()}
-                                className="w-full pr-4 py-1 text-right font-mono text-slate-700 font-semibold bg-slate-50/50 rounded border border-slate-100 transition-all focus:outline-none cursor-default text-xs"
-                              />
-                              <span className="absolute right-1.5 text-slate-400 font-bold text-[10px]"></span>
-                            </div>
+                        {/* Headline number: the plain answer to "เสียภาษีเท่าไหร่" — kept separate
+                            from the fee-inclusive total below so it's never buried as a small line item. */}
+                        <div className="p-4 bg-indigo-50 rounded-xl border-2 border-indigo-200 text-center mt-2">
+                          <span className="text-[11px] font-bold text-indigo-700 uppercase tracking-wide">ภาษีนิติบุคคล (ภ.ง.ด.50)</span>
+                          <div className="text-2xl font-black font-mono text-indigo-800 mt-0.5">
+                            {corporateResult.corpTax.toLocaleString()} <span className="text-sm font-bold">บ.</span>
                           </div>
+                        </div>
+
+                        <div className="space-y-2 pt-1 border-t border-slate-100 mt-2">
                           {corporateResult.dividendTax > 0 && (
                             <div className="flex justify-between items-center py-0.5">
                               <span className="text-slate-500 text-xs font-medium">ภาษีเงินปันผล (10%):</span>
@@ -2451,23 +2448,16 @@ export default function App() {
                   </div>
 
                   <div className="border-t border-slate-100 pt-3 mt-4">
-                    <div className="flex justify-between items-end">
-                      <div>
-                        <span className="text-xs text-slate-400 uppercase font-mono block">อัตราภาษีนิติบุคคล</span>
-                        <strong className="text-slate-900 text-sm md:text-base font-mono">{corporateResult.marginalRate}%</strong>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-xs text-slate-500 block">ภาระรวมโครงสร้างนิติบุคคล</span>
-                        <span className="text-base md:text-lg font-bold font-mono text-indigo-600 block">
-                          {corporateResult.totalCost.toLocaleString()} บ.
-                        </span>
-                      </div>
+                    <div>
+                      <span className="text-xs text-slate-400 uppercase font-mono block">อัตราภาษีนิติบุคคล</span>
+                      <strong className="text-slate-900 text-sm md:text-base font-mono">{corporateResult.marginalRate}%</strong>
                     </div>
-                    {/* Spell out the addition so the total is never a mystery number */}
-                    <p className="text-[10.5px] text-slate-400 text-right mt-1 font-mono">
-                      ภาษี {corporateResult.corpTax.toLocaleString()}
+                    {/* Secondary/supporting figure — the fee-inclusive total, kept small so it
+                        doesn't compete with the ภ.ง.ด.50 headline number above for attention. */}
+                    <p className="text-[10.5px] text-slate-400 text-right mt-2 font-mono leading-relaxed">
+                      รวมภาระทั้งหมด (ภาษี {corporateResult.corpTax.toLocaleString()}
                       {corporateResult.dividendTax > 0 ? ` + ปันผล ${corporateResult.dividendTax.toLocaleString()}` : ""}
-                      {" "}+ ค่าทำบัญชี {auditFee.toLocaleString()} = {corporateResult.totalCost.toLocaleString()}
+                      {" "}+ ค่าทำบัญชี {auditFee.toLocaleString()}) = {corporateResult.totalCost.toLocaleString()} บ.
                     </p>
                   </div>
                 </div>
