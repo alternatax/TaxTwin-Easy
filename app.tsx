@@ -704,7 +704,11 @@ export default function App() {
     const defaultCorpExpenses = expenseType === "flat" ? revenue * 0.45 : actualExpenseInput;
     const activeExpense = corporateExpensesOverride !== null ? corporateExpensesOverride : defaultCorpExpenses;
 
-    const netProfit = Math.max(0, revenue - activeExpense);
+    // Audit/bookkeeping fees are a deductible business expense for corporate
+    // income tax purposes, so they reduce taxable profit here — matching the
+    // "ลบ ค่าทำ/ตรวจบัญชี CPA" row shown right above "กำไรสุทธิทางภาษี" in the UI,
+    // which previously displayed as if subtracted but wasn't actually applied.
+    const netProfit = Math.max(0, revenue - activeExpense - auditFee);
 
     let corpTax = 0;
     const breakdown: TaxBracket[] = [];
