@@ -264,6 +264,9 @@ export default function App() {
   const [investmentSavings, setInvestmentSavings] = useState<number>(30000); // SSF/RMF/ThaiESG up to 200,000 THB
   const [hasSpouse, setHasSpouse] = useState<boolean>(false); // Spouse allowance: 60,000 THB
   const [withheldTax, setWithheldTax] = useState<number>(0); // ภาษีหัก ณ ที่จ่าย สะสมระหว่างปี (เครดิตหักจากยอดที่ต้องชำระตอนยื่นแบบ)
+  const [taxpayerName, setTaxpayerName] = useState<string>("");
+  const [taxpayerId, setTaxpayerId] = useState<string>("");
+  const [taxpayerAddress, setTaxpayerAddress] = useState<string>("");
 
   // --- DETAILED TAX DEDUCTIONS (20 ITEMS) ---
   const [useDetailedDeductions, setUseDetailedDeductions] = useState<boolean>(false);
@@ -1024,6 +1027,93 @@ export default function App() {
   // still in place.
   const shouldShowPnd94Notice =
     activeTab === "calculator" || (activeTab === "personal_tax" && personalTaxStep === 4);
+
+  // Print-only worksheet mirroring the ภ.ง.ด.90/91 line items, kept off-screen
+  // (position: fixed, left: -9999px) in normal browsing and swapped to visible
+  // by the @media print rules in index.html when the user prints/saves as PDF.
+  // This is a reference summary for filling in the real RD e-Filing form or
+  // paper form — it cannot itself be submitted as the filing.
+  const taxPrintYearBE = new Date().getFullYear() + 543;
+  const netTaxPayable = personalResult.totalTax - withheldTax;
+  const renderTaxPrintSheet = () => (
+    <div id="tax-print-sheet" style={{ position: "fixed", left: "-9999px", top: 0 }} className="w-[190mm] p-8 bg-white text-black font-sans">
+      <div className="text-center mb-6 pb-4 border-b-2 border-slate-800">
+        <h1 className="text-lg font-bold">สรุปการคำนวณภาษีเงินได้บุคคลธรรมดา (ภ.ง.ด.90/91)</h1>
+        <p className="text-xs text-slate-600 mt-1">ปีภาษี {taxPrintYearBE} — จัดทำโดย Tax Twin Easy</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-xs border border-slate-400 rounded-lg p-4 mb-6">
+        <div><span className="font-bold">ชื่อ-นามสกุล:</span> {taxpayerName || "…………………………………………………"}</div>
+        <div><span className="font-bold">เลขประจำตัวผู้เสียภาษี:</span> {taxpayerId || "……………………………"}</div>
+        <div className="col-span-2"><span className="font-bold">ที่อยู่:</span> {taxpayerAddress || "……………………………………………………………………………………………"}</div>
+        <div className="col-span-2"><span className="font-bold">ประเภทเงินได้ (มาตรา 40):</span> {INCOME_TYPES.find((t) => t.id === incomeType)?.name}</div>
+      </div>
+
+      <table className="w-full text-xs border-collapse mb-6">
+        <tbody>
+          <tr className="border-b border-slate-300">
+            <td className="py-1.5">1. เงินได้พึงประเมิน</td>
+            <td className="py-1.5 text-right font-mono">{revenue.toLocaleString()}</td>
+          </tr>
+          <tr className="border-b border-slate-300">
+            <td className="py-1.5">2. หักค่าใช้จ่าย</td>
+            <td className="py-1.5 text-right font-mono">({personalResult.totalExpenses.toLocaleString()})</td>
+          </tr>
+          <tr className="border-b border-slate-300">
+            <td className="py-1.5">3. หักค่าลดหย่อน</td>
+            <td className="py-1.5 text-right font-mono">({personalResult.totalDeductions.toLocaleString()})</td>
+          </tr>
+          <tr className="border-b-2 border-slate-800 font-bold">
+            <td className="py-1.5">4. เงินได้สุทธิ (ฐานภาษี)</td>
+            <td className="py-1.5 text-right font-mono">{personalResult.netTaxableIncome.toLocaleString()}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table className="w-full text-xs border-collapse mb-6">
+        <thead>
+          <tr className="border-b-2 border-slate-800 font-bold">
+            <th className="text-left py-1.5">ช่วงเงินได้สุทธิ (บาท)</th>
+            <th className="text-center py-1.5">อัตรา</th>
+            <th className="text-right py-1.5">ภาษีในขั้น (บาท)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {personalResult.breakdown.map((row) => (
+            <tr key={row.bracket} className="border-b border-slate-200">
+              <td className="py-1">{row.bracket.split(" (")[0]}</td>
+              <td className="text-center py-1">{(row.rate * 100)}%</td>
+              <td className="text-right py-1 font-mono">{row.taxInBracket.toLocaleString()}</td>
+            </tr>
+          ))}
+          <tr className="font-bold border-t-2 border-slate-800">
+            <td className="py-1.5" colSpan={2}>รวมภาษีที่คำนวณได้</td>
+            <td className="text-right py-1.5 font-mono">{personalResult.totalTax.toLocaleString()}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table className="w-full text-xs border-collapse mb-8">
+        <tbody>
+          <tr className="border-b border-slate-300">
+            <td className="py-1.5">หัก ภาษีที่ถูกหัก ณ ที่จ่ายไว้แล้วระหว่างปี</td>
+            <td className="py-1.5 text-right font-mono">({withheldTax.toLocaleString()})</td>
+          </tr>
+          <tr className="font-bold border-t-2 border-slate-800 text-sm">
+            <td className="py-2">{netTaxPayable >= 0 ? "ภาษีที่ต้องชำระเพิ่มเติมเมื่อยื่นแบบ" : "ภาษีที่ได้รับคืน"}</td>
+            <td className="py-2 text-right font-mono">{Math.abs(netTaxPayable).toLocaleString()}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p className="text-[10px] text-slate-500 leading-relaxed border-t border-slate-300 pt-3">
+        เอกสารนี้เป็นเพียงเอกสารสรุปผลการคำนวณ จัดทำขึ้นเพื่อใช้เป็นข้อมูลอ้างอิงประกอบการกรอกแบบแสดงรายการภาษีเงินได้บุคคลธรรมดาผ่านระบบ e-Filing ของกรมสรรพากร (efiling.rd.go.th) หรือแบบกระดาษ ณ สำนักงานสรรพากรพื้นที่ &mdash; มิใช่แบบแสดงรายการภาษีอย่างเป็นทางการ และไม่สามารถใช้ยื่นแบบแทนได้โดยตรง ตัวเลขที่แสดงเป็นการประมาณการจากข้อมูลที่กรอกเข้าระบบเท่านั้น โปรดตรวจสอบความถูกต้องกับกรมสรรพากรหรือผู้เชี่ยวชาญด้านภาษีก่อนยื่นแบบจริง
+      </p>
+      <p className="text-[10px] text-slate-400 mt-2">
+        พิมพ์เมื่อ: {new Date().toLocaleDateString("th-TH", { year: "numeric", month: "long", day: "numeric" })}
+      </p>
+    </div>
+  );
 
   // ภ.ง.ด. 94 requirement notice — shown as a dismissible popup rather than
   // an inline banner, since it's the same condition/content regardless of
@@ -2379,6 +2469,14 @@ export default function App() {
                   <span className="text-3xl font-black font-mono">{costDiff.toLocaleString()}</span>
                   <span className="text-sm opacity-85">บาท/ปี ที่ประหยัดได้เพิ่ม</span>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="mt-4 flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition cursor-pointer"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  ดาวน์โหลด PDF สรุปผลภาษีบุคคลธรรมดา
+                </button>
               </div>
 
               {/* AI SEGMENT: ADVANCED TAX STRATEGY & DEDUCTIONS PLANNER (GEMINI PROXY) */}
@@ -3621,6 +3719,61 @@ export default function App() {
                 {/* Step 4: Summary breakdown */}
                 {personalTaxStep === 4 && (
                 <>
+                {/* Taxpayer info + PDF worksheet download */}
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5 mb-0.5">
+                      <FileBarChart2 className="w-4 h-4 text-blue-600" />
+                      ข้อมูลผู้เสียภาษี (สำหรับเอกสาร PDF)
+                    </h3>
+                    <p className="text-xs text-slate-500">ไม่บังคับ — กรอกไว้เพื่อให้ PDF สรุปผลด้านล่างมีชื่อ/เลขประจำตัวผู้เสียภาษีติดไปด้วย ไม่ต้องมาเขียนเพิ่มเอง</p>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-700">ชื่อ-นามสกุล</label>
+                      <input
+                        type="text"
+                        value={taxpayerName}
+                        onChange={(e) => setTaxpayerName(e.target.value)}
+                        placeholder="เช่น นายเอ ใจดี"
+                        className="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-700">เลขประจำตัวผู้เสียภาษี (13 หลัก)</label>
+                      <input
+                        type="text"
+                        value={taxpayerId}
+                        onChange={(e) => setTaxpayerId(e.target.value.replace(/[^0-9]/g, "").slice(0, 13))}
+                        placeholder="เช่น 1234567890123"
+                        inputMode="numeric"
+                        className="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-mono font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div className="space-y-1 sm:col-span-2">
+                      <label className="text-xs font-bold text-slate-700">ที่อยู่</label>
+                      <input
+                        type="text"
+                        value={taxpayerAddress}
+                        onChange={(e) => setTaxpayerAddress(e.target.value)}
+                        placeholder="เลขที่ ถนน แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์"
+                        className="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3 rounded-xl transition cursor-pointer"
+                  >
+                    <Printer className="w-4 h-4" />
+                    ดาวน์โหลด PDF สรุปผล
+                  </button>
+                  <p className="text-[10.5px] text-slate-400 leading-relaxed">
+                    ระบบจะเปิดหน้าต่างพิมพ์ของเบราว์เซอร์ ให้เลือกปลายทางเป็น &ldquo;บันทึกเป็น PDF&rdquo; — เอกสารนี้เป็นสรุปผลสำหรับใช้อ้างอิงกรอกแบบ ภ.ง.ด.90/91 ผ่านระบบ e-Filing ของกรมสรรพากรหรือแบบกระดาษเท่านั้น <strong>ไม่ใช่แบบยื่นภาษีอย่างเป็นทางการ และไม่สามารถส่งเข้าระบบ e-Filing แทนการยื่นจริงได้</strong>
+                  </p>
+                </div>
+
                 {/* 2. Detailed computation summary (Waterfall list) */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
                   <span className="inline-block text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full mb-3">
@@ -4948,6 +5101,8 @@ export default function App() {
         </div>
       </footer>
       </div>
+
+      {renderTaxPrintSheet()}
 
       {renderPnd94Modal()}
 

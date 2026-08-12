@@ -69,6 +69,27 @@
       .text-base {
         font-size: 1.1875rem !important;
       }
+
+      /* Print-only tax summary sheet (#tax-print-sheet in app.tsx) — everything
+         else is hidden while printing/saving as PDF, only the sheet shows. */
+      @media print {
+        body * {
+          visibility: hidden !important;
+        }
+        #tax-print-sheet,
+        #tax-print-sheet * {
+          visibility: visible !important;
+        }
+        #tax-print-sheet {
+          position: absolute !important;
+          left: 0 !important;
+          top: 0 !important;
+          width: 100% !important;
+        }
+        @page {
+          margin: 15mm;
+        }
+      }
     </style>
   </head>
   <body>
