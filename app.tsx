@@ -4404,13 +4404,13 @@ export default function App() {
                                 </div>
                               </div>
                               <div className="py-0.5">
-                                <div className="text-slate-500 mb-1">รายจ่ายทางภาษี</div>
+                                <div className="text-slate-500 mb-1">หักรายจ่ายทางภาษี</div>
                                 <div className="w-full text-right px-2.5 py-1 rounded-lg border border-slate-100 bg-slate-50/50 font-mono font-semibold text-red-500">
                                   ({plannerExpenses.toLocaleString()})
                                 </div>
                               </div>
                               <div className="py-0.5 border-t border-slate-100 pt-2.5">
-                                <div className="text-slate-800 font-bold mb-1">กำไรสุทธิ</div>
+                                <div className="text-slate-800 font-bold mb-1">กำไรสุทธิทางภาษี</div>
                                 <div className="w-full text-right px-2.5 py-1 rounded-lg border border-slate-100 bg-slate-50/50 font-mono font-bold text-slate-900">
                                   {activeRes.profitBefore.toLocaleString()}
                                 </div>
@@ -4418,7 +4418,7 @@ export default function App() {
 
                               {/* HIGHLIGHTED ROW FOR BEFORE */}
                               <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-200/60 my-2">
-                                <div className="font-bold text-slate-600 mb-1">ภาษีเงินได้</div>
+                                <div className="font-bold text-slate-600 mb-1">หักภาษีเงินได้นิติบุคคล</div>
                                 <div className="w-full text-right px-2.5 py-1 rounded-lg border border-slate-200 bg-white font-mono font-black text-slate-800">
                                   ({activeRes.corpTaxBefore.toLocaleString()})
                                 </div>
@@ -4432,14 +4432,14 @@ export default function App() {
                               </div>
 
                               <div className="py-0.5">
-                                <div className="text-slate-500 mb-1">ณ ที่จ่าย 10%</div>
+                                <div className="text-slate-500 mb-1">หัก ณ ที่จ่าย 10%</div>
                                 <div className="w-full text-right px-2.5 py-1 rounded-lg border border-slate-100 bg-slate-50/50 font-mono text-red-400">
                                   ({activeRes.divTaxBefore.toLocaleString()})
                                 </div>
                               </div>
 
                               <div className="border-t border-slate-100 pt-2.5 font-bold text-slate-900 bg-slate-50/50 p-2.5 rounded-lg">
-                                <div className="mb-1">เงินได้รับจริง</div>
+                                <div className="mb-1">คงเหลือเงินได้รับจริง</div>
                                 <div className="w-full text-right px-2.5 py-1 rounded-lg border border-slate-200 bg-white font-mono font-black">
                                   {activeRes.netReceivedBefore.toLocaleString()}
                                 </div>
@@ -4473,13 +4473,13 @@ export default function App() {
                                 </div>
                               </div>
                               <div className="py-0.5">
-                                <div className="text-slate-500 mb-1">รายจ่าย+เงินเดือน</div>
+                                <div className="text-slate-500 mb-1">หักรายจ่ายรวมเงินเดือน</div>
                                 <div className="w-full text-right px-2.5 py-1 rounded-lg border border-slate-100 bg-slate-50/50 font-mono font-bold text-red-500">
                                   ({(plannerExpenses + activeRes.corporationAdditionalExpenses).toLocaleString()})
                                 </div>
                               </div>
                               <div className="py-0.5 border-t border-slate-100 pt-2.5">
-                                <div className="text-slate-800 font-bold mb-1">กำไรสุทธิ</div>
+                                <div className="text-slate-800 font-bold mb-1">กำไรสุทธิทางภาษี</div>
                                 <div className="w-full text-right px-2.5 py-1 rounded-lg border border-slate-100 bg-slate-50/50 font-mono font-bold text-blue-700">
                                   {activeRes.profitAfter.toLocaleString()}
                                 </div>
@@ -4487,7 +4487,7 @@ export default function App() {
 
                               {/* HIGHLIGHTED GREEN ROW */}
                               <div className="bg-blue-50/40 rounded-xl p-2.5 border-2 border-blue-500/80 my-2">
-                                <div className="font-extrabold text-blue-950 mb-1">หัก ภาษีเงินได้ {plannerSme ? "SME" : "20%"}</div>
+                                <div className="font-extrabold text-blue-950 mb-1">หักภาษีเงินได้นิติบุคคล {plannerSme ? "SME" : "20%"}</div>
                                 <div className="w-full text-right px-2.5 py-1 rounded-lg border border-blue-200 bg-white font-mono font-black text-blue-800">
                                   ({activeRes.corpTaxAfter.toLocaleString()})
                                 </div>
@@ -4501,14 +4501,14 @@ export default function App() {
                               </div>
 
                               <div className="py-0.5">
-                                <div className="text-slate-500 mb-1">ณ ที่จ่าย 10%</div>
+                                <div className="text-slate-500 mb-1">หัก ณ ที่จ่าย 10%</div>
                                 <div className="w-full text-right px-2.5 py-1 rounded-lg border border-slate-100 bg-slate-50/50 font-mono text-red-500">
                                   ({activeRes.divTaxAfter.toLocaleString()})
                                 </div>
                               </div>
 
                               <div className="border-t border-slate-100 pt-2.5 font-bold text-slate-900 bg-blue-50/40 p-2.5 rounded-lg">
-                                <div className="text-blue-950 mb-1">เงินได้รับจริง</div>
+                                <div className="text-blue-950 mb-1">คงเหลือเงินได้รับจริง</div>
                                 <div className="w-full text-right px-2.5 py-1 rounded-lg border border-blue-200 bg-white font-mono font-black text-blue-900">
                                   {activeRes.netReceivedAfter.toLocaleString()}
                                 </div>
@@ -4575,7 +4575,7 @@ export default function App() {
                           </div>
                         </div>
                         <div className="py-0.5">
-                          <div className="text-slate-500 font-medium mb-1">ค่าใช้จ่าย 50%/100k</div>
+                          <div className="text-slate-500 font-medium mb-1">หักค่าใช้จ่ายตามกฎหมาย (50%)</div>
                           <div className="w-full text-right px-2.5 py-1 rounded-lg border border-slate-100 bg-slate-50/50 font-mono text-red-500">
                             ({Math.min(plannerSalary * 12 * 0.5, 100000).toLocaleString()})
                           </div>
@@ -4583,7 +4583,7 @@ export default function App() {
 
                         {plannerInterestIncome > 0 && (
                           <div className="bg-slate-50 p-2 rounded-xl font-medium text-slate-800 text-xs">
-                            <div className="text-slate-500 mb-1">💰 ดอกเบี้ยกรรมการ</div>
+                            <div className="text-slate-500 mb-1">💰 รายได้ดอกเบี้ยของกรรมการ</div>
                             <div className="w-full text-right px-2 py-1 rounded-lg border border-slate-200 bg-white font-mono text-blue-600">
                               +{plannerInterestIncome.toLocaleString()}
                             </div>
@@ -4593,13 +4593,13 @@ export default function App() {
                         {plannerRentalIncome > 0 && (
                           <div className="space-y-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
                             <div className="font-medium text-slate-800 text-xs">
-                              <div className="text-slate-500 mb-1">🔑 ค่าเช่ากรรมการ</div>
+                              <div className="text-slate-500 mb-1">🔑 รายได้ค่าเช่าของกรรมการ</div>
                               <div className="w-full text-right px-2 py-1 rounded-lg border border-slate-200 bg-white font-mono text-blue-600">
                                 +{plannerRentalIncome.toLocaleString()}
                               </div>
                             </div>
                             <div className="text-red-500 text-[10px]">
-                              <div className="text-slate-400 mb-1">หัก ค่าใช้จ่ายค่าเช่า (30%)</div>
+                              <div className="text-slate-400 mb-1">หักค่าใช้จ่ายค่าเช่า (เหมา 30%)</div>
                               <div className="w-full text-right px-2 py-1 rounded-lg border border-slate-200 bg-white font-mono">
                                 (-{(plannerRentalIncome * 0.3).toLocaleString()})
                               </div>
@@ -4631,7 +4631,7 @@ export default function App() {
 
                         {/* HIGHLIGHTED RED ROW FOR PERSONAL TAX */}
                         <div className="bg-red-50 rounded-xl p-2.5 border-2 border-red-500 my-2">
-                          <div className="font-extrabold text-red-950 mb-1">หัก ภาษีเงินได้</div>
+                          <div className="font-extrabold text-red-950 mb-1">หักภาษีเงินได้บุคคลธรรมดา</div>
                           <div className="w-full text-right px-2.5 py-1 rounded-lg border border-red-200 bg-white font-mono font-black text-red-600">
                             ({activeRes.persTax.toLocaleString()})
                           </div>
