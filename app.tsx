@@ -104,14 +104,14 @@ export const INCOME_TYPES = [
 // exactly one unambiguous option.
 export const PROFESSIONS = [
   {
-    id: "employee", emoji: "🏛️", name: "พนักงาน/ข้าราชการ (เงินเดือนประจำ)",
+    id: "employee", emoji: "🏛️", name: "พนักงาน/ข้าราชการ",
     aliases: ["employee", "staff", "office worker", "เงินเดือน", "ข้าราชการ", "พนักงานบริษัท", "ลูกจ้าง", "officer", "มนุษย์เงินเดือน"],
     options: [
       { incomeType: "40_1", label: "เงินเดือน ค่าจ้าง เบี้ยเลี้ยง โบนัส", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
     ],
   },
   {
-    id: "content_creator", emoji: "🎥", name: "คอนเทนต์ครีเอเตอร์ / YouTuber / TikToker",
+    id: "content_creator", emoji: "🎥", name: "ครีเอเตอร์ / YouTuber",
     aliases: ["youtuber", "tiktok", "tiktoker", "อินฟลู", "influencer", "สตรีมเมอร์", "streamer", "รีวิวสินค้า", "คอนเทนต์", "ครีเอเตอร์"],
     options: [
       { incomeType: "40_2", label: "รับจ้างรีวิว/สปอนเซอร์คลิป", desc: "หักเหมา 50% ไม่เกิน 100,000 บาท" },
@@ -238,7 +238,7 @@ export const PROFESSIONS = [
 
 // Always-visible catch-all for anyone whose job isn't in the 16 profession cards above.
 export const OTHER_PROFESSION = {
-  id: "other", emoji: "🤔", name: "ไม่แน่ใจ / อาชีพอื่นๆ",
+  id: "other", emoji: "🤔", name: "ไม่แน่ใจ / อื่นๆ",
   aliases: [],
   options: [
     { incomeType: "40_8", label: "ขายสินค้า/ผลิตภัณฑ์", desc: "เช่น ทำขนม ปลูกต้นไม้ขาย" },
@@ -2734,7 +2734,7 @@ export default function App() {
                         />
                       </div>
 
-                      <div className="grid grid-cols-3 gap-2">
+                      <div className="grid grid-cols-2 gap-2">
                         {allCards.map((prof) => {
                           const isSingle = prof.options.length === 1;
                           const isSelected =
@@ -2769,7 +2769,7 @@ export default function App() {
                         })}
                         {filteredProfessions.length === 0 && (
                           <div className="col-span-3 text-center text-xs text-slate-400 py-4">
-                            ไม่พบอาชีพที่ค้นหา เลือก &ldquo;ไม่แน่ใจ / อาชีพอื่นๆ&rdquo; ด้านบนแทนได้เลย
+                            ไม่พบอาชีพที่ค้นหา เลือก &ldquo;ไม่แน่ใจ / อื่นๆ&rdquo; ด้านบนแทนได้เลย
                           </div>
                         )}
                       </div>
