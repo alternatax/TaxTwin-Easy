@@ -71,6 +71,7 @@ interface PersonalTaxResult {
   totalExpenses: number;
   avgRate: number;
   marginalRate: number;
+  deductionBreakdown: { label: string; amount: number }[];
 }
 
 interface CorporateTaxResult {
@@ -560,7 +561,8 @@ export default function App() {
     const allowanceSpouse = hasSpouse ? 60000 : 0;
     
     let calculatedDeductions = 0;
-    
+    let deductionBreakdown: { label: string; amount: number }[] = [];
+
     if (useDetailedDeductions) {
       // 1. ค่าลดหย่อนผู้มีเงินได้
       const d1 = 60000;
@@ -625,11 +627,41 @@ export default function App() {
       const d20 = Math.min(10000, politicalDonationAmount);
       
       calculatedDeductions = sumBeforeDonations + d17 + d18 + d20;
+
+      deductionBreakdown = [
+        { label: "ส่วนตัวผู้มีเงินได้", amount: d1 },
+        { label: "คู่สมรส", amount: d2 },
+        { label: "บุตร", amount: d3 },
+        { label: "ฝากครรภ์และคลอดบุตร", amount: d4 },
+        { label: "บิดามารดา", amount: d5 },
+        { label: "ผู้พิการ/ทุพพลภาพ", amount: d6 },
+        { label: "เบี้ยประกันชีวิต/สุขภาพตนเอง", amount: d7_9_combined },
+        { label: "เบี้ยประกันสุขภาพบิดามารดา", amount: d8 },
+        { label: "ดอกเบี้ยกู้ยืมที่อยู่อาศัย", amount: d10 },
+        { label: "กองทุนเพื่อการเกษียณ (PVD/RMF/SSF/กบข./กอช./ประกันบำนาญ)", amount: retirementAllowed },
+        { label: "ประกันสังคม", amount: d15 },
+        { label: "ค่าธรรมเนียมรับชำระเงินอิเล็กทรอนิกส์ (EDC)", amount: d19 },
+        { label: "เงินบริจาคการศึกษา/กีฬา/สังคม", amount: d17 },
+        { label: "เงินบริจาคทั่วไป", amount: d18 },
+        { label: "เงินบริจาคพรรคการเมือง", amount: d20 },
+      ].filter((item) => item.amount > 0);
     } else {
       const allowanceChildren = childrenCount * 30000;
       calculatedDeductions = allowancePersonal + allowanceSpouse + allowanceChildren + socialSecurity + insuranceCost + investmentSavings;
+
+      deductionBreakdown = [
+        { label: "ส่วนตัวผู้มีเงินได้", amount: allowancePersonal },
+        { label: "คู่สมรส", amount: allowanceSpouse },
+        { label: "บุตร", amount: allowanceChildren },
+        { label: "ประกันสังคม", amount: socialSecurity },
+        { label: "เบี้ยประกันชีวิต/สุขภาพ", amount: insuranceCost },
+        { label: "กองทุน SSF/RMF/ThaiESG", amount: investmentSavings },
+      ].filter((item) => item.amount > 0);
     }
     const totalDeductions = customDeductions !== null ? customDeductions : calculatedDeductions;
+    if (customDeductions !== null) {
+      deductionBreakdown = [{ label: "ค่าลดหย่อนรวม (ระบุเอง)", amount: customDeductions }];
+    }
 
     // 3. Taxable Income (เงินได้สุทธิ = รายได้ - ค่าใช้จ่าย - ค่าลดหย่อน)
     const netTaxableIncome = Math.max(0, revenue - allowedExpenses - totalDeductions);
@@ -695,6 +727,7 @@ export default function App() {
       totalExpenses: Math.round(allowedExpenses),
       avgRate,
       marginalRate,
+      deductionBreakdown: deductionBreakdown.map((item) => ({ label: item.label, amount: Math.round(item.amount) })),
     };
   };
 
@@ -1070,10 +1103,16 @@ export default function App() {
             <td className="py-1.5">2. หักค่าใช้จ่าย</td>
             <td className="py-1.5 text-right font-mono">({personalResult.totalExpenses.toLocaleString()})</td>
           </tr>
-          <tr className="border-b border-slate-300">
+          <tr className="border-b border-slate-200">
             <td className="py-1.5">3. หักค่าลดหย่อน</td>
             <td className="py-1.5 text-right font-mono">({personalResult.totalDeductions.toLocaleString()})</td>
           </tr>
+          {personalResult.deductionBreakdown.map((item, idx) => (
+            <tr key={idx} className="border-b border-dotted border-slate-200 text-slate-500">
+              <td className="py-1 pl-4 text-[10.5px]">&bull; {item.label}</td>
+              <td className="py-1 text-right font-mono text-[10.5px]">({item.amount.toLocaleString()})</td>
+            </tr>
+          ))}
           <tr className="border-b-2 border-slate-800 font-bold">
             <td className="py-1.5">4. เงินได้สุทธิ (ฐานภาษี)</td>
             <td className="py-1.5 text-right font-mono">{personalResult.netTaxableIncome.toLocaleString()}</td>
