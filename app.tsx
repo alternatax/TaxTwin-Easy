@@ -1564,7 +1564,6 @@ export default function App() {
             </button>
           )}
         </nav>
-        <div className="relative p-3 border-t border-white/10">{accountCapsule}</div>
       </aside>
 
       {/* Content column */}
@@ -4557,7 +4556,7 @@ export default function App() {
                         <div>
                           <h3 className="text-lg md:text-xl font-extrabold flex items-center gap-2">
                             <Sparkles className="w-5 h-5 text-blue-400" />
-                            เจาะลึกเฉพาะจุด: Case {plannerCase > 0 ? plannerCase : "กำหนดเอง"} (กระหมวดเงินเดือน {plannerSalary.toLocaleString()} บาท/เดือน)
+                            เจาะลึกเฉพาะจุด: Case {plannerCase > 0 ? plannerCase : "กำหนดเอง"} (กำหนดเงินเดือน {plannerSalary.toLocaleString()} บาท/เดือน)
                           </h3>
                           <p className="text-xs md:text-sm font-semibold text-slate-300 mt-1">
                             ตารางเปรียบเทียบเชิงลึกแสดงภาระรวมระหว่านิติบุคคล ปะทะ ภาษีบุคคลเพื่อเกณฑ์ประหยัดครอบครัวสูงสุด
@@ -5261,6 +5260,7 @@ export default function App() {
                       <input
                         type="email"
                         required
+                        autoComplete="off"
                         value={authEmail}
                         onChange={(e) => setAuthEmail(e.target.value)}
                         placeholder="เช่น name@company.co"
@@ -5276,6 +5276,7 @@ export default function App() {
                       <input
                         type="password"
                         required
+                        autoComplete="new-password"
                         value={authPassword}
                         onChange={(e) => setAuthPassword(e.target.value)}
                         placeholder="รหัสผ่านเข้าถึงประวัติ"
